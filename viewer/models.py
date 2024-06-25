@@ -1,12 +1,9 @@
 from datetime import date
 
+from django.db import models
 from django.db.models import *  #(Model, CharField, ForeignKey, DO_NOTHING,
 
 # Create your models here.
-
-
-class Role(Model):
-    role_name = CharField(max_length=42, null=True, blank=False)
 
 
 class User(Model):
@@ -17,7 +14,6 @@ class User(Model):
     address = CharField(max_length=80, null=True, blank=False)
     phone_number = IntegerField(default=0, unique=True, null=True, blank=False)
     city = CharField(max_length=42, null=True, blank=False)
-    role = ForeignKey(Role, on_delete=CASCADE, null=True, blank=False)
 
     class Meta:
         ordering = ['last_name', 'first_name', 'email', 'phone_number', 'city']
@@ -37,13 +33,24 @@ class Manufacturer(Model):
 
 
 class Product(Model):
+    class ProductType(models.TextChoices):
+        SHOES = 'BT', 'Boty'
+        CLOTHES = 'OB', 'Oblečení'
+        ACCESSORIES = 'ACS', 'Příslušenství'
+        OTHER = 'OT', 'Jiné'
     title = CharField(max_length=100, null=True, blank=False)
+    product_type = models.CharField(
+        max_length=3,
+        choices=ProductType.choices,
+        default=ProductType.OTHER,
+    )
     description = CharField(max_length=500, null=True, blank=False)
     thumbnail = CharField(max_length=500, null=True, blank=False)
     price = IntegerField(default=0, null=True, blank=False)
-    product_type = CharField(max_length=42, null=True, blank=False)
     stock = IntegerField(default=0, null=True, blank=False)
     manufacturer = ForeignKey(Manufacturer,on_delete=DO_NOTHING, null=True, blank=False)
+
+
 
     class Meta:
         ordering = ['title', 'stock', 'price']
