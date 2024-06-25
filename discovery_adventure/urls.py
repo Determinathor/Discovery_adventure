@@ -18,8 +18,10 @@ from django.urls import path
 
 from viewer import views
 
+from viewer.views import home
+
 urlpatterns = [
     path('admin/', admin.site.urls),
-    #path('', home, name='home'),
+    path('', home, name='home'),
     path('hello/', views.hello, name='hello'),
 ]

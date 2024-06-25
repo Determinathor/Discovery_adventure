@@ -19,9 +19,21 @@ class User(Model):
     city = CharField(max_length=42, null=True, blank=False)
     role = ForeignKey(Role, on_delete=CASCADE, null=True, blank=False)
 
+    class Meta:
+        ordering = ['last_name', 'first_name', 'email', 'phone_number', 'city']
+
 
 class Manufacturer(Model):
     name = CharField(max_length=80, null=True, blank=False)
+
+    class Meta:
+        ordering = ['name']
+
+    def __repr__(self):
+        return f"<Manufacturer: {self.name}>"
+
+    def __str__(self):
+        return f"{self.name}"
 
 
 class Product(Model):
@@ -33,17 +45,31 @@ class Product(Model):
     stock = IntegerField(default=0, null=True, blank=False)
     manufacturer = ForeignKey(Manufacturer,on_delete=DO_NOTHING, null=True, blank=False)
 
+    class Meta:
+        ordering = ['title', 'stock', 'price']
+
+    def __str__(self):
+        return f"{self.title}, in stock: {self.stock}"
+
+    def __repr__(self):
+        return f"<Product: {self.title}, in stock: {self.stock}>"
+
 
 class Cart(Model):
     quantity = IntegerField(default=0, null=True, blank=False)
     Product = ManyToManyField(Product, related_name='cart')
 
 
-
 class Category(Model):
     name = CharField(max_length=42, null=True, blank=False)
     Product = ManyToManyField(Product, related_name='category')
 
+    class Meta:
+        ordering = ['name']
+        verbose_name_plural = 'Categories'
+
+    def __str__(self):
+        return f"{self.name}"
 
 
 class Order(Model):
@@ -60,7 +86,6 @@ class Order_Line(Model):
     quantity = IntegerField(default=0, null=True, blank=False)
     Product = ForeignKey(Product, on_delete=DO_NOTHING, null=True, blank=False)
     Order = ForeignKey(Order, on_delete=DO_NOTHING, null=True, blank=False)
-
 
 
 class Payment(Model):
