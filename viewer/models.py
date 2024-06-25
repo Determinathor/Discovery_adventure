@@ -32,6 +32,18 @@ class Manufacturer(Model):
         return f"{self.name}"
 
 
+class Category(Model):
+    name = CharField(max_length=42, null=True, blank=False)
+    Product = ManyToManyField(Product, related_name='category')
+
+    class Meta:
+        ordering = ['name']
+        verbose_name_plural = 'Categories'
+
+    def __str__(self):
+        return f"{self.name}"
+
+
 class Product(Model):
     class ProductType(models.TextChoices):
         SHOES = 'BT', 'Boty'
@@ -49,6 +61,7 @@ class Product(Model):
     price = IntegerField(default=0, null=True, blank=False)
     stock = IntegerField(default=0, null=True, blank=False)
     manufacturer = ForeignKey(Manufacturer,on_delete=DO_NOTHING, null=True, blank=False)
+    category = ForeignKey(Category, on_delete=DO_NOTHING, null=True, blank=False)
 
 
 
@@ -67,16 +80,6 @@ class Cart(Model):
     Product = ManyToManyField(Product, related_name='cart')
 
 
-class Category(Model):
-    name = CharField(max_length=42, null=True, blank=False)
-    Product = ManyToManyField(Product, related_name='category')
-
-    class Meta:
-        ordering = ['name']
-        verbose_name_plural = 'Categories'
-
-    def __str__(self):
-        return f"{self.name}"
 
 
 class Order(Model):
