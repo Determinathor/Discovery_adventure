@@ -41,6 +41,7 @@ INSTALLED_APPS = [
 
     #Our apps
     'viewer',
+    'accounts',
 ]
 
 MIDDLEWARE = [
