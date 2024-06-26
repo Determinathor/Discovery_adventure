@@ -20,11 +20,12 @@ from django.urls import path
 from discovery_adventure import settings
 from viewer import views
 
-from viewer.views import home
+from viewer.views import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', home, name='home'),
     path('hello/', views.hello, name='hello'),
+    path('faq/', faq, name='faq'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

@@ -17,8 +17,6 @@
 > 
 >>Categories menu - /shop/category
 > 
->> Categories - /shop/category/xxx
-> 
 >> Product page - /product/xxx
 
 
@@ -26,4 +24,4 @@
 
 > Admin - /admin
 
-fotbal, beh, hokej, cyklo, vodni sporty, turistika, 
+ 

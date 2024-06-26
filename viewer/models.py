@@ -32,36 +32,40 @@ class Manufacturer(Model):
         return f"{self.name}"
 
 
-class Category(Model):
-    name = CharField(max_length=42, null=True, blank=False)
-    Product = ManyToManyField(Product, related_name='category')
+class Category(models.Model):
+    name = models.CharField(max_length=42, null=True, blank=False)
+    products = models.ManyToManyField('Product', related_name='categories')
 
     class Meta:
         ordering = ['name']
         verbose_name_plural = 'Categories'
 
     def __str__(self):
-        return f"{self.name}"
+        return self.name
 
 
-class Product(Model):
+class Product(models.Model):
     class ProductType(models.TextChoices):
         SHOES = 'BT', 'Boty'
         CLOTHES = 'OB', 'Oblečení'
         ACCESSORIES = 'ACS', 'Příslušenství'
         OTHER = 'OT', 'Jiné'
-    title = CharField(max_length=100, null=True, blank=False)
+
+    title = models.CharField(max_length=100, null=True, blank=False)
     product_type = models.CharField(
         max_length=3,
         choices=ProductType.choices,
         default=ProductType.OTHER,
     )
-    description = CharField(max_length=500, null=True, blank=False)
-    thumbnail = CharField(max_length=500, null=True, blank=False)
-    price = IntegerField(default=0, null=True, blank=False)
-    stock = IntegerField(default=0, null=True, blank=False)
-    manufacturer = ForeignKey(Manufacturer,on_delete=DO_NOTHING, null=True, blank=False)
-    category = ForeignKey(Category, on_delete=DO_NOTHING, null=True, blank=False)
+    description = models.CharField(max_length=500, null=True, blank=False)
+    thumbnail = models.CharField(max_length=500, null=True, blank=False)
+    price = models.IntegerField(default=0, null=True, blank=False)
+    stock = models.IntegerField(default=0, null=True, blank=False)
+    manufacturer = models.ForeignKey('Manufacturer', on_delete=models.DO_NOTHING, null=True, blank=False)
+    category = models.ForeignKey(Category, on_delete=models.DO_NOTHING, null=True, blank=False)
+
+    def __str__(self):
+        return self.title
 
 
 
