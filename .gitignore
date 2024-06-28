@@ -1,10 +1,4 @@
 /.venv/
 /.idea/
 supabase.py
-/static/
-/img/
-/viewer/templates/cart.html
-/viewer/templates/checkout.html
-/viewer/templates/contact.html
-/viewer/templates/detail.html
-/viewer/templates/shop.html
+/viewer/migrations/

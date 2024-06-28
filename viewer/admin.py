@@ -13,4 +13,3 @@ admin.site.register(Order)
 admin.site.register(Order_Line)
 admin.site.register(Payment)
 
-
