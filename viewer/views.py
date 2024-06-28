@@ -16,7 +16,7 @@ from django.forms import *
 
 
 def home(request):
-    return render(request, "home.html")
+    return render(request, ".html")
 
 
 def hello(request):
@@ -25,7 +25,7 @@ def hello(request):
 
 class CategoryListView(ListView): # chceme zobrazit všechny kategorie
     model = Category
-    template_name = "index.html"
+    template_name = ".html"
 
 
 class CategoryTemplateView(TemplateView): # chceme vypsat produkty v dané kategorii
