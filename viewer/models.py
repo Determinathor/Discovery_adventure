@@ -36,6 +36,12 @@ class Manufacturer(Model):
 
 
 class Product(Model):
+    class ProductType(TextChoices):
+        SHOES = 'BT', 'Boty'
+        CLOTHES = 'OB', 'Oblečení'
+        ACCESSORIES = 'ACS', 'Příslušenství'
+        OTHER = 'OT', 'Jiné'
+
     title = CharField(max_length=100, null=True, blank=False)
     description = CharField(max_length=500, null=True, blank=False)
     thumbnail = CharField(max_length=500, null=True, blank=False)
