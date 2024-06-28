@@ -7,7 +7,7 @@ from viewer import views
 from accounts.views import SubmittableLoginView, SignUpView, SubmittablePasswordChangeView
 
 from viewer.views import home, ProductsListView, ProductTemplateView, ProductCreateView, CategoryListView, \
-    CategoryTemplateView
+    CategoryTemplateView, faq
 
 urlpatterns = [
 
@@ -20,6 +20,7 @@ urlpatterns = [
     path('category/<pk>/', CategoryTemplateView.as_view(), name='category'), # zobrazení produktů dané kategorie
     path('product/<pk>', ProductTemplateView.as_view(), name='product'), # zobrazení detailu produktu
     path('product/create/', ProductCreateView.as_view(), name='product_create'), # vytvoření produktu
+    path('faq/', views.faq, name='faq'), # faq stránka
 
     path('accounts/login/', SubmittableLoginView.as_view(), name='login'),  # vlastní view pro login
     path('accounts/signup/', SignUpView.as_view(), name='signup'),          # vlastní view pro signup

@@ -58,7 +58,7 @@ class Product(models.Model):
     price = models.IntegerField(default=0, null=True, blank=False, validators=[MinValueValidator(1)])
     stock = models.IntegerField(default=0, null=True, blank=False, validators=[MinValueValidator(0)])
     manufacturer = models.ForeignKey('Manufacturer', on_delete=models.DO_NOTHING, null=True, blank=False)
-    categories = models.ManyToManyField('Category', related_name='products', blank=True)
+    categories = models.ManyToManyField('Category', related_name='products', blank=True, null=True)
     class Meta:
         ordering = ['title', 'stock', 'price']
 
