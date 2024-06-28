@@ -61,7 +61,7 @@
         </div>
         <div class="row align-items-center py-3 px-xl-5">
             <div class="col-lg-3 d-none d-lg-block">
-                <a href="" class="text-decoration-none">
+                <a href="{% url 'home' %}" class="text-decoration-none">
                     <h1 class="m-0 display-9 font-weight-semi-bold"><span class="text-primary font-weight-light border px-1 mr-2">DA</span>Discovery adventure</h1>
                 </a>
             </div>
@@ -129,7 +129,7 @@
                     </button>
                     <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                         <div class="navbar-nav mr-auto py-0">
-                            <a href="home.html" class="nav-item nav-link">Domů</a>
+                            <a href="{% url 'home' %}" class="nav-item nav-link">Domů</a>
                             <a href="shop.html" class="nav-item nav-link active">Všechny produkty</a>
                             <a href="detail.html" class="nav-item nav-link">Detail produktu</a>
                             <div class="nav-item dropdown">
@@ -158,6 +158,7 @@
         <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 150px">
             <h1 class="font-weight-semi-bold text-uppercase mb-3">Nabídka produktů</h1>
             <div class="d-inline-flex">
+                <p class="m-0"><a href="{% url 'home' %}">Domů</a></p>
                 <p class="m-0 px-2">-</p>
                 <p class="m-0">Všechny produkty</p>
             </div>
@@ -383,7 +384,7 @@
                     <div class="col-md-4 mb-5">
                         <h5 class="font-weight-bold text-dark mb-4">Odkazy</h5>
                         <div class="d-flex flex-column justify-content-start">
-                            <a class="text-dark mb-2" href="home.html"><i class="fa fa-angle-right mr-2"></i>Domů</a> <!-- TODO: dotvořit všechny crossclicky -->
+                            <a class="text-dark mb-2" href="{% url 'home' %}"><i class="fa fa-angle-right mr-2"></i>Domů</a> <!-- TODO: dotvořit všechny crossclicky -->
                             <a class="text-dark mb-2" href="shop.html"><i class="fa fa-angle-right mr-2"></i>Všechny produkty</a>
                             <a class="text-dark mb-2" href="detail.html"><i class="fa fa-angle-right mr-2"></i>Detail produktu</a>
                             <a class="text-dark mb-2" href="cart.html"><i class="fa fa-angle-right mr-2"></i>Nákupní košík</a>

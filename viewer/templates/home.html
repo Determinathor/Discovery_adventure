@@ -79,10 +79,6 @@
             </div>
             <div class="col-lg-3 col-6 text-right">
                 <a href="" class="btn border">
-                    <i class="fas fa-heart text-primary"></i>
-                    <span class="badge">0</span>
-                </a>
-                <a href="" class="btn border">
                     <i class="fas fa-shopping-cart text-primary"></i>
                     <span class="badge">0</span>
                 </a>
@@ -129,16 +125,9 @@
                     </button>
                     <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                         <div class="navbar-nav mr-auto py-0">
-                            <a href="home.html" class="nav-item nav-link active">Domů</a>
-                            <a href="shop.html" class="nav-item nav-link">Všechny produkty</a>
-                            <a href="detail.html" class="nav-item nav-link">Detail produktu</a>
-                            <div class="nav-item dropdown">
-                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Další</a>
-                                <div class="dropdown-menu rounded-0 m-0">
-                                    <a href="cart.html" class="dropdown-item">Nákupní košík</a>
-                                    <a href="checkout.html" class="dropdown-item">Pokladna</a>
-                                </div>
-                            </div>
+                            <a href="{% url 'home' %}" class="nav-item nav-link active">Domů</a>
+                            <a href="{% url 'shop' %}" class="nav-item nav-link">Všechny produkty</a>
+                            <a href="detail.html" class="nav-item nav-link">Náhodný produkt</a>
                             <a href="contact.html" class="nav-item nav-link">Kontakt</a>
                         </div>
                         <div class="navbar-nav ml-auto py-0">
@@ -158,9 +147,9 @@
         <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 150px">
             <h1 class="font-weight-semi-bold text-uppercase mb-3">Výběr kategorie</h1>
             <div class="d-inline-flex">
-                <p class="m-0"><a href="">Domů</a></p>
+                <p class="m-0"><a href="{% url 'home' %}">Domů</a></p>
                 <p class="m-0 px-2">-</p>
-                <p class="m-0">Všechny produkty</p>
+                <p class="m-0"><a href="{% url 'shop' %}">Všechny produkty</a></p>
             </div>
         </div>
     </div>
@@ -291,66 +280,23 @@
 
               <!-- Categories Start -->
     <!-- TODO: změnit, aby se zobrazovalo vedle sebe -->
-    {% for object in object_list %}
-    <div class="container-fluid pt-5">
-        <div class="row px-xl-5 pb-3">
+
+<div class="container-fluid pt-5">
+    <div class="row">
+        {% for object in object_list %}
             <div class="col-lg-4 col-md-6 pb-1">
                 <div class="cat-item d-flex flex-column border mb-4" style="padding: 30px;">
-                    <p class="text-right">15 Products</p> <!-- TODO: vypsat počet produktů  -->
+                    <p class="text-right">15 Products</p> <!-- TODO: vypsat počet produktů -->
                     <a href="" class="cat-img position-relative overflow-hidden mb-3">
-                        <img class="img-fluid" src="img/cat-1.jpg" alt="">
+                        <img class="img-fluid" src="{% static 'img/cat-1.jpg' %}" alt="">
                     </a>
                     <h5 class="font-weight-semi-bold m-0">{{ object.name }}</h5>
                 </div>
             </div>
-<!--            <div class="col-lg-4 col-md-6 pb-1">-->
-<!--                <div class="cat-item d-flex flex-column border mb-4" style="padding: 30px;">-->
-<!--                    <p class="text-right">15 Products</p>-->
-<!--                    <a href="" class="cat-img position-relative overflow-hidden mb-3">-->
-<!--                        <img class="img-fluid" src="img/cat-2.jpg" alt="">-->
-<!--                    </a>-->
-<!--                    <h5 class="font-weight-semi-bold m-0">Women's dresses</h5>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            <div class="col-lg-4 col-md-6 pb-1">-->
-<!--                <div class="cat-item d-flex flex-column border mb-4" style="padding: 30px;">-->
-<!--                    <p class="text-right">15 Products</p>-->
-<!--                    <a href="" class="cat-img position-relative overflow-hidden mb-3">-->
-<!--                        <img class="img-fluid" src="img/cat-3.jpg" alt="">-->
-<!--                    </a>-->
-<!--                    <h5 class="font-weight-semi-bold m-0">Baby's dresses</h5>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            <div class="col-lg-4 col-md-6 pb-1">-->
-<!--                <div class="cat-item d-flex flex-column border mb-4" style="padding: 30px;">-->
-<!--                    <p class="text-right">15 Products</p>-->
-<!--                    <a href="" class="cat-img position-relative overflow-hidden mb-3">-->
-<!--                        <img class="img-fluid" src="img/cat-4.jpg" alt="">-->
-<!--                    </a>-->
-<!--                    <h5 class="font-weight-semi-bold m-0">Accerssories</h5>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            <div class="col-lg-4 col-md-6 pb-1">-->
-<!--                <div class="cat-item d-flex flex-column border mb-4" style="padding: 30px;">-->
-<!--                    <p class="text-right">15 Products</p>-->
-<!--                    <a href="" class="cat-img position-relative overflow-hidden mb-3">-->
-<!--                        <img class="img-fluid" src="img/cat-5.jpg" alt="">-->
-<!--                    </a>-->
-<!--                    <h5 class="font-weight-semi-bold m-0">Bags</h5>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            <div class="col-lg-4 col-md-6 pb-1">-->
-<!--                <div class="cat-item d-flex flex-column border mb-4" style="padding: 30px;">-->
-<!--                    <p class="text-right">15 Products</p>-->
-<!--                    <a href="" class="cat-img position-relative overflow-hidden mb-3">-->
-<!--                        <img class="img-fluid" src="img/cat-6.jpg" alt="">-->
-<!--                    </a>-->
-<!--                    <h5 class="font-weight-semi-bold m-0">Shoes</h5>-->
-                </div>
-            </div>
-        </div>
+        {% endfor %}
     </div>
-    {% endfor %}
+</div>
+
     <!-- Categories End -->
 
 
@@ -371,8 +317,8 @@
                     <div class="col-md-4 mb-5">
                         <h5 class="font-weight-bold text-dark mb-4">Rychlé odkazy</h5>
                         <div class="d-flex flex-column justify-content-start">
-                            <a class="text-dark mb-2" href="home.html"><i class="fa fa-angle-right mr-2"></i>Domů</a>
-                            <a class="text-dark mb-2" href="shop.html"><i class="fa fa-angle-right mr-2"></i>Všechny produkty</a>
+                            <a class="text-dark mb-2" href="{% url 'home' %}"><i class="fa fa-angle-right mr-2"></i>Domů</a>
+                            <a class="text-dark mb-2" href="{% url 'shop' %}"><i class="fa fa-angle-right mr-2"></i>Všechny produkty</a>
                             <a class="text-dark mb-2" href="detail.html"><i class="fa fa-angle-right mr-2"></i>Detail produktu</a>
                             <a class="text-dark mb-2" href="cart.html"><i class="fa fa-angle-right mr-2"></i>Nákupní košík</a>
                             <a class="text-dark mb-2" href="checkout.html"><i class="fa fa-angle-right mr-2"></i>Pokladna</a>

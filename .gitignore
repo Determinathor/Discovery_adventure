@@ -1,3 +1,4 @@
 /.venv/
 /.idea/
 supabase.py
+/viewer/migrations/
