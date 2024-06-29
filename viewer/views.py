@@ -32,14 +32,16 @@ class CategoryListView(ListView): # chceme zobrazit všechny kategorie
     template_name = "home.html"
 
 
-class CategoryTemplateView(TemplateView): # chceme vypsat produkty v dané kategorii
+class CategoryTemplateView(TemplateView): # chceme vypsat produkty v dané kategorii TODO: category_name
     template_name = "products_by_category.html"
 
     def get_context_data(self, **kwargs):
-        context =super().get_context_data(**kwargs)
-        pk = self.kwargs.get('pk')
-        context["category"] = Category.objects.get(id=pk)
-        context["products"] = Product.objects.filter(categories__id=pk)
+        context = super().get_context_data(**kwargs)
+        pk = self.kwargs['pk']
+        category = Category.objects.get(id=pk)
+        products = Product.objects.filter(categories=category)
+        context["category"] = category
+        context["products"] = products
         return context
 
 
@@ -49,8 +51,24 @@ class ProductsListView(ListView):  # chceme vypsat všechny produkty
 
 
 class ProductTemplateView(TemplateView): # chceme zobrazit konkrétní produkt s popisem
-    model = Product
     template_name = 'detail.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        pk = self.kwargs['pk']
+        product_ = Product.objects.get(id=pk)
+        conversion_rate = 25.5
+        context["product"] = product_
+        context["title"] = product_.title
+        context["description"] = product_.description
+        context["price"] = product_.price
+        context["manufacturer"] = product_.manufacturer
+        context["conversion_rate"] = conversion_rate
+        context["price_czk"] = product_.price * conversion_rate # TODO: aktuální cena czk -> eur?
+        return context
+        # context["reviews"] = Review.objects.filter(product=product_) TODO: chceme vypisovat a tvořit review pro produkt?
+        # context["form_review"] = ReviewModelForm
+
 
 
 class ProductModelForm(ModelForm): # formulář pro produkt

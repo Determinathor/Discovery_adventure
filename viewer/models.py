@@ -3,6 +3,7 @@ from django.db import models
 from django.db.models import *  #(Model, CharField, ForeignKey, DO_NOTHING,
 from django.core.validators import MinValueValidator
 
+
 class User(Model):
     first_name = CharField(max_length=42, null=True, blank=False)
     last_name = CharField(max_length=42, null=True, blank=False)
@@ -11,7 +12,6 @@ class User(Model):
     address = CharField(max_length=80, null=True, blank=False)
     phone_number = IntegerField(default=0, unique=True, null=True, blank=False)
     city = CharField(max_length=42, null=True, blank=False)
-
 
     class Meta:
         ordering = ['last_name', 'first_name', 'email', 'phone_number', 'city']
@@ -40,6 +40,7 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
+
 class Product(models.Model):
     class ProductType(models.TextChoices):
         SHOES = 'BT', 'Boty'
@@ -58,15 +59,16 @@ class Product(models.Model):
     price = models.IntegerField(default=0, null=True, blank=False, validators=[MinValueValidator(1)])
     stock = models.IntegerField(default=0, null=True, blank=False, validators=[MinValueValidator(0)])
     manufacturer = models.ForeignKey('Manufacturer', on_delete=models.DO_NOTHING, null=True, blank=False)
-    categories = models.ManyToManyField('Category', related_name='products', blank=True, null=True)
+    categories = models.ManyToManyField('Category', related_name='products', blank=True)
+
     class Meta:
         ordering = ['title', 'stock', 'price']
 
     def __str__(self):
-        return f"{self.title}, in stock: {self.stock}, price: {self.price} CZK"
+        return f"{self.title}, in stock: {self.stock}, price: {self.price} EUR"
 
     def __repr__(self):
-        return f"<Product: {self.title}, in stock: {self.stock}, price: {self.price} CZK>"
+        return f"<Product: {self.title}, in stock: {self.stock}, price: {self.price} EUR>"
 
 
 class Cart(Model):
@@ -82,8 +84,8 @@ class Cart(Model):
 #         ordering = ['name']
 #         verbose_name_plural = 'Categories'
 
-    def __str__(self):
-        return f"{self.name}"
+    # def __str__(self):
+    #     return f"{self.name}"
 
 
 class Order(Model):

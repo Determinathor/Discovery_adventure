@@ -17,12 +17,12 @@ urlpatterns = [
 
     # path('index/', CategoryListView.as_view(), name='index'), # "domovská stránka", která zobrazuje kategorie
     path('shop/', ProductsListView.as_view(), name='shop'), # zobrazení všech produktů
-    path('category/<pk>/', CategoryTemplateView.as_view(), name='category'), # zobrazení produktů dané kategorie
-    path('product/<pk>', ProductTemplateView.as_view(), name='product'), # zobrazení detailu produktu
+    path('category/<pk>/', CategoryTemplateView.as_view(), name='category'), # zobrazení produktů dané kategorie TODO: chceme místo pk vypsat category_name
+    path('shop/<pk>/', ProductTemplateView.as_view(), name='detail'), # zobrazení detailu produktu TODO: aby byla adresář shop/product/<pk>
     path('product/create/', ProductCreateView.as_view(), name='product_create'), # vytvoření produktu
     path('faq/', views.faq, name='faq'), # faq stránka
 
-    path('accounts/login/', SubmittableLoginView.as_view(), name='login'),  # vlastní view pro login
+    path('login/', SubmittableLoginView.as_view(), name='login'),  # vlastní view pro login
     path('accounts/signup/', SignUpView.as_view(), name='signup'),          # vlastní view pro signup
     path('accounts/password_change/', SubmittablePasswordChangeView.as_view(), name='password_change'), # view pro změnu hesla
     path('accounts/', include('django.contrib.auth.urls')), # default django view
