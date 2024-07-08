@@ -1,5 +1,8 @@
 /.venv/
 /.idea/
 supabase.py
+/accounts/__pycache__/
+/viewer/__pycache__/
+/__pycache__/
 /viewer/migrations/
 /accounts/migrations/
