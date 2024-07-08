@@ -1,12 +1,7 @@
 from datetime import date
-
+from django.db import models
 from django.db.models import *  #(Model, CharField, ForeignKey, DO_NOTHING,
-
-# Create your models here.
-
-
-class Role(Model):
-    role_name = CharField(max_length=42, null=True, blank=False)
+from django.core.validators import MinValueValidator
 
 
 class User(Model):
@@ -17,7 +12,6 @@ class User(Model):
     address = CharField(max_length=80, null=True, blank=False)
     phone_number = IntegerField(default=0, unique=True, null=True, blank=False)
     city = CharField(max_length=42, null=True, blank=False)
-    role = ForeignKey(Role, on_delete=CASCADE, null=True, blank=False)
 
     class Meta:
         ordering = ['last_name', 'first_name', 'email', 'phone_number', 'city']
@@ -36,23 +30,45 @@ class Manufacturer(Model):
         return f"{self.name}"
 
 
-class Product(Model):
-    title = CharField(max_length=100, null=True, blank=False)
-    description = CharField(max_length=500, null=True, blank=False)
-    thumbnail = CharField(max_length=500, null=True, blank=False)
-    price = IntegerField(default=0, null=True, blank=False)
-    product_type = CharField(max_length=42, null=True, blank=False)
-    stock = IntegerField(default=0, null=True, blank=False)
-    manufacturer = ForeignKey(Manufacturer,on_delete=DO_NOTHING, null=True, blank=False)
+class Category(models.Model):
+    name = models.CharField(max_length=42, null=True, blank=False)
+
+    class Meta:
+        ordering = ['name']
+        verbose_name_plural = 'Categories'
+
+    def __str__(self):
+        return self.name
+
+
+class Product(models.Model):
+    class ProductType(models.TextChoices):
+        SHOES = 'BT', 'Boty'
+        CLOTHES = 'OB', 'Oblečení'
+        ACCESSORIES = 'ACS', 'Příslušenství'
+        OTHER = 'OT', 'Jiné'
+
+    title = models.CharField(max_length=100, null=True, blank=False)
+    product_type = models.CharField(
+        max_length=3,
+        choices=ProductType.choices,
+        default=ProductType.OTHER,
+    )
+    description = models.CharField(max_length=500, null=True, blank=False)
+    thumbnail = models.CharField(max_length=500, null=True, blank=False)
+    price = models.IntegerField(default=0, null=True, blank=False, validators=[MinValueValidator(1)])
+    stock = models.IntegerField(default=0, null=True, blank=False, validators=[MinValueValidator(0)])
+    manufacturer = models.ForeignKey('Manufacturer', on_delete=models.DO_NOTHING, null=True, blank=False)
+    categories = models.ManyToManyField('Category', related_name='products', blank=True)
 
     class Meta:
         ordering = ['title', 'stock', 'price']
 
     def __str__(self):
-        return f"{self.title}, in stock: {self.stock}"
+        return f"{self.title}, in stock: {self.stock}, price: {self.price} EUR"
 
     def __repr__(self):
-        return f"<Product: {self.title}, in stock: {self.stock}>"
+        return f"<Product: {self.title}, in stock: {self.stock}, price: {self.price} EUR>"
 
 
 class Cart(Model):
@@ -60,16 +76,16 @@ class Cart(Model):
     Product = ManyToManyField(Product, related_name='cart')
 
 
-class Category(Model):
-    name = CharField(max_length=42, null=True, blank=False)
-    Product = ManyToManyField(Product, related_name='category')
+# class Category(Model):
+#     name = CharField(max_length=42, null=True, blank=False)
+#     Product = ManyToManyField(Product, related_name='category', blank=True)
+#
+#     class Meta:
+#         ordering = ['name']
+#         verbose_name_plural = 'Categories'
 
-    class Meta:
-        ordering = ['name']
-        verbose_name_plural = 'Categories'
-
-    def __str__(self):
-        return f"{self.name}"
+    # def __str__(self):
+    #     return f"{self.name}"
 
 
 class Order(Model):
