@@ -2,3 +2,4 @@
 /.idea/
 supabase.py
 /viewer/migrations/
+/accounts/migrations/
