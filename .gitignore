@@ -6,3 +6,4 @@ supabase.py
 /__pycache__/
 /viewer/migrations/
 /accounts/migrations/
+/accounts/migrations/__pycache__/
