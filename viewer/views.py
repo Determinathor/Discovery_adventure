@@ -70,6 +70,15 @@ class ProductTemplateView(TemplateView): # chceme zobrazit konkrétní produkt s
         # context["form_review"] = ReviewModelForm
 
 
+class ProductsCheckoutListView(ListView): #TODO: vypsat všechny produkty v košíku
+    model = Product
+    template_name = 'checkout.html'
+
+
+class ProductsCartListView(ListView): #TODO: vypsat produkty z orderlines
+    model = Product
+    template_name = 'cart.html'
+
 
 class ProductModelForm(ModelForm): # formulář pro produkt
     class Meta:
