@@ -1,83 +1,40 @@
-<!DOCTYPE html>
-<html lang="cs">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DiscoveryAdventures FAQ</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-        }
-        .faq-container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        .faq-header {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        .faq-section {
-            margin-bottom: 20px;
-        }
-        .faq-question {
-            font-weight: bold;
-            cursor: pointer;
-        }
-        .faq-answer {
-            display: none;
-            margin-top: 10px;
-        }
-    </style>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            var questions = document.querySelectorAll('.faq-question');
-            questions.forEach(function(question) {
-                question.addEventListener('click', function() {
-                    var answer = this.nextElementSibling;
-                    if (answer.style.display === 'block') {
-                        answer.style.display = 'none';
-                    } else {
-                        answer.style.display = 'block';
-                    }
-                });
-            });
-        });
-    </script>
-</head>
-<body>
-    <div class="faq-container">
-        <div class="faq-header">
-            <h1>Často kladené otázky (FAQ)</h1>
-        </div>
-        <div class="faq-section">
-            <div class="faq-question">1. Jaké druhy sportovního vybavení nabízíte?</div>
-            <div class="faq-answer">Nabízíme širokou škálu sportovního vybavení pro různé sporty včetně turistiky, horolezectví, běhání, cyklistiky, lyžování a dalších.</div>
-        </div>
-        <div class="faq-section">
-            <div class="faq-question">2. Jak mohu provést objednávku?</div>
-            <div class="faq-answer">Objednávku můžete provést online prostřednictvím našeho e-shopu. Vyberte si produkty, přidejte je do košíku a následujte instrukce k dokončení nákupu.</div>
-        </div>
-        <div class="faq-section">
-            <div class="faq-question">3. Jaké jsou možnosti platby?</div>
-            <div class="faq-answer">Přijímáme platby kreditními a debetními kartami, bankovním převodem a prostřednictvím platebních bran jako je PayPal.</div>
-        </div>
-        <div class="faq-section">
-            <div class="faq-question">4. Jak dlouho trvá doručení?</div>
-            <div class="faq-answer">Doba doručení závisí na místě doručení a zvoleném způsobu dopravy. Obvykle trvá 2-5 pracovních dní v rámci České republiky.</div>
-        </div>
-        <div class="faq-section">
-            <div class="faq-question">5. Můžu zboží vrátit nebo vyměnit?</div>
-            <div class="faq-answer">Ano, zboží můžete vrátit nebo vyměnit do 30 dnů od jeho doručení. Zboží musí být nepoužité a v původním balení. Pro více informací navštivte naši sekci o vrácení zboží.</div>
-        </div>
-        <div class="faq-section">
-            <div class="faq-question">6. Nabízíte zákaznickou podporu?</div>
-            <div class="faq-answer">Ano, naše zákaznická podpora je vám k dispozici prostřednictvím e-mailu a telefonu od pondělí do pátku od 9:00 do 17:00.</div>
-        </div>
-        <div class="faq-section">
-            <div class="faq-question">7. Jak mohu sledovat svou objednávku?</div>
-            <div class="faq-answer">Po odeslání objednávky vám zašleme sledovací číslo, které můžete použít na webu přepravce k sledování své zásilky.</div>
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+    <div class="jumbotron">
+        <div class="faq-container">
+            <div class="faq-header">
+                <h1>Často kladené otázky (FAQ)</h1>
+            </div>
+            <div class="faq-section">
+                <div class="faq-question">1. Jaké druhy sportovního vybavení nabízíte?</div>
+                <div class="faq-answer">Nabízíme širokou škálu sportovního vybavení pro různé sporty včetně turistiky, horolezectví, běhání, cyklistiky, lyžování a dalších.</div>
+            </div>
+            <div class="faq-section">
+                <div class="faq-question">2. Jak mohu provést objednávku?</div>
+                <div class="faq-answer">Objednávku můžete provést online prostřednictvím našeho e-shopu. Vyberte si produkty, přidejte je do košíku a následujte instrukce k dokončení nákupu.</div>
+            </div>
+            <div class="faq-section">
+                <div class="faq-question">3. Jaké jsou možnosti platby?</div>
+                <div class="faq-answer">Přijímáme platby kreditními a debetními kartami, bankovním převodem a prostřednictvím platebních bran jako je PayPal.</div>
+            </div>
+            <div class="faq-section">
+                <div class="faq-question">4. Jak dlouho trvá doručení?</div>
+                <div class="faq-answer">Doba doručení závisí na místě doručení a zvoleném způsobu dopravy. Obvykle trvá 2-5 pracovních dní v rámci České republiky.</div>
+            </div>
+            <div class="faq-section">
+                <div class="faq-question">5. Můžu zboží vrátit nebo vyměnit?</div>
+                <div class="faq-answer">Ano, zboží můžete vrátit nebo vyměnit do 30 dnů od jeho doručení. Zboží musí být nepoužité a v původním balení. Pro více informací navštivte naši sekci o vrácení zboží.</div>
+            </div>
+            <div class="faq-section">
+                <div class="faq-question">6. Nabízíte zákaznickou podporu?</div>
+                <div class="faq-answer">Ano, naše zákaznická podpora je vám k dispozici prostřednictvím e-mailu a telefonu od pondělí do pátku od 9:00 do 17:00.</div>
+            </div>
+            <div class="faq-section">
+                <div class="faq-question">7. Jak mohu sledovat svou objednávku?</div>
+                <div class="faq-answer">Po odeslání objednávky vám zašleme sledovací číslo, které můžete použít na webu přepravce k sledování své zásilky.</div>
+            </div>
         </div>
     </div>
-</body>
-</html>
+</div>
+{% endblock %}
