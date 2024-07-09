@@ -1,3 +1,4 @@
+import random
 from concurrent.futures._base import LOGGER
 
 from django.contrib.auth.decorators import login_required
@@ -32,13 +33,13 @@ class CategoryListView(ListView): # chceme zobrazit všechny kategorie
     template_name = "home.html"
 
 
-class CategoryTemplateView(TemplateView): # chceme vypsat produkty v dané kategorii TODO: category_name
+class CategoryTemplateView(TemplateView): # chceme vypsat produkty v dané kategorii
     template_name = "products_by_category.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         pk = self.kwargs['pk']
-        category = Category.objects.get(id=pk)
+        category = Category.objects.get(pk=pk) # TODO: category_name
         products = Product.objects.filter(categories=category)
         context["category"] = category
         context["products"] = products
@@ -68,6 +69,27 @@ class ProductTemplateView(TemplateView): # chceme zobrazit konkrétní produkt s
         return context
         # context["reviews"] = Review.objects.filter(product=product_) TODO: chceme vypisovat a tvořit review pro produkt?
         # context["form_review"] = ReviewModelForm
+
+
+class RandomProductTemplateView(TemplateView):
+    template_name = 'random_detail.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        product_count = Product.objects.count()
+        if product_count > 0:
+            while True:
+                random_index = random.randint(0, product_count - 1)
+                if Product.objects.filter(id=random_index).exists():
+                    random_product = Product.objects.get(pk=random_index)
+                    break
+        else:
+            random_product = None
+        context["product"] = random_product
+        return context
+
+
+
 
 
 class ProductsCheckoutListView(ListView): #TODO: vypsat všechny produkty v košíku

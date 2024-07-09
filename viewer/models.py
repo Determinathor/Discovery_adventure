@@ -9,12 +9,9 @@ class User(Model):
     last_name = CharField(max_length=42, null=True, blank=False)
     email = CharField(max_length=128, unique=True, null=True, blank=False)
     password = CharField(max_length=80, null=True, blank=False)
-    address = CharField(max_length=80, null=True, blank=False)
-    phone_number = IntegerField(default=0, unique=True, null=True, blank=False)
-    city = CharField(max_length=42, null=True, blank=False)
 
     class Meta:
-        ordering = ['last_name', 'first_name', 'email', 'phone_number', 'city']
+        ordering = ['last_name', 'first_name']
 
 
 class Manufacturer(Model):

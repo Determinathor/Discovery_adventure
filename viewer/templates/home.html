@@ -131,8 +131,29 @@
                             <a href="contact.html" class="nav-item nav-link">Kontakt</a>
                         </div>
                         <div class="navbar-nav ml-auto py-0">
-                            <a href="" class="nav-item nav-link">Přihlášení</a>
-                            <a href="" class="nav-item nav-link">Registrace</a>
+                            <div class="nav-item dropdown">
+                                    {% if user.is_authenticated %}
+                                        <a class="nav-link active dropdown-toggle" href="#" data-toggle="dropdown">
+                                            {% if user.first_name %}
+                                                Vítej, {{ user.first_name }}!
+                                            {% else %}
+                                                Můj účet.
+                                            {% endif %}
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-right">
+                                            <a class="dropdown-item text-right" href="{% url 'logout' %}">Odhlásit se</a>
+                                            <a class="dropdown-item text-right" href="{% url 'password_change' %}">Změna hesla</a>
+                                        </div>
+                                    {% else %}
+                                        <a class="nav-link active dropdown-toggle" href="#" data-toggle="dropdown">
+                                                Chcete se přihlásit?
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-right">
+                                            <a class="dropdown-item text-right" href="{% url 'login' %}">Přihlásit</a>
+                                            <a class="dropdown-item text-right" href="{% url 'signup' %}">Registrovat</a>
+                                        </div>
+                            </div>
+                                    {% endif %}
                         </div>
                     </div>
                 </nav>
@@ -279,7 +300,7 @@
 
 
               <!-- Categories Start -->
-    <!-- TODO: změnit, aby se zobrazovalo vedle sebe -->
+
 
 <div class="container-fluid pt-5">
     <div class="row">
