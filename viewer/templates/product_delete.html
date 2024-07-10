@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+<form method="POST">
+    {% csrf_token %}
+    <div>
+        <p>Jste si jisti, že chcete odstranit "{{ object }}" z databáze produktů?</p>
+        <input type="submit" value="Odstranit" class="btn btn-danger">
+    </div>
+</form>
+{% endblock %}

@@ -3,15 +3,17 @@ from django.db import models
 from django.db.models import *  #(Model, CharField, ForeignKey, DO_NOTHING,
 from django.core.validators import MinValueValidator
 
+from accounts.models import Profile
 
-class User(Model):
-    first_name = CharField(max_length=42, null=True, blank=False)
-    last_name = CharField(max_length=42, null=True, blank=False)
-    email = CharField(max_length=128, unique=True, null=True, blank=False)
-    password = CharField(max_length=80, null=True, blank=False)
 
-    class Meta:
-        ordering = ['last_name', 'first_name']
+# class User(Model):
+#     first_name = CharField(max_length=42, null=True, blank=False)
+#     last_name = CharField(max_length=42, null=True, blank=False)
+#     email = CharField(max_length=128, unique=True, null=True, blank=False)
+#     password = CharField(max_length=80, null=True, blank=False)
+#
+#     class Meta:
+#         ordering = ['last_name', 'first_name']
 
 
 class Manufacturer(Model):
@@ -88,10 +90,10 @@ class Cart(Model):
 class Order(Model):
     total_cost = IntegerField(default=0, null=True, blank=False)
     delivery_address = CharField(max_length=100, null=True, blank=False)
-    user_address = CharField(max_length=100, null=True, blank=False)
+    # user_address = CharField(max_length=100, null=True, blank=False)
     date_of_sale = DateField(null=True, blank=False)
     status = CharField(max_length=42, null=True, blank=False)
-    User = ForeignKey(User,on_delete=DO_NOTHING, null=True, blank=False)
+    User = ForeignKey(Profile,on_delete=DO_NOTHING, null=True, blank=False)
 
 
 class Order_Line(Model):
@@ -102,9 +104,11 @@ class Order_Line(Model):
 
 
 class Payment(Model):
-    sum = IntegerField(default=0, null=True, blank=False)
-    User = ForeignKey(User, on_delete=DO_NOTHING, null=True, blank=False)
+    # sum = IntegerField(default=0, null=True, blank=False)
+    # User = ForeignKey(Profile, on_delete=DO_NOTHING, null=True, blank=False)
     Order = ForeignKey(Order, on_delete=DO_NOTHING, null=True, blank=False)
+    date_of_payment = DateTimeField(null=True, blank=False)
+
 
 
 

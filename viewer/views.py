@@ -110,9 +110,6 @@ class RandomProductTemplateView(TemplateView):
         return context
 
 
-
-
-
 class ProductsCheckoutListView(ListView): #TODO: vypsat všechny produkty v košíku
     model = Product
     template_name = 'checkout.html'
@@ -134,9 +131,9 @@ class ProductsCartListView(ListView): #TODO: vypsat produkty z orderlines
 class ProductModelForm(ModelForm): # formulář pro produkt
     class Meta:
         model = Product
-        fields = ['title', 'description', 'price', 'stock', 'thumbnail']
+        fields = '__all__'
         widgets = {
-            'category': AddAnotherWidgetWrapper(
+            'categories': AddAnotherWidgetWrapper(
                 SelectMultiple,
                 reverse_lazy('shop')
             )
@@ -156,11 +153,10 @@ class ProductModelForm(ModelForm): # formulář pro produkt
 
 
 class ProductCreateView(PermissionRequiredMixin, CreateView): # autorizace + vytvoření produktu skrze formulář
-    template_name = 'form_product.html'
+    template_name = 'product_create.html'
     form_class = ProductModelForm
     success_url = reverse_lazy('shop')
-    #TODO: správnost viewer.add_product?
-    permission_required = 'viewer.add_product'
+    permission_required = 'accounts.add_product'
 
     def form_invalid(self, form):
         LOGGER.warning('Invalid data in ProductCreateView.')
@@ -173,11 +169,11 @@ class ProductCreateView(PermissionRequiredMixin, CreateView): # autorizace + vyt
 
 
 class ProductUpdateView(PermissionRequiredMixin, UpdateView): # update produktu (stock, cena apod)
-    template_name = 'form_product.html'
+    template_name = 'product_create.html'
     model = Product
     form_class = ProductModelForm
     success_url = reverse_lazy('shop')
-    permission_required = 'viewer.change_product'
+    permission_required = 'accounts.change_product'
 
     def form_invalid(self, form):
         LOGGER.warning('User provided invalid data while updating a product.')
@@ -187,6 +183,18 @@ class ProductUpdateView(PermissionRequiredMixin, UpdateView): # update produktu 
         context = super().get_context_data(**kwargs)
         context['categories'] = Category.objects.all()
         return context
+
+
+class StaffRequiredMixin(UserPassesTestMixin):
+    def test_func(self):
+        return self.request.user.is_staff
+
+
+class ProductDeleteView(StaffRequiredMixin, PermissionRequiredMixin, DeleteView):
+    template_name = 'product_delete.html'
+    model = Product
+    success_url = reverse_lazy('shop')
+    permission_required = 'accounts.delete_product'
 
 
 
