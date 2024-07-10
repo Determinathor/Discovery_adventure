@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'django_addanother',
+
     #Our apps
     'viewer',
     'accounts',

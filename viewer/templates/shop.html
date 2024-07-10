@@ -138,6 +138,13 @@
                                     </div>
                                 </div>
                             </form>
+                            {% if perms.accounts.add_product %}
+                            <div class="col-md-4 mb-1">
+                                <h5>
+                                    <a href="{% url 'product_create' %}" class="font-weight-bold text-monospace text-uppercase mb-1" style="color: red">Vytvořit nový produkt</a>
+                                </h5>
+                            </div>
+                            {% endif %}
                             <div class="dropdown ml-4">
                                 <button class="btn border dropdown-toggle" type="button" id="triggerId" data-toggle="dropdown" aria-haspopup="true"
                                         aria-expanded="false">
@@ -166,7 +173,13 @@
                             </div>
                             <div class="card-footer d-flex justify-content-between bg-light border">
                                 <a href="{{ object.id }}" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>Zobrazit detail</a>
-                                <a href="" class="btn btn-sm text-dark p-0"><i class="fas fa-shopping-cart text-primary mr-1"></i>Vložit do košíku</a>
+                                <a href="" class="btn btn-sm text-dark p-1"><i class="fas fa-shopping-cart text-primary mr-1"></i>Vložit do košíku</a>
+                                {% if perms.accounts.change_product %}
+                                    <a href="{% url 'product_create' object.id %}" class="btn btn-sm text-uppercase text-danger p-0"><i class="fas fa-edit text-primary mr-1"></i>Upravit produkt</a>
+                                {% endif %}
+                                {% if perms.accounts.delete_product %}
+                                    <a href="{% url 'product_delete' object.id %}" class="btn btn-sm text-uppercase text-danger p-0"><i class="fas fa-trash-alt text-primary mr-1"></i>Odstranit produkt</a>
+                                {% endif %}
                             </div>
                         </div>
                     </div>
