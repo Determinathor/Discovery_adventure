@@ -59,6 +59,7 @@ class Product(models.Model):
     stock = models.IntegerField(default=0, null=True, blank=False, validators=[MinValueValidator(0)])
     manufacturer = models.ForeignKey('Manufacturer', on_delete=models.DO_NOTHING, null=True, blank=False)
     categories = models.ManyToManyField('Category', related_name='products', blank=True)
+    # created_at = models.DateTimeField(auto_now_add=True, null=True, blank=False)
 
     class Meta:
         ordering = ['title', 'stock', 'price']

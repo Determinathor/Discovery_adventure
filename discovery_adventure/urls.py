@@ -7,7 +7,8 @@ from viewer import views
 from accounts.views import SubmittableLoginView, SignUpView, SubmittablePasswordChangeView
 
 from viewer.views import home, ProductsListView, ProductTemplateView, ProductCreateView, CategoryListView, \
-    CategoryTemplateView, faq, ProductsCheckoutListView, ProductsCartListView, RandomProductTemplateView
+    CategoryTemplateView, faq, ProductsCheckoutListView, ProductsCartListView, RandomProductTemplateView, \
+    ProductSortedLowListView, ProductSortedHighListView
 
 urlpatterns = [
 
@@ -24,6 +25,8 @@ urlpatterns = [
     path('faq/', views.faq, name='faq'), # faq stránka
     path('checkout/', ProductsCheckoutListView.as_view(), name='checkout'),
     path('cart/', ProductsCartListView.as_view(), name='cart'),
+    path('shop-nejdrazsi/', ProductSortedLowListView.as_view(), name='shop-nejdrazsi'), #zobrazi vsechny produkty serazene od nejlevnejsiho
+    path('shop-nejlevnejsi/', ProductSortedHighListView.as_view(), name='shop-nejlevnejsi'), #zobrazi vsechny produkty serazene od nejdrazsiho
 
 
 
