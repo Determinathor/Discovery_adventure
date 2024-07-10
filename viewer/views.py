@@ -70,6 +70,27 @@ class ProductsListView(ListView):  # chceme vypsat všechny produkty
         return context
 
 
+class ProductSortedHighListView(ListView): # chceme vypsat produkty serazene od nejdrazsiho
+    model = Product
+    template_name = 'shop.html'
+    context_object_name = 'products'
+
+    def get_queryset(self):
+        return Product.objects.order_by('price')
+
+
+class ProductSortedLowListView(ListView): # chceme vypsat produkty serazene od nejlevnejsiho
+    model = Product
+    template_name = 'shop.html'
+    context_object_name = 'products'
+
+    def get_queryset(self):
+        return Product.objects.order_by('-price')
+
+
+class ProductNewestListView:
+    pass
+
 class ProductTemplateView(TemplateView): # chceme zobrazit konkrétní produkt s popisem
     template_name = 'detail.html'
 
