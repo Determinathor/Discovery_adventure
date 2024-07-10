@@ -7,7 +7,7 @@ from viewer import views
 from accounts.views import SubmittableLoginView, SignUpView, SubmittablePasswordChangeView
 
 from viewer.views import home, ProductsListView, ProductTemplateView, ProductCreateView, CategoryListView, \
-    CategoryTemplateView, faq, ProductsCheckoutListView, ProductsCartListView, RandomProductTemplateView
+    CategoryTemplateView, ProductsCheckoutListView, ProductsCartListView, RandomProductTemplateView, FAQView
 
 urlpatterns = [
 
@@ -21,7 +21,7 @@ urlpatterns = [
     path('shop/random/', RandomProductTemplateView.as_view(), name='random'),
     path('shop/<pk>/', ProductTemplateView.as_view(), name='detail'), # zobrazení detailu produktu TODO: aby byla adresář shop/product/<pk>
     path('product/create/', ProductCreateView.as_view(), name='product_create'), # vytvoření produktu
-    path('faq/', views.faq, name='faq'), # faq stránka
+    path('faq/', FAQView.as_view(), name='faq'), # faq stránka
     path('checkout/', ProductsCheckoutListView.as_view(), name='checkout'),
     path('cart/', ProductsCartListView.as_view(), name='cart'),
 

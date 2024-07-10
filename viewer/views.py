@@ -20,18 +20,31 @@ def home(request):
     return render(request, "home.html")
 
 
-def faq(request):
-    return render(request, "faq.html")
+
+class FAQView(TemplateView):
+    template_name = "faq.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['categories'] = Category.objects.all()
+        return context
+
 
 
 def hello(request):
     return render(request, "hello.html")
 
 
+
+
 class CategoryListView(ListView): # chceme zobrazit všechny kategorie
     model = Category
     template_name = "home.html"
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['categories'] = Category.objects.all()
+        return context
 
 class CategoryTemplateView(TemplateView): # chceme vypsat produkty v dané kategorii
     template_name = "products_by_category.html"
@@ -43,12 +56,18 @@ class CategoryTemplateView(TemplateView): # chceme vypsat produkty v dané kateg
         products = Product.objects.filter(categories=category)
         context["category"] = category
         context["products"] = products
+        context['categories'] = Category.objects.all()
         return context
 
 
 class ProductsListView(ListView):  # chceme vypsat všechny produkty
     model = Product
     template_name = 'shop.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['categories'] = Category.objects.all()
+        return context
 
 
 class ProductTemplateView(TemplateView): # chceme zobrazit konkrétní produkt s popisem
@@ -66,6 +85,7 @@ class ProductTemplateView(TemplateView): # chceme zobrazit konkrétní produkt s
         context["manufacturer"] = product_.manufacturer
         context["conversion_rate"] = conversion_rate
         context["price_czk"] = product_.price * conversion_rate # TODO: aktuální cena czk -> eur?
+        context['categories'] = Category.objects.all()
         return context
         # context["reviews"] = Review.objects.filter(product=product_) TODO: chceme vypisovat a tvořit review pro produkt?
         # context["form_review"] = ReviewModelForm
@@ -86,6 +106,7 @@ class RandomProductTemplateView(TemplateView):
         else:
             random_product = None
         context["product"] = random_product
+        context['categories'] = Category.objects.all()
         return context
 
 
@@ -95,11 +116,19 @@ class RandomProductTemplateView(TemplateView):
 class ProductsCheckoutListView(ListView): #TODO: vypsat všechny produkty v košíku
     model = Product
     template_name = 'checkout.html'
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['categories'] = Category.objects.all()
+        return context
 
 
 class ProductsCartListView(ListView): #TODO: vypsat produkty z orderlines
     model = Product
     template_name = 'cart.html'
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['categories'] = Category.objects.all()
+        return context
 
 
 class ProductModelForm(ModelForm): # formulář pro produkt
@@ -120,6 +149,11 @@ class ProductModelForm(ModelForm): # formulář pro produkt
         initial = self.cleaned_data['title']
         return initial.strip()
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['categories'] = Category.objects.all()
+        return context
+
 
 class ProductCreateView(PermissionRequiredMixin, CreateView): # autorizace + vytvoření produktu skrze formulář
     template_name = 'form_product.html'
@@ -132,6 +166,11 @@ class ProductCreateView(PermissionRequiredMixin, CreateView): # autorizace + vyt
         LOGGER.warning('Invalid data in ProductCreateView.')
         return super().form_invalid(form)
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['categories'] = Category.objects.all()
+        return context
+
 
 class ProductUpdateView(PermissionRequiredMixin, UpdateView): # update produktu (stock, cena apod)
     template_name = 'form_product.html'
@@ -143,6 +182,11 @@ class ProductUpdateView(PermissionRequiredMixin, UpdateView): # update produktu 
     def form_invalid(self, form):
         LOGGER.warning('User provided invalid data while updating a product.')
         return super().form_invalid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['categories'] = Category.objects.all()
+        return context
 
 
 
