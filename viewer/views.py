@@ -4,12 +4,14 @@ from concurrent.futures._base import LOGGER
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin, UserPassesTestMixin
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import TemplateView, ListView, FormView, CreateView, UpdateView, DeleteView, DetailView
 from django_addanother.views import CreatePopupMixin
 from django_addanother.widgets import AddAnotherWidgetWrapper
+from django.core.paginator import Paginator
+
 
 from viewer.models import *
 
@@ -43,8 +45,14 @@ class CategoryListView(ListView): # chceme zobrazit všechny kategorie
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['categories'] = Category.objects.all()
+        categories = Category.objects.all()
+        for category in categories:
+            category.product_count = Product.objects.filter(categories=category).count()
+        context['categories'] = categories
         return context
+
+
+
 
 class CategoryTemplateView(TemplateView): # chceme vypsat produkty v dané kategorii
     template_name = "products_by_category.html"
@@ -52,17 +60,26 @@ class CategoryTemplateView(TemplateView): # chceme vypsat produkty v dané kateg
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         pk = self.kwargs['pk']
-        category = Category.objects.get(pk=pk) # TODO: category_name
+        category = get_object_or_404(Category, pk=pk)
         products = Product.objects.filter(categories=category)
+        paginator = Paginator(products, 3)
+        page_number = self.request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
         context["category"] = category
         context["products"] = products
-        context['categories'] = Category.objects.all()
+        categories = Category.objects.all()
+        for category in categories:
+            category.product_count = Product.objects.filter(categories=category).count()
+        context['categories'] = categories
+        context['page_obj'] = page_obj
         return context
 
 
 class ProductsListView(ListView):  # chceme vypsat všechny produkty
     model = Product
     template_name = 'shop.html'
+    context_object_name = 'products'
+    paginate_by = 3
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -74,22 +91,45 @@ class ProductSortedHighListView(ListView): # chceme vypsat produkty serazene od 
     model = Product
     template_name = 'shop.html'
     context_object_name = 'products'
+    paginate_by = 3
 
     def get_queryset(self):
         return Product.objects.order_by('price')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['categories'] = Category.objects.all()
+        return context
 
 
 class ProductSortedLowListView(ListView): # chceme vypsat produkty serazene od nejlevnejsiho
     model = Product
     template_name = 'shop.html'
     context_object_name = 'products'
+    paginate_by = 3
 
     def get_queryset(self):
         return Product.objects.order_by('-price')
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['categories'] = Category.objects.all()
+        return context
 
-class ProductNewestListView:
-    pass
+
+class ProductNewestListView(ListView):
+    model = Product
+    template_name = 'shop.html'
+    context_object_name = 'products'
+    paginate_by = 3
+
+    def get_queryset(self):
+        return Product.objects.order_by('-created_at')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['categories'] = Category.objects.all()
+        return context
 
 class ProductTemplateView(TemplateView): # chceme zobrazit konkrétní produkt s popisem
     template_name = 'detail.html'
