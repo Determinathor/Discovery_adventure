@@ -40,33 +40,33 @@
                         <div class="navbar-nav mr-auto py-0">
                             <a href="{% url 'home' %}" class="nav-item nav-link active">Domů</a>
                             <a href="{% url 'shop' %}" class="nav-item nav-link">Všechny produkty</a>
-                            <a href="detail.html" class="nav-item nav-link">Náhodný produkt</a>
+                            <a href="{% url 'random' %}" class="nav-item nav-link">Náhodný produkt</a>
                             <a href="contact.html" class="nav-item nav-link">Kontakt</a>
                         </div>
                         <div class="navbar-nav ml-auto py-0">
                             <div class="nav-item dropdown">
                                 {% if user.is_authenticated %}
                                 <a class="nav-link active dropdown-toggle" href="#" data-toggle="dropdown">
-                                {% if user.first_name %}
-                                    Vítej, {{ user.first_name }}!
-                                {% else %}
-                                    Můj účet.
-                                {% endif %}
+                                    {% if user.first_name %}
+                                        Vítej, {{ user.first_name }}!
+                                    {% else %}
+                                        Můj účet.
+                                    {% endif %}
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right">
                                     <a class="dropdown-item text-right" href="{% url 'logout' %}">Odhlásit se</a>
                                     <a class="dropdown-item text-right" href="{% url 'password_change' %}">Změna hesla</a>
                                 </div>
-                                    {% else %}
+                                {% else %}
                                     <a class="nav-link active dropdown-toggle" href="#" data-toggle="dropdown">
                                             Chcete se přihlásit?
                                     </a>
                                 <div class="dropdown-menu dropdown-menu-right">
-                                    <a class="dropdown-item text-right" href="{% url 'login' %}">Přihlásit</a>
+                                    <a class="dropdown-item text-right" href="{% url 'home' %}" data-toggle="modal" data-target="#loginModal">Přihlásit</a>
                                     <a class="dropdown-item text-right" href="{% url 'signup' %}">Registrovat</a>
                                 </div>
                             </div>
-                        {% endif %}
+                                {% endif %}
                         </div>
                     </div>
                 </nav>
@@ -74,3 +74,42 @@
         </div>
     </div>
     <!-- Navbar End -->
+
+
+    <!-- Login Modal PopUp Start -->
+    <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="loginModalLabel">Přihlášení</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form method="POST" action="{% url 'login' %}">
+            {% csrf_token %}
+          <div class="form-group">
+            <label for="username">Přihlašovací jméno</label>
+            <input type="text" class="form-control" id="username" name="username" required>
+          </div>
+          <div class="form-group">
+            <label for="password">Heslo</label>
+            <input type="password" class="form-control" id="password" name="password" required>
+          </div>
+          <div class="form-group">
+            <a href="#" class="forgot-pass">Zapomenuté heslo?</a>
+          </div>
+          <button type="submit" class="btn btn-primary">Přihlásit se</button>
+        </form>
+
+      </div>
+      <div class="modal-footer">
+        <div class="signup-link">
+          Nemáte účet? <a href="#">Registrovat se</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+     <!-- Login Modal PopUp End -->

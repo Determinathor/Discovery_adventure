@@ -1,16 +1,77 @@
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import login, authenticate
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView, PasswordChangeView
 from django.db.transaction import atomic
 from django.forms import DateField, CharField, Textarea, NumberInput, IntegerField
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
+from django.views import View
 from django.views.generic import CreateView
 
 from accounts.models import Profile
+from discovery_adventure import settings
 
+def my_view(request):
+    username = request.POST.get('username')
+    password = request.POST.get('password')
+    user = authenticate(request, username=username, password=password)
+    if user is not None:
+        login(request, user)
+        return redirect('home')
 
-class SubmittableLoginView(LoginView):
-    template_name = 'login.html'
+# class SubmittableLoginView(View):
+    # def post(self, request, *args, **kwargs):
+    #     if request.method == "POST":
+    #         username = request.POST.get('username')
+    #         password = request.POST.get('password')
+    #         user = User.objects.get(username=username)
+    #         login(request, user)
+    #     return redirect('home')
+    # reverse_lazy = 'home'
+
+    # def get(self, request, *args, **kwargs):
+    #     form = AuthenticationForm()
+    #     return render(request, 'login.html', {'form': form})
+
+    # def post(self, request, *args, **kwargs):
+    #     if request.method == "POST":
+    #         form = AuthenticationForm(request, data=request.POST)
+    #         if form.is_valid():
+    #             username = form.cleaned_data.get('username')
+    #             password = form.cleaned_data.get('password')
+    #             user = authenticate(request, username=username, password=password)
+    #             if user is not None:
+    #                 login(request, user)
+    #                 return redirect('home')
+    #             else:
+    #                 form.add_error(None, "Invalid username or password")
+    #     return redirect('home')
+    #
+    # reverse_lazy = 'home'
+
+    # def get(self, request, *args, **kwargs):
+    #     # If user is already authenticated, redirect to LOGIN_REDIRECT_URL
+    #     if request.user.is_authenticated:
+    #         return redirect('home')
+    #
+    #     form = AuthenticationForm()
+    #     return redirect('home')
+
+    # def post(self, request, *args, **kwargs):
+    #     form = AuthenticationForm(request, data=request.POST)
+    #     if form.is_valid():
+    #         username = form.cleaned_data.get('username')
+    #         password = form.cleaned_data.get('password')
+    #         user = authenticate(request, username=username, password=password)
+    #         if user is not None:
+    #             login(request, user)
+    #             return redirect('home')
+    #         else:
+    #             form.add_error(None, "Invalid username or password")
+    #     print("nevalidni formulař")
+    #     # If form is invalid or authentication fails, render the login form with errors
+    #     return redirect('home')
 
 
 class SignUpForm(UserCreationForm):

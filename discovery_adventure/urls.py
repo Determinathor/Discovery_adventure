@@ -4,11 +4,11 @@ from django.urls import path, include
 from discovery_adventure import settings
 
 from viewer import views
-from accounts.views import SubmittableLoginView, SignUpView, SubmittablePasswordChangeView
+from accounts.views import SignUpView, SubmittablePasswordChangeView, my_view
 
 from viewer.views import home, ProductsListView, ProductTemplateView, ProductCreateView, CategoryListView, \
     CategoryTemplateView, ProductsCheckoutListView, ProductsCartListView, RandomProductTemplateView, FAQView, \
-    ProductUpdateView, ProductDeleteView
+    ProductUpdateView, ProductDeleteView, ProductSortedLowListView, ProductSortedHighListView
 
 urlpatterns = [
 
@@ -21,6 +21,8 @@ urlpatterns = [
     path('category/<pk>/', CategoryTemplateView.as_view(), name='category'), # zobrazení produktů dané kategorie TODO: chceme místo pk vypsat category_name
     path('shop/random/', RandomProductTemplateView.as_view(), name='random'),
     path('shop/<pk>/', ProductTemplateView.as_view(), name='detail'), # zobrazení detailu produktu TODO: aby byla adresář shop/product/<pk>
+    path('shop-nejdrazsi/', ProductSortedLowListView.as_view(), name='shop-nejdrazsi'), #zobrazi vsechny produkty serazene od nejlevnejsiho
+    path('shop-nejlevnejsi/', ProductSortedHighListView.as_view(), name='shop-nejlevnejsi'), #zobrazi vsechny produkty serazene od nejdrazsiho
     path('product/create/', ProductCreateView.as_view(), name='product_create'), # vytvoření produktu
     path('product/update/<pk>/', ProductUpdateView.as_view(), name='product_create'), # update produktu
     path('product/delete/<pk>/', ProductDeleteView.as_view(), name='product_delete'), # odstranění produktu
@@ -30,8 +32,7 @@ urlpatterns = [
 
 
 
-
-    path('accounts/login/', SubmittableLoginView.as_view(), name='login'),  # vlastní view pro login
+    path('accounts/login/', my_view, name='login'),  # vlastní view pro login
     path('accounts/signup/', SignUpView.as_view(), name='signup'),          # vlastní view pro signup
     path('accounts/password_change/', SubmittablePasswordChangeView.as_view(), name='password_change'), # view pro změnu hesla
     path('accounts/', include('django.contrib.auth.urls')), # default django view
