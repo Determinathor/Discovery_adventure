@@ -21,14 +21,13 @@ from django.forms import *
 def home(request):
     return render(request, "home.html")
 
-
-
 class FAQView(TemplateView):
     template_name = "faq.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['categories'] = Category.objects.all()
+        context['current_template'] = "FAQ"
         return context
 
 
@@ -49,6 +48,7 @@ class CategoryListView(ListView): # chceme zobrazit všechny kategorie
         for category in categories:
             category.product_count = Product.objects.filter(categories=category).count()
         context['categories'] = categories
+        context['current_template'] = "Kategorie"
         return context
 
 
@@ -72,6 +72,7 @@ class CategoryTemplateView(TemplateView): # chceme vypsat produkty v dané kateg
             category.product_count = Product.objects.filter(categories=category).count()
         context['categories'] = categories
         context['page_obj'] = page_obj
+        context['current_template'] = "Všechny produkty"
         return context
 
 
@@ -84,10 +85,11 @@ class ProductsListView(ListView):  # chceme vypsat všechny produkty
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['categories'] = Category.objects.all()
+        context['current_template'] = "Všechny produkty"
         return context
 
 
-class ProductSortedHighListView(ListView): # chceme vypsat produkty serazene od nejdrazsiho
+class ProductSortedHighListView(ListView): # chceme vypsat produkty serazene od nejlevnějšího
     model = Product
     template_name = 'shop.html'
     context_object_name = 'products'
@@ -99,10 +101,11 @@ class ProductSortedHighListView(ListView): # chceme vypsat produkty serazene od 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['categories'] = Category.objects.all()
+        context['current_template'] = "produkty seřazené od nejlevnějšího"
         return context
 
 
-class ProductSortedLowListView(ListView): # chceme vypsat produkty serazene od nejlevnejsiho
+class ProductSortedLowListView(ListView): # chceme vypsat produkty serazene od nejdražšího
     model = Product
     template_name = 'shop.html'
     context_object_name = 'products'
@@ -114,6 +117,7 @@ class ProductSortedLowListView(ListView): # chceme vypsat produkty serazene od n
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['categories'] = Category.objects.all()
+        context['current_template'] = "produkty seřazené od nejdražšího"
         return context
 
 
@@ -129,6 +133,7 @@ class ProductNewestListView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['categories'] = Category.objects.all()
+        context['current_template'] = "produkty seřazené od nejnovějšího"
         return context
 
 class ProductTemplateView(TemplateView): # chceme zobrazit konkrétní produkt s popisem
@@ -147,6 +152,7 @@ class ProductTemplateView(TemplateView): # chceme zobrazit konkrétní produkt s
         context["conversion_rate"] = conversion_rate
         context["price_czk"] = product_.price * conversion_rate # TODO: aktuální cena czk -> eur?
         context['categories'] = Category.objects.all()
+        context['current_template'] = "detail produktu"
         return context
         # context["reviews"] = Review.objects.filter(product=product_) TODO: chceme vypisovat a tvořit review pro produkt?
         # context["form_review"] = ReviewModelForm
@@ -168,6 +174,7 @@ class RandomProductTemplateView(TemplateView):
             random_product = None
         context["product"] = random_product
         context['categories'] = Category.objects.all()
+        context['current_template'] = "Náhodný produkt"
         return context
 
 
@@ -177,6 +184,7 @@ class ProductsCheckoutListView(ListView): #TODO: vypsat všechny produkty v koš
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['categories'] = Category.objects.all()
+        context['current_template'] = "Všechny produkty v košíku"
         return context
 
 
@@ -186,6 +194,7 @@ class ProductsCartListView(ListView): #TODO: vypsat produkty z orderlines
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['categories'] = Category.objects.all()
+        context['current_template'] = "Objednané produkty"
         return context
 
 
