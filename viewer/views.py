@@ -72,7 +72,6 @@ class CategoryTemplateView(TemplateView): # chceme vypsat produkty v dané kateg
             category.product_count = Product.objects.filter(categories=category).count()
         context['categories'] = categories
         context['page_obj'] = page_obj
-        context['current_template'] = "Všechny produkty"
         return context
 
 
