@@ -36,7 +36,13 @@ def hello(request):
     return render(request, "hello.html")
 
 
-
+class Contactview(TemplateView):
+    template_name = "contact.html"
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['categories'] = Category.objects.all()
+        context['current_template'] = "kONTAKT"
+        return context
 
 class CategoryListView(ListView): # chceme zobrazit všechny kategorie
     model = Category
@@ -218,6 +224,7 @@ class ProductModelForm(ModelForm): # formulář pro produkt
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['categories'] = Category.objects.all()
+        context['current_template'] = "Formulář produktu"
         return context
 
 
@@ -234,6 +241,7 @@ class ProductCreateView(PermissionRequiredMixin, CreateView): # autorizace + vyt
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['categories'] = Category.objects.all()
+        context['current_template'] = "Vytváření produktu"
         return context
 
 
@@ -251,6 +259,7 @@ class ProductUpdateView(PermissionRequiredMixin, UpdateView): # update produktu 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['categories'] = Category.objects.all()
+        context['current_template'] = "úprava produktu"
         return context
 
 

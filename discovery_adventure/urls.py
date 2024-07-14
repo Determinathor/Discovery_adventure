@@ -8,7 +8,7 @@ from accounts.views import SubmittableLoginView, SignUpView, SubmittablePassword
 
 from viewer.views import home, ProductsListView, ProductTemplateView, ProductCreateView, CategoryListView, \
     CategoryTemplateView, ProductsCheckoutListView, ProductsCartListView, RandomProductTemplateView, FAQView, \
-    ProductUpdateView, ProductDeleteView, ProductSortedLowListView, ProductSortedHighListView
+    ProductUpdateView, ProductDeleteView, ProductSortedLowListView, ProductSortedHighListView, Contactview
 
 urlpatterns = [
 
@@ -25,6 +25,7 @@ urlpatterns = [
     path('product/update/<pk>/', ProductUpdateView.as_view(), name='product_create'), # update produktu
     path('product/delete/<pk>/', ProductDeleteView.as_view(), name='product_delete'), # odstranění produktu
     path('faq/', FAQView.as_view(), name='faq'), # faq stránka
+    path('contact/', Contactview.as_view(), name='contact'), # faq stránka
     path('checkout/', ProductsCheckoutListView.as_view(), name='checkout'),
     path('cart/', ProductsCartListView.as_view(), name='cart'),
     path('shop-nejdrazsi/', ProductSortedLowListView.as_view(), name='shop-nejdrazsi'), #zobrazi vsechny produkty serazene od nejlevnejsiho
