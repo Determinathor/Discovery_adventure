@@ -2,9 +2,15 @@
 {% load static %}
 {% block content %}
 
+<!-- Začátek formuláře -->
 <form method="POST">
+    <!-- CSRF token pro ochranu proti Cross-Site Request Forgery útokům. Django automaticky generuje a kontroluje tento token. -->
     {% csrf_token %}
+
+    <!-- Vykreslení formuláře jako tabulka. Tato syntaxe zobrazuje formulářové prvky v tabulkovém formátu. -->
     <table>{{ form }}</table>
+
+    <!-- Tlačítko pro odeslání formuláře. Používá třídu 'btn btn-primary' pro styling podle Bootstrapu a má ID 'id_submit'. -->
     <input id="id_submit" type="submit" value="Submit" class="btn btn-primary">
 </form>
 

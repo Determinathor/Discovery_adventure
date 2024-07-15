@@ -10,37 +10,40 @@
     <meta content="Free HTML Templates" name="description">
 
     <!-- Favicon -->
-    <!--    <link href="img/favicon.ico" rel="icon">-->
+    <!-- <link href="img/favicon.ico" rel="icon"> --> <!-- Ikona stránky, kterou je možné nahrát -->
 
     <!-- Google Web Fonts -->
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com"> <!-- Připojení k serveru Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet"> <!-- Font Poppins pro celou stránku -->
 
     <!-- Font Awesome -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet"> <!-- Ikony Font Awesome -->
 
     <!-- Libraries Stylesheet -->
-    <link href="{% static 'css/owl.carousel.css' %}" rel="stylesheet">
+    <link href="{% static 'css/owl.carousel.css' %}" rel="stylesheet"> <!-- Styl pro carousel (karusel) knihovnu Owl Carousel -->
 
     <!-- Customized Bootstrap Stylesheet -->
-    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+    <link href="{% static 'css/style.css' %}" rel="stylesheet"> <!-- Vlastní styl pro stránku -->
+
 </head>
 
 <body>
     <!-- Topbar Start -->
     <div class="container-fluid">
         <div class="row bg-secondary py-2 px-xl-5">
+            <!-- Horní řádek s informacemi a sociálními odkazy -->
             <div class="col-lg-6 d-none d-lg-block">
                 <div class="d-inline-flex align-items-center">
                     <a class="text-dark" href="{% url 'faq' %}">FAQ</a>
-<!--                    <span class="text-muted px-2">|</span>-->
-<!--                    <a class="text-dark" href="">Pomoc</a>-->
-<!--                    <span class="text-muted px-2">|</span>-->
-<!--                    <a class="text-dark" href="">Podpora</a>-->
+                    <!-- <span class="text-muted px-2">|</span>
+                    <a class="text-dark" href="">Pomoc</a>
+                    <span class="text-muted px-2">|</span>
+                    <a class="text-dark" href="">Podpora</a> -->
                 </div>
             </div>
             <div class="col-lg-6 text-center text-lg-right">
                 <div class="d-inline-flex align-items-center">
+                    <!-- Odkazy na sociální média -->
                     <a class="text-dark px-2" href="https://www.facebook.com/vitek.hlavacek">
                         <i class="fab fa-facebook-f"></i>
                     </a>
@@ -60,6 +63,7 @@
             </div>
         </div>
         <div class="row align-items-center py-3 px-xl-5">
+            <!-- Hlavní logo a vyhledávací panel -->
             <div class="col-lg-3 d-none d-lg-block">
                 <a href="{% url 'home' %}" class="text-decoration-none">
                     <h1 class="m-0 display-9 font-weight-semi-bold"><span class="text-primary font-weight-light border px-1 mr-2">DA</span>Discovery adventure</h1>
@@ -68,7 +72,7 @@
             <div class="col-lg-6 col-6 text-left">
                 <form action="">
                     <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Vyhledej produkt">
+                        <input type="text" class="form-control" placeholder="Vyhledej produkt"> <!-- Vyhledávací pole -->
                         <div class="input-group-append">
                             <span class="input-group-text bg-transparent text-primary">
                                 <i class="fa fa-search"></i>
@@ -79,8 +83,8 @@
             </div>
             <div class="col-lg-3 col-6 text-right">
                 <a href="{% url 'cart' %}" class="btn border">
-                    <i class="fas fa-shopping-cart text-primary"></i>
-                    <span class="badge">0</span>
+                    <i class="fas fa-shopping-cart text-primary"></i> <!-- Ikona košíku -->
+                    <span class="badge">0</span> <!-- Počet položek v košíku -->
                 </a>
             </div>
         </div>
@@ -88,46 +92,44 @@
     <!-- Topbar End -->
 
 
-{% include "nav.html" %}
+    {% include "nav.html" %} <!-- Zahrnutí navigačního menu -->
 
     <!-- Page Header Start -->
     <div class="container-fluid bg-secondary mb-5">
         <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 150px">
-             <h1 class="font-weight-semi-bold text-uppercase mb-3">
+            <!-- Hlavní nadpis stránky -->
+            <h1 class="font-weight-semi-bold text-uppercase mb-3">
                 {% if current_template %}
                     {{ current_template }}
                 {% endif %}
             </h1>
             {% if category %}
-                <h1 class="font-weight-semi-bold text-uppercase mb-3">{{ category.name }}</h1>
+                <h1 class="font-weight-semi-bold text-uppercase mb-3">{{ category.name }}</h1> <!-- Název kategorie -->
             {% endif %}
         </div>
     </div>
     <!-- Page Header End -->
 
 
-    {% block content %}{% endblock %}
+    {% block content %}{% endblock %} <!-- Blok pro dynamický obsah -->
 
-
-    {% include "footer.html" %}
+    {% include "footer.html" %} <!-- Zahrnutí patičky -->
 
     <!-- Back to Top -->
-    <a href="#" class="btn btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>
+    <a href="#" class="btn btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a> <!-- Tlačítko pro návrat na začátek stránky -->
 
     <!-- JavaScript Libraries -->
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
-    <script src="{% static 'lib/easing/easing.min.js' %}"></script>
-    <script src="{% static 'lib/owlcarousel/owl.carousel.min.js' %}"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script> <!-- JQuery knihovna -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script> <!-- Bootstrap knihovna -->
+    <script src="{% static 'lib/easing/easing.min.js' %}"></script> <!-- Knihovna pro plynulé přechody -->
+    <script src="{% static 'lib/owlcarousel/owl.carousel.min.js' %}"></script> <!-- Knihovna pro carousel (karusel) -->
 
     <!-- Contact Javascript File -->
-    <script src="{% static 'mail/jqBootstrapValidation.min.js' %}"></script>
-    <script src="{% static 'mail/contact.js' %}"></script>
+    <script src="{% static 'mail/jqBootstrapValidation.min.js' %}"></script> <!-- Knihovna pro validaci formulářů -->
+    <script src="{% static 'mail/contact.js' %}"></script> <!-- Skript pro zpracování kontaktů -->
 
     <!-- Template Javascript -->
-    <script src="{% static 'js/main.js' %}"></script>
-
-
+    <script src="{% static 'js/main.js' %}"></script> <!-- Hlavní skript pro šablonu -->
 
 </body>
 

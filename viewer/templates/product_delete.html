@@ -1,10 +1,16 @@
 {% extends "base.html" %}
 
 {% block content %}
+<!-- Začátek formuláře pro potvrzení odstranění -->
 <form method="POST">
+    <!-- CSRF token pro ochranu proti Cross-Site Request Forgery útokům. Tento token zabezpečuje, že formulář je odesílán z legitimního zdroje. -->
     {% csrf_token %}
+
     <div>
+        <!-- Text potvrzení odstranění produktu z databáze. "{{ object }}" je proměnná, která obsahuje název nebo identifikátor produktu, který má být odstraněn. -->
         <p>Jste si jisti, že chcete odstranit "{{ object }}" z databáze produktů?</p>
+
+        <!-- Tlačítko pro potvrzení odstranění. Tlačítko má třídu 'btn btn-danger', která mu dává červenou barvu podle Bootstrapu, což je standardní styl pro nebezpečné akce jako je mazání. -->
         <input type="submit" value="Odstranit" class="btn btn-danger">
     </div>
 </form>
