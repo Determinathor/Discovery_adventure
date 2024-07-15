@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
@@ -74,7 +75,7 @@ def my_view(request):
     #     # If form is invalid or authentication fails, render the login form with errors
     #     return redirect('home')
 
-
+    
 class SignUpForm(UserCreationForm):
 
     class Meta(UserCreationForm.Meta):
@@ -98,15 +99,23 @@ class SignUpForm(UserCreationForm):
         return user
 
 
-
-
 class SignUpView(CreateView):
     template_name = "form.html"
     form_class = SignUpForm
     success_url = reverse_lazy('home')
-
-
-
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        # Create the Profile for the user
+        user = form.instance
+        Profile.objects.create(
+            user=user,
+            address=form.cleaned_data.get('address'),
+            phone_number=form.cleaned_data.get('phone_number'),
+            city=form.cleaned_data.get('city')
+        )
+        # Add the success message
+        messages.success(self.request, 'Účet byl úspěšně vytvořen! Můžete se nyní přihlásit.')
+        return response
 
 
 
