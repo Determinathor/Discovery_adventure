@@ -2,6 +2,7 @@ from datetime import date
 from django.db import models
 from django.db.models import *  #(Model, CharField, ForeignKey, DO_NOTHING,
 from django.core.validators import MinValueValidator
+from django.urls import reverse
 
 from accounts.models import Profile
 
@@ -70,6 +71,11 @@ class Product(models.Model):
     def __repr__(self):
         return f"<Product: {self.title}, in stock: {self.stock}, price: {self.price} EUR>"
 
+    def add_to_cart_url(self):
+        return reverse("add_to_cart", kwargs=
+        {"pk": self.pk
+         })
+
 
 class Cart(Model):
     quantity = IntegerField(default=0, null=True, blank=False)
@@ -94,12 +100,12 @@ class Order(Model):
     # user_address = CharField(max_length=100, null=True, blank=False)
     date_of_sale = DateField(null=True, blank=False)
     status = CharField(max_length=42, null=True, blank=False)
-    User = ForeignKey(Profile,on_delete=DO_NOTHING, null=True, blank=False)
+    User = ForeignKey(Profile, on_delete=DO_NOTHING, null=True, blank=False)
 
 
 class Order_Line(Model):
     product_price = IntegerField(default=0, null=True, blank=False)
-    quantity = IntegerField(default=0, null=True, blank=False)
+    quantity = IntegerField(default=1, null=True, blank=False)
     Product = ForeignKey(Product, on_delete=DO_NOTHING, null=True, blank=False)
     Order = ForeignKey(Order, on_delete=DO_NOTHING, null=True, blank=False)
 

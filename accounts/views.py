@@ -12,6 +12,7 @@ from django.views.generic import CreateView
 from accounts.models import Profile
 from discovery_adventure import settings
 
+
 def my_view(request):
     username = request.POST.get('username')
     password = request.POST.get('password')
@@ -97,10 +98,16 @@ class SignUpForm(UserCreationForm):
         return user
 
 
+
+
 class SignUpView(CreateView):
     template_name = "form.html"
     form_class = SignUpForm
     success_url = reverse_lazy('home')
+
+
+
+
 
 
 class SubmittablePasswordChangeView(PasswordChangeView):
