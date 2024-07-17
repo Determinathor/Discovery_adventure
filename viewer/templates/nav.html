@@ -170,7 +170,7 @@
       </div>
       <div class="modal-footer">
         <div class="signup-link">
-          Máte již účet? <a href="#" id="loginLink" data-toggle="modal" data-target="#loginModal">Přihlásit se</a>
+          Máte již účet? <a href="#" id="loginLink" data-toggle="modal" data-target="loginModal">Přihlásit se</a>
         </div>
       </div>
     </div>
@@ -194,7 +194,7 @@
         });
 
         // Remove backdrop if modal is hidden
-         $('#loginModal, #signupModal').on('hidden.bs.modal', function () {
+        $('#loginModal, #signupModal').on('hidden.bs.modal', function () {
             if ($('.modal:visible').length) {
                 $('body').addClass('modal-open');
             } else {
