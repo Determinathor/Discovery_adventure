@@ -24,8 +24,6 @@
 
     <!-- Customized Bootstrap Stylesheet -->
     <link href="{% static 'css/style.css' %}" rel="stylesheet">
-
-
 </head>
 
 <body>
@@ -43,19 +41,19 @@
             </div>
             <div class="col-lg-6 text-center text-lg-right">
                 <div class="d-inline-flex align-items-center">
-                    <a class="text-dark px-2" href="">
+                    <a class="text-dark px-2" href="https://www.facebook.com/vitek.hlavacek">
                         <i class="fab fa-facebook-f"></i>
                     </a>
-                    <a class="text-dark px-2" href="">
+                    <a class="text-dark px-2" href="https://x.com/VtHlavacek">
                         <i class="fab fa-twitter"></i>
                     </a>
-                    <a class="text-dark px-2" href="">
+                    <a class="text-dark px-2" href="https://www.linkedin.com/in/v%C3%ADtek-hlav%C3%A1%C4%8Dek-388548135/">
                         <i class="fab fa-linkedin-in"></i>
                     </a>
-                    <a class="text-dark px-2" href="">
+                    <a class="text-dark px-2" href="https://www.instagram.com/vitekhlavacek/">
                         <i class="fab fa-instagram"></i>
                     </a>
-                    <a class="text-dark pl-2" href="">
+                    <a class="text-dark pl-2" href="https://www.youtube.com/@vithlavacek2281">
                         <i class="fab fa-youtube"></i>
                     </a>
                 </div>
@@ -63,7 +61,7 @@
         </div>
         <div class="row align-items-center py-3 px-xl-5">
             <div class="col-lg-3 d-none d-lg-block">
-                <a href="" class="text-decoration-none">
+                <a href="{% url 'home' %}" class="text-decoration-none">
                     <h1 class="m-0 display-9 font-weight-semi-bold"><span class="text-primary font-weight-light border px-1 mr-2">DA</span>Discovery adventure</h1>
                 </a>
             </div>
@@ -95,12 +93,14 @@
     <!-- Page Header Start -->
     <div class="container-fluid bg-secondary mb-5">
         <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 150px">
-            <h1 class="font-weight-semi-bold text-uppercase mb-3">Výběr kategorie</h1>
-            <div class="d-inline-flex">
-                <p class="m-0"><a href="{% url 'home' %}">Domů</a></p>
-                <p class="m-0 px-2">-</p>
-                <p class="m-0"><a href="{% url 'shop' %}">Všechny produkty</a></p>
-            </div>
+             <h1 class="font-weight-semi-bold text-uppercase mb-3">
+                {% if current_template %}
+                    {{ current_template }}
+                {% endif %}
+            </h1>
+            {% if category %}
+                <h1 class="font-weight-semi-bold text-uppercase mb-3">{{ category.name }}</h1>
+            {% endif %}
         </div>
     </div>
     <!-- Page Header End -->

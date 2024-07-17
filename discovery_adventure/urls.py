@@ -9,7 +9,7 @@ from accounts.views import SignUpView, SubmittablePasswordChangeView, my_view
 from viewer.views import home, ProductsListView, ProductTemplateView, ProductCreateView, CategoryListView, \
     CategoryTemplateView, RandomProductTemplateView, FAQView, \
     ProductUpdateView, ProductDeleteView, ProductSortedLowListView, ProductSortedHighListView, \
-    ProductsCheckoutListView, add_to_cart, cart_view, delete_order_line, remove_from_cart
+    ProductsCheckoutListView, add_to_cart, cart_view, delete_order_line, remove_from_cart, Contactview
 
 urlpatterns = [
 
@@ -28,6 +28,7 @@ urlpatterns = [
     path('product/update/<pk>/', ProductUpdateView.as_view(), name='product_create'), # update produktu
     path('product/delete/<pk>/', ProductDeleteView.as_view(), name='product_delete'), # odstranění produktu
     path('faq/', FAQView.as_view(), name='faq'), # faq stránka
+    path('contact/', Contactview.as_view(), name='contact'), # faq stránka
     path('checkout/', ProductsCheckoutListView.as_view(), name='checkout'),
     # path('cart/', ProductsCartListView.as_view(), name='cart'),
 

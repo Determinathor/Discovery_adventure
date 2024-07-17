@@ -13,6 +13,8 @@ from django.views import View
 from django.views.generic import TemplateView, ListView, FormView, CreateView, UpdateView, DeleteView, DetailView
 from django_addanother.views import CreatePopupMixin
 from django_addanother.widgets import AddAnotherWidgetWrapper
+from django.core.paginator import Paginator
+
 
 from viewer.models import *
 
@@ -22,23 +24,26 @@ from django.forms import *
 def home(request):
     return render(request, "home.html")
 
-
-
 class FAQView(TemplateView):
     template_name = "faq.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['categories'] = Category.objects.all()
+        context['current_template'] = "FAQ"
         return context
-
-
 
 def hello(request):
     return render(request, "hello.html")
 
 
-
+class Contactview(TemplateView):
+    template_name = "contact.html"
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['categories'] = Category.objects.all()
+        context['current_template'] = "kONTAKT"
+        return context
 
 class CategoryListView(ListView): # chceme zobrazit všechny kategorie
     model = Category
@@ -46,8 +51,13 @@ class CategoryListView(ListView): # chceme zobrazit všechny kategorie
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['categories'] = Category.objects.all()
+        categories = Category.objects.all()
+        for category in categories:
+            category.product_count = Product.objects.filter(categories=category).count()
+        context['categories'] = categories
+        context['current_template'] = "Kategorie"
         return context
+
 
 class CategoryTemplateView(TemplateView): # chceme vypsat produkty v dané kategorii
     template_name = "products_by_category.html"
@@ -55,44 +65,80 @@ class CategoryTemplateView(TemplateView): # chceme vypsat produkty v dané kateg
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         pk = self.kwargs['pk']
-        category = Category.objects.get(pk=pk) # TODO: category_name
+        category = get_object_or_404(Category, pk=pk)
         products = Product.objects.filter(categories=category)
+        paginator = Paginator(products, 3)
+        page_number = self.request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
         context["category"] = category
         context["products"] = products
-        context['categories'] = Category.objects.all()
+        categories = Category.objects.all()
+        for category in categories:
+            category.product_count = Product.objects.filter(categories=category).count()
+        context['categories'] = categories
+        context['page_obj'] = page_obj
         return context
 
 
 class ProductsListView(ListView):  # chceme vypsat všechny produkty
     model = Product
     template_name = 'shop.html'
+    context_object_name = 'products'
+    paginate_by = 3
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['categories'] = Category.objects.all()
+        context['current_template'] = "Všechny produkty"
         return context
 
 
-class ProductSortedHighListView(ListView): # chceme vypsat produkty serazene od nejdrazsiho
+class ProductSortedHighListView(ListView): # chceme vypsat produkty serazene od nejlevnějšího
     model = Product
     template_name = 'shop.html'
     context_object_name = 'products'
+    paginate_by = 3
 
     def get_queryset(self):
         return Product.objects.order_by('price')
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['categories'] = Category.objects.all()
+        context['current_template'] = "produkty seřazené od nejlevnějšího"
+        return context
 
-class ProductSortedLowListView(ListView): # chceme vypsat produkty serazene od nejlevnejsiho
+
+class ProductSortedLowListView(ListView): # chceme vypsat produkty serazene od nejdražšího
     model = Product
     template_name = 'shop.html'
     context_object_name = 'products'
+    paginate_by = 3
 
     def get_queryset(self):
         return Product.objects.order_by('-price')
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['categories'] = Category.objects.all()
+        context['current_template'] = "produkty seřazené od nejdražšího"
+        return context
 
-class ProductNewestListView:
-    pass
+
+class ProductNewestListView(ListView):
+    model = Product
+    template_name = 'shop.html'
+    context_object_name = 'products'
+    paginate_by = 3
+
+    def get_queryset(self):
+        return Product.objects.order_by('-created_at')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['categories'] = Category.objects.all()
+        context['current_template'] = "produkty seřazené od nejnovějšího"
+        return context
 
 class ProductTemplateView(TemplateView): # chceme zobrazit konkrétní produkt s popisem
     template_name = 'detail.html'
@@ -110,6 +156,7 @@ class ProductTemplateView(TemplateView): # chceme zobrazit konkrétní produkt s
         context["conversion_rate"] = conversion_rate
         context["price_czk"] = product_.price * conversion_rate # TODO: aktuální cena czk -> eur?
         context['categories'] = Category.objects.all()
+        context['current_template'] = "detail produktu"
         return context
         # context["reviews"] = Review.objects.filter(product=product_) TODO: chceme vypisovat a tvořit review pro produkt?
         # context["form_review"] = ReviewModelForm
@@ -131,6 +178,7 @@ class RandomProductTemplateView(TemplateView):
             random_product = None
         context["product"] = random_product
         context['categories'] = Category.objects.all()
+        context['current_template'] = "Náhodný produkt"
         return context
 # -----------------------------------------
 # CRUD_product OPERATIONS START
@@ -156,6 +204,7 @@ class ProductModelForm(ModelForm): # formulář pro produkt
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['categories'] = Category.objects.all()
+        context['current_template'] = "Formulář produktu"
         return context
 
 
@@ -172,6 +221,7 @@ class ProductCreateView(PermissionRequiredMixin, CreateView): # autorizace + vyt
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['categories'] = Category.objects.all()
+        context['current_template'] = "Vytváření produktu"
         return context
 
 
@@ -189,6 +239,7 @@ class ProductUpdateView(PermissionRequiredMixin, UpdateView): # update produktu 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['categories'] = Category.objects.all()
+        context['current_template'] = "úprava produktu"
         return context
 
 

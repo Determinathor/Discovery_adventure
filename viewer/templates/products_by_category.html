@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
 {% block content %}
-
     <!-- Shop Start -->
     <div class="container-fluid pt-5">
         <div class="row px-xl-5">
@@ -21,65 +20,94 @@
                                     </div>
                                 </div>
                             </form>
+                            {% if perms.accounts.add_product %}
+                            <div class="col-md-4 mb-1">
+                                <h5>
+                                    <a href="{% url 'product_create' %}" class="font-weight-bold text-monospace text-uppercase mb-1" style="color: red">Vytvořit nový produkt</a>
+                                </h5>
+                            </div>
+                            {% endif %}
                             <div class="dropdown ml-4">
-                                <button class="btn border dropdown-toggle" type="button" id="triggerId" data-toggle="dropdown" aria-haspopup="true"
-                                        aria-expanded="false">
-                                            Seřadit dle
-                                        </button>
+                                <button class="btn border dropdown-toggle" type="button" id="triggerId" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Seřadit dle
+                                </button>
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="triggerId">
                                     <a class="dropdown-item" href="#">Nejnovější</a>
                                     <a class="dropdown-item" href="#">Cena</a> <!-- TODO: řazení? -->
-                                    <a class="dropdown-item" href="#">Nejlépe hodnocené</a>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    {% for product in products %}
+                    {% for product in page_obj %}
                     <div class="col-lg-4 col-md-6 col-sm-12 pb-1">
                         <div class="card product-item border-0 mb-4">
                             <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
-                                <img class="img-fluid w-100" src="img/product-1.jpg" alt="">
+                                <a href="{% url 'detail' product.id %}" class="text-decoration-none">
+                                    <img class="img-fluid w-100" src="{% static 'img/product-1.jpg' %}" alt="">
+                                </a>
                             </div>
                             <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
-                                <h6 class="text-truncate mb-3">{{ product.title  }}</h6>
+                                <h6 class="text-truncate mb-3">{{ product.title }}</h6>
                                 <div class="d-flex justify-content-center">
-                                    <h6>{{ product.price }}</h6><h6 class="text-muted ml-2"><del>{{ product.price }}</del></h6>
+                                    <h6>€ {{ product.price }}</h6>
                                 </div>
                             </div>
                             <div class="card-footer d-flex justify-content-between bg-light border">
-                                <a href="{{ object.id }}" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>Zobrazit detail</a>
-                                <a href="" class="btn btn-sm text-dark p-0"><i class="fas fa-shopping-cart text-primary mr-1"></i>Vložit do košíku</a>
+                                <a href="" class="btn btn-sm text-dark p-1"><i class="fas fa-shopping-cart text-primary mr-1"></i>Vložit do košíku</a>
+                                {% if perms.accounts.change_product %}
+                                <a href="{% url 'product_create' product.id %}" class="btn btn-sm text-uppercase text-danger p-0"><i class="fas fa-edit text-primary mr-1"></i>Upravit produkt</a>
+                                {% endif %}
+                                {% if perms.accounts.delete_product %}
+                                <a href="{% url 'product_delete' product.id %}" class="btn btn-sm text-uppercase text-danger p-0"><i class="fas fa-trash-alt text-primary mr-1"></i>Odstranit produkt</a>
+                                {% endif %}
                             </div>
                         </div>
                     </div>
                     {% endfor %}
-
                     <div class="col-12 pb-1">
                         <nav aria-label="Page navigation">
                           <ul class="pagination justify-content-center mb-3">
+                            {% if page_obj.has_previous %}
+                            <li class="page-item">
+                              <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                                <span class="sr-only">Previous</span>
+                              </a>
+                            </li>
+                            {% else %}
                             <li class="page-item disabled">
                               <a class="page-link" href="#" aria-label="Previous">
                                 <span aria-hidden="true">&laquo;</span>
                                 <span class="sr-only">Previous</span>
                               </a>
                             </li>
-                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                            {% endif %}
+                            {% for num in page_obj.paginator.page_range %}
+                            <li class="page-item {% if page_obj.number == num %}active{% endif %}">
+                              <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                            </li>
+                            {% endfor %}
+                            {% if page_obj.has_next %}
                             <li class="page-item">
+                              <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                                <span class="sr-only">Next</span>
+                              </a>
+                            </li>
+                            {% else %}
+                            <li class="page-item disabled">
                               <a class="page-link" href="#" aria-label="Next">
                                 <span aria-hidden="true">&raquo;</span>
                                 <span class="sr-only">Next</span>
                               </a>
                             </li>
+                            {% endif %}
                           </ul>
                         </nav>
                     </div>
                 </div>
             </div>
-            <!-- Shop Product End -->
         </div>
     </div>
     <!-- Shop End -->
-
 {% endblock %}
