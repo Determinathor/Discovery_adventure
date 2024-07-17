@@ -109,6 +109,11 @@ class Order_Line(Model):
     Product = ForeignKey(Product, on_delete=DO_NOTHING, null=True, blank=False)
     Order = ForeignKey(Order, on_delete=DO_NOTHING, null=True, blank=False)
 
+    def total_order_line_price(self):
+        return self.product_price * self.quantity
+
+    total_order_line_price.short_description = 'Total Price'
+
 
 class Payment(Model):
     # sum = IntegerField(default=0, null=True, blank=False)
