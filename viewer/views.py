@@ -357,11 +357,67 @@ def delete_order_line(request, pk):
     return redirect('cart_view')
 
 
+def checkout_view(request):
+    try:
+        # Fetch the order based on the current user and status (assuming 'Pending')
+        order = Order.objects.get(User=request.user.profile, status='Pending')
+
+        # Fetch all order lines for the current order
+        order_lines = order.order_line_set.all()
+
+        # Calculate total cost of the order
+        total_cost = order.total_cost  # Assuming total_cost is pre-calculated in the Order model
+
+        # Prepare data for displaying in the template
+        order_summary = []
+        for line in order_lines:
+            line_total = line.product_price * line.quantity
+            order_summary.append({
+                'product_title': line.Product.title,
+                'quantity': line.quantity,
+                'line_total': line_total,
+            })
+
+        # Render the checkout template with the order summary data
+        return render(request, 'checkout.html', {
+            'order_summary': order_summary,
+            'total_cost': total_cost,
+        })
+
+    except Order.DoesNotExist:
+        # Handle case where the order does not exist
+        return render(request, 'checkout.html', {'order_summary': [], 'total_cost': 0})
+
+
+# def place_order(request, order_id):
+#     order = get_object_or_404(Order, id=order_id, User=request.user.profile, status='Pending')
+#     order_lines = order.order_line_set.all()
+#
+#     try:
+#         for line in order_lines:
+#             product = line.Product
+#             if product.stock >= line.quantity:
+#                 product.stock -= line.quantity
+#                 product.save()
+#             else:
+#                 messages.error(request, f"Insufficient stock for {product.title}")
+#                 return redirect('checkout')
+#
+#         order.status = 'Confirmed'
+#         order.save()
+#         messages.success(request, "Order placed successfully!")
+#         return redirect('home', order_id=order.id)
+#     except Exception as e:
+#         messages.error(request, "An error occurred while placing the order.")
+#         return redirect('checkout')
+
+
+
 # -----------------------------------------
 # CART OPERATIONS END
 # -----------------------------------------
 
-# class ProductsCartListView(ListView): #TODO: vypsat produkty v košíku z orderlines
+# class ProductsCartListView(ListView): #TODO: vypsat produkty v pokladně z orderlines
 #     model = Order_Line
 #     template_name = 'cart.html'
 #     def get_context_data(self, **kwargs):
@@ -373,13 +429,43 @@ def delete_order_line(request, pk):
 #         return context
 
 
-class ProductsCheckoutListView(ListView): #TODO: vypsat všechny produkty v checkoutu
-    model = Product
-    template_name = 'checkout.html'
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['categories'] = Category.objects.all()
-        return context
+# class CheckoutView(ListView):
+#     model = Order_Line
+#     template_name = 'checkout.html'
+#     context_object_name = 'order_lines'
+#
+#     def get_queryset(self):
+#         order_id = self.kwargs['order_id']
+#         order = get_object_or_404(Order, id=order_id)
+#         return Order_Line.objects.filter(Order=order)
+#
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         order_id = self.kwargs['order_id']
+#         order = get_object_or_404(Order, id=order_id)
+#
+#         total_price = sum(line.product_price * line.quantity for line in self.get_queryset())
+#
+#         context['order'] = order
+#         context['total_price'] = total_price
+#         return context
+
+# class CheckoutView(TemplateView):
+#     template_name = 'checkout.html'
+#
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         order_id = self.kwargs.get('order_id')
+#
+#         order = get_object_or_404(Order, pk=order_id)
+#         order_lines = Order_Line.objects.filter(Order=order)
+#
+#         total_price = sum(line.product_price * line.quantity for line in order_lines)
+#
+#         context['order'] = order
+#         context['order_lines'] = order_lines
+#         context['total_price'] = total_price
+#         return context
 
 
 

@@ -103,19 +103,19 @@ class SignUpView(CreateView):
     template_name = "form.html"
     form_class = SignUpForm
     success_url = reverse_lazy('home')
-    def form_valid(self, form):
-        response = super().form_valid(form)
-        # Create the Profile for the user
-        user = form.instance
-        Profile.objects.create(
-            user=user,
-            address=form.cleaned_data.get('address'),
-            phone_number=form.cleaned_data.get('phone_number'),
-            city=form.cleaned_data.get('city')
-        )
-        # Add the success message
-        messages.success(self.request, 'Účet byl úspěšně vytvořen! Můžete se nyní přihlásit.')
-        return response
+    # def form_valid(self, form):
+    #     response = super().form_valid(form)
+    #     # Create the Profile for the user
+    #     user = form.instance
+    #     Profile.objects.create(
+    #         user=user,
+    #         address=form.cleaned_data.get('address'),
+    #         phone_number=form.cleaned_data.get('phone_number'),
+    #         city=form.cleaned_data.get('city')
+    #     )
+    #     # Add the success message
+    #     messages.success(self.request, 'Účet byl úspěšně vytvořen! Můžete se nyní přihlásit.')
+    #     return response
 
 
 
