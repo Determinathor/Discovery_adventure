@@ -337,6 +337,9 @@ def remove_from_cart(request, pk):
     order.total_cost = sum(line.product_price * line.quantity for line in order.order_line_set.all())
     order.save()
 
+    if not order.order_line_set.exists():
+        order.delete()
+
     return redirect('cart_view')
 
 
@@ -353,6 +356,10 @@ def delete_order_line(request, pk):
     # Update the total cost of the order
     order.total_cost = sum(line.product_price * line.quantity for line in order.order_line_set.all())
     order.save()
+
+    # Check if the order has no more order lines and delete the order if true
+    if not order.order_line_set.exists():
+        order.delete()
 
     return redirect('cart_view')
 
