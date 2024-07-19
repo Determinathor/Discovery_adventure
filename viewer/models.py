@@ -102,6 +102,8 @@ class Order(Model):
     status = CharField(max_length=42, null=True, blank=False)
     User = ForeignKey(Profile, on_delete=DO_NOTHING, null=True, blank=False)
 
+    # _processed = models.BooleanField(default=False, editable=False)  # Temporary flag
+
 
 class Order_Line(Model):
     product_price = IntegerField(default=0, null=True, blank=False)

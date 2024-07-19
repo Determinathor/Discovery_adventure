@@ -382,6 +382,7 @@ def checkout_view(request):
         return render(request, 'checkout.html', {
             'order_summary': order_summary,
             'total_cost': total_cost,
+            'order': order,
         })
 
     except Order.DoesNotExist:
@@ -389,27 +390,29 @@ def checkout_view(request):
         return render(request, 'checkout.html', {'order_summary': [], 'total_cost': 0})
 
 
-# def place_order(request, order_id):
-#     order = get_object_or_404(Order, id=order_id, User=request.user.profile, status='Pending')
-#     order_lines = order.order_line_set.all()
-#
-#     try:
-#         for line in order_lines:
-#             product = line.Product
-#             if product.stock >= line.quantity:
-#                 product.stock -= line.quantity
-#                 product.save()
-#             else:
-#                 messages.error(request, f"Insufficient stock for {product.title}")
-#                 return redirect('checkout')
-#
-#         order.status = 'Confirmed'
-#         order.save()
-#         messages.success(request, "Order placed successfully!")
-#         return redirect('home', order_id=order.id)
-#     except Exception as e:
-#         messages.error(request, "An error occurred while placing the order.")
-#         return redirect('checkout')
+@login_required
+def place_order(request, pk):
+    order = get_object_or_404(Order, id=pk, User=request.user.profile, status='Pending')
+    order_lines = order.order_line_set.all()
+
+    try:
+        for line in order_lines:
+            product = line.Product
+            if product.stock >= line.quantity:
+                product.stock -= line.quantity
+                product.save()
+            else:
+                messages.error(request, f"Insufficient stock for {product.title}")
+                return redirect('checkout')
+
+        order.status = 'Confirmed'
+        # order._processed = False  # Reset the flag to ensure the signal processes
+        order.save()
+        messages.success(request, "Order placed successfully!")
+        return redirect('home')
+    except Exception as e:
+        messages.error(request, f"An error occurred while placing the order: {e}")
+        return redirect('checkout')
 
 
 

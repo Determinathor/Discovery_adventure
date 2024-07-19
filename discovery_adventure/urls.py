@@ -9,7 +9,7 @@ from accounts.views import SignUpView, SubmittablePasswordChangeView, my_view
 from viewer.views import home, ProductsListView, ProductTemplateView, ProductCreateView, CategoryListView, \
     CategoryTemplateView, RandomProductTemplateView, FAQView, \
     ProductUpdateView, ProductDeleteView, ProductSortedLowListView, ProductSortedHighListView, \
-    add_to_cart, cart_view, delete_order_line, remove_from_cart, Contactview, checkout_view
+    add_to_cart, cart_view, delete_order_line, remove_from_cart, Contactview, checkout_view, place_order
 
 urlpatterns = [
 
@@ -37,7 +37,7 @@ urlpatterns = [
     path('delete-order-line/<pk>/', delete_order_line, name='delete_order_line'),
     path('cart/', cart_view, name='cart_view'),
     path('checkout/', checkout_view, name='checkout'),
-    # path('place_order/<int:order_id>/', place_order, name='place_order'),
+    path('place_order/<pk>/', place_order, name='place_order'),
 
 
 
