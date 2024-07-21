@@ -10,7 +10,7 @@ from viewer.views import home, ProductsListView, ProductTemplateView, ProductCre
     CategoryTemplateView, RandomProductTemplateView, FAQView, \
     ProductUpdateView, ProductDeleteView, ProductSortedLowListView, ProductSortedHighListView, \
     add_to_cart, cart_view, delete_order_line, remove_from_cart, Contactview, checkout_view, place_order, \
-    CategoryCreateView, order_confirmation
+    CategoryCreateView, order_confirmation, product_select_view
 
 urlpatterns = [
 
@@ -26,6 +26,7 @@ urlpatterns = [
     path('shop/<pk>/', ProductTemplateView.as_view(), name='detail'), # zobrazení detailu produktu
     path('shop-nejdrazsi/', ProductSortedLowListView.as_view(), name='shop-nejdrazsi'), #zobrazi vsechny produkty serazene od nejlevnejsiho
     path('shop-nejlevnejsi/', ProductSortedHighListView.as_view(), name='shop-nejlevnejsi'), #zobrazi vsechny produkty serazene od nejdrazsiho
+    path('products/select/', product_select_view, name='product_select'),
     path('product/create/', ProductCreateView.as_view(), name='product_create'), # vytvoření produktu
     path('product/update/<pk>/', ProductUpdateView.as_view(), name='product_update'), # update produktu
     path('product/delete/<pk>/', ProductDeleteView.as_view(), name='product_delete'), # odstranění produktu

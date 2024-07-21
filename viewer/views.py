@@ -226,9 +226,19 @@ class ProductCreateView(PermissionRequiredMixin, CreateView): # autorizace + vyt
         context['current_template'] = "Vytváření produktu"
         return context
 
+    def get(self, request, *args, **kwargs):
+        product_form = ProductModelForm()
+        return render(request, self.template_name, {'product_form': product_form})
+
+    def post(self, request, *args, **kwargs):
+        product_form = ProductModelForm(self.request.POST)
+        if product_form.is_valid():
+            product_form.save()
+            return redirect('shop')
+
 
 class ProductUpdateView(PermissionRequiredMixin, UpdateView): # update produktu (stock, cena apod)
-    template_name = 'product_create.html'
+    template_name = 'product_update.html'
     model = Product
     form_class = ProductModelForm
     success_url = reverse_lazy('shop')
@@ -243,6 +253,33 @@ class ProductUpdateView(PermissionRequiredMixin, UpdateView): # update produktu 
         context['categories'] = Category.objects.all()
         context['current_template'] = "úprava produktu"
         return context
+
+    def get(self, request, *args, **kwargs):
+        product_form = ProductModelForm(instance=self.get_object())
+        return render(request, self.template_name, {'product_form': product_form})
+
+    def post(self, request, *args, **kwargs):
+        product_form = ProductModelForm(request.POST, instance=self.get_object())
+
+        if product_form.is_valid():
+            product_form.save()
+            return redirect('product_select')
+
+
+class ProductSelectForm(forms.Form):
+    product = ModelChoiceField(queryset=Product.objects.all(), label="Vyber")
+
+
+def product_select_view(request):
+    if request.method == 'POST':
+        form = ProductSelectForm(request.POST)
+        if form.is_valid():
+            product = form.cleaned_data['product']
+            return redirect('product_update', pk=product.pk)
+    else:
+        form = ProductSelectForm()
+
+    return render(request, 'product_select.html', {'form': form})
 
 
 class StaffRequiredMixin(UserPassesTestMixin):
