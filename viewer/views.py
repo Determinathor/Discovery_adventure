@@ -183,6 +183,8 @@ class RandomProductTemplateView(TemplateView):
 # -----------------------------------------
 # CRUD_product OPERATIONS START
 # -----------------------------------------
+
+
 class ProductModelForm(ModelForm): # formulář pro produkt
     class Meta:
         model = Product
@@ -258,6 +260,36 @@ class ProductDeleteView(StaffRequiredMixin, PermissionRequiredMixin, DeleteView)
 # CRUD_product OPERATIONS END
 # -----------------------------------------
 
+
+class CategoryModelForm(ModelForm): # formulář pro kategorii
+    class Meta:
+        model = Category
+        fields = '__all__'
+
+    def clean_title(self):
+        initial = self.cleaned_data['name']
+        return initial.strip()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['current_template'] = "Formulář kategorie"
+        return context
+
+
+class CategoryCreateView(PermissionRequiredMixin, CreateView): # autorizace + vytvoření kategorie skrze formulář
+    template_name = 'category_create.html'
+    form_class = CategoryModelForm
+    success_url = reverse_lazy('home')
+    permission_required = 'accounts.add_category'
+
+    def form_invalid(self, form):
+        LOGGER.warning('Invalid data in CategoryCreateView.')
+        return super().form_invalid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['current_template'] = "Vytváření kategorie"
+        return context
 
 # -----------------------------------------
 # CART OPERATIONS START

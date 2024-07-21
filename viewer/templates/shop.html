@@ -61,7 +61,7 @@
                                 <a href="{{ object.id }}" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>Zobrazit detail</a>
                                 <a href="{{ object.add_to_cart_url }}" class="btn btn-sm text-dark p-1"><i class="fas fa-shopping-cart text-primary mr-1"></i>Vložit do košíku</a>
                                 {% if perms.accounts.change_product %}
-                                <a href="{% url 'product_create' object.id %}" class="btn btn-sm text-uppercase text-danger p-0"><i class="fas fa-edit text-primary mr-1"></i>Upravit produkt</a>
+                                <a href="{% url 'product_update' object.id %}" class="btn btn-sm text-uppercase text-danger p-0"><i class="fas fa-edit text-primary mr-1"></i>Upravit produkt</a>
                                 {% endif %}
                                 {% if perms.accounts.delete_product %}
                                 <a href="{% url 'product_delete' object.id %}" class="btn btn-sm text-uppercase text-danger p-0"><i class="fas fa-trash-alt text-primary mr-1"></i>Odstranit produkt</a>

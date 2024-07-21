@@ -43,6 +43,17 @@
                             <a href="{% url 'random' %}" class="nav-item nav-link">Náhodný produkt</a>
                             <a href="{% url 'contact' %}" class="nav-item nav-link">Kontakt</a>
                         </div>
+                            {% if perms.accounts.add_category %}
+                            <div class="navbar-nav ml-auto py-0">
+                            <div class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" style="color: red; font-weight: bold;">Admin - úpravy</a>
+                                <div class="dropdown-menu dropdown-menu-right">
+                                    <a class="dropdown-item text-right" href="{% url 'category_create' %}">Přidat kategorii</a>
+                                    <a class="dropdown-item text-right" href="{% url 'product_create' %}">Přidat produkt</a>
+                                </div>
+                            </div>
+                            </div>
+                            {% endif %}
                         <div class="navbar-nav ml-auto py-0">
                             <div class="nav-item dropdown">
                                 {% if user.is_authenticated %}

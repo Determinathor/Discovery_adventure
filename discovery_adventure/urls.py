@@ -9,8 +9,8 @@ from accounts.views import SignUpView, my_view, ProfileUpdateView, CustomPasswor
 from viewer.views import home, ProductsListView, ProductTemplateView, ProductCreateView, CategoryListView, \
     CategoryTemplateView, RandomProductTemplateView, FAQView, \
     ProductUpdateView, ProductDeleteView, ProductSortedLowListView, ProductSortedHighListView, \
-    add_to_cart, cart_view, delete_order_line, remove_from_cart, Contactview, checkout_view, place_order
-
+    add_to_cart, cart_view, delete_order_line, remove_from_cart, Contactview, checkout_view, place_order, \
+    CategoryCreateView
 urlpatterns = [
 
     path('hello/', views.hello, name='hello'),
@@ -19,16 +19,18 @@ urlpatterns = [
 
     # path('index/', CategoryListView.as_view(), name='index'), # "domovská stránka", která zobrazuje kategorie
     path('shop/', ProductsListView.as_view(), name='shop'), # zobrazení všech produktů
-    path('category/<pk>/', CategoryTemplateView.as_view(), name='category'), # zobrazení produktů dané kategorie TODO: chceme místo pk vypsat category_name
+    path('category/create/', CategoryCreateView.as_view(), name='category_create'), # vytvoření kategorie
+    path('category/<pk>/', CategoryTemplateView.as_view(), name='category'), # zobrazení produktů dané kategorie
     path('shop/random/', RandomProductTemplateView.as_view(), name='random'),
-    path('shop/<pk>/', ProductTemplateView.as_view(), name='detail'), # zobrazení detailu produktu TODO: aby byla adresář shop/product/<pk>
+    path('shop/<pk>/', ProductTemplateView.as_view(), name='detail'), # zobrazení detailu produktu
     path('shop-nejdrazsi/', ProductSortedLowListView.as_view(), name='shop-nejdrazsi'), #zobrazi vsechny produkty serazene od nejlevnejsiho
     path('shop-nejlevnejsi/', ProductSortedHighListView.as_view(), name='shop-nejlevnejsi'), #zobrazi vsechny produkty serazene od nejdrazsiho
     path('product/create/', ProductCreateView.as_view(), name='product_create'), # vytvoření produktu
-    path('product/update/<pk>/', ProductUpdateView.as_view(), name='product_create'), # update produktu
+    path('product/update/<pk>/', ProductUpdateView.as_view(), name='product_update'), # update produktu
     path('product/delete/<pk>/', ProductDeleteView.as_view(), name='product_delete'), # odstranění produktu
+
     path('faq/', FAQView.as_view(), name='faq'), # faq stránka
-    path('contact/', Contactview.as_view(), name='contact'), # faq stránka
+    path('contact/', Contactview.as_view(), name='contact'), # kontakt stránka
 
     # path('checkout/', CheckoutView.as_view(), name='checkout'),
 
@@ -51,3 +53,4 @@ urlpatterns = [
 
     path('admin/', admin.site.urls),
 ]
+
