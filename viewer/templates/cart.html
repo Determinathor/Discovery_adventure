@@ -90,9 +90,11 @@
                             <h5 class="font-weight-bold">Celková cena</h5>
                             <h5 class="font-weight-bold">€ {{ total_cost }}</h5>
                         </div>
-                        <a href="{% url 'checkout' %}">
-                            <button class="btn btn-block btn-primary my-3 py-3">K pokladně</button>
-                        </a>
+                        {% if has_items %}
+                            <a href="{% url 'checkout' %}">
+                                <button class="btn btn-block btn-primary my-3 py-3">K pokladně</button>
+                            </a>
+                        {% endif %}
                     </div>
                 </div>
             </div>

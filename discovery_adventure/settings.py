@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'django_addanother',
+    'widget_tweaks',
 
     #Our apps
     'viewer',

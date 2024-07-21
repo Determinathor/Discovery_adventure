@@ -4,7 +4,7 @@ from django.urls import path, include
 from discovery_adventure import settings
 
 from viewer import views
-from accounts.views import SignUpView, SubmittablePasswordChangeView, my_view
+from accounts.views import SignUpView, my_view, ProfileUpdateView, CustomPasswordChangeView
 
 from viewer.views import home, ProductsListView, ProductTemplateView, ProductCreateView, CategoryListView, \
     CategoryTemplateView, RandomProductTemplateView, FAQView, \
@@ -42,9 +42,11 @@ urlpatterns = [
 
 
 
+
     path('accounts/login/', my_view, name='login'),  # vlastní view pro login
     path('accounts/signup/', SignUpView.as_view(), name='signup'),          # vlastní view pro signup
-    path('accounts/password_change/', SubmittablePasswordChangeView.as_view(), name='password_change'), # view pro změnu hesla
+    path('accounts/password_change/', CustomPasswordChangeView.as_view(), name='password_change'), # view pro změnu hesla
+    path('accounts/info_change/', ProfileUpdateView.as_view(), name='profile_update'), # view pro změnu údajů
     path('accounts/', include('django.contrib.auth.urls')), # default django view
 
     path('admin/', admin.site.urls),

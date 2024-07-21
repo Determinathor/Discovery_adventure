@@ -310,13 +310,19 @@ def cart_view(request):
                     'product_price': line.product_price,
                     'line_total': line_total,
             })
+
+        # Check if there are any order lines
+        has_items = order_lines.exists()
+
     except Order.DoesNotExist:
         order_lines_with_total = []
         total_cost = 0
+        has_items = False
 
     return render(request, 'cart.html', {
         'order_lines': order_lines_with_total,
         'total_cost': total_cost,
+        'has_items': has_items,
     })
 
 
