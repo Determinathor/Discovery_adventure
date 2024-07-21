@@ -453,11 +453,15 @@ def place_order(request, pk):
         order.status = 'Confirmed'
         # order._processed = False  # Reset the flag to ensure the signal processes
         order.save()
-        messages.success(request, "Order placed successfully!")
-        return redirect('home')
+        # messages.success(request, "Objednávka byla úspěšně vytvořena! Děkujeme! Nyní již potřebujeme jen vytvořit s.r.o., nakoupit stovky produktů, napojit skladový systém na databázi a zprovoznit tisíc dalších funkcí.")
+        return redirect('order_confirmation')
     except Exception as e:
         messages.error(request, f"An error occurred while placing the order: {e}")
         return redirect('checkout')
+
+
+def order_confirmation(request):
+    return render(request, 'order_confirmation.html')
 
 
 

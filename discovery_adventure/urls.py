@@ -10,7 +10,8 @@ from viewer.views import home, ProductsListView, ProductTemplateView, ProductCre
     CategoryTemplateView, RandomProductTemplateView, FAQView, \
     ProductUpdateView, ProductDeleteView, ProductSortedLowListView, ProductSortedHighListView, \
     add_to_cart, cart_view, delete_order_line, remove_from_cart, Contactview, checkout_view, place_order, \
-    CategoryCreateView
+    CategoryCreateView, order_confirmation
+
 urlpatterns = [
 
     path('hello/', views.hello, name='hello'),
@@ -40,6 +41,7 @@ urlpatterns = [
     path('cart/', cart_view, name='cart_view'),
     path('checkout/', checkout_view, name='checkout'),
     path('place_order/<pk>/', place_order, name='place_order'),
+    path('order_confirmation/', order_confirmation, name='order_confirmation'),
 
 
 
