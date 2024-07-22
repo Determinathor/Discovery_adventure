@@ -7,13 +7,16 @@
             <!-- Shop Sidebar Start -->
             <div class="col-lg-3 col-md-12">
                 <!-- Optional Sidebar Content -->
+                <!-- Zde můžete přidat další obsah postranního panelu, např. filtry produktů, kategorie apod. -->
             </div>
             <!-- Shop Sidebar End -->
+
             <!-- Shop Product Start -->
             <div class="col-lg-9 col-md-12">
                 <div class="row pb-3">
                     <div class="col-12 pb-1">
                         <div class="d-flex align-items-center justify-content-between mb-4">
+                            <!-- Formulář pro vyhledávání produktů podle názvu -->
                             <form action="">
                                 <div class="input-group">
                                     <input type="text" class="form-control" placeholder="Hledat dle názvu">
@@ -24,6 +27,8 @@
                                     </div>
                                 </div>
                             </form>
+
+                            <!-- Tlačítko pro vytvoření nového produktu, zobrazí se jen pokud má uživatel oprávnění -->
                             {% if perms.accounts.add_product %}
                             <div class="col-md-4 mb-1">
                                 <h5>
@@ -31,22 +36,27 @@
                                 </h5>
                             </div>
                             {% endif %}
+
+                            <!-- Dropdown menu pro řazení produktů -->
                             <div class="dropdown ml-4">
                                 <button class="btn border dropdown-toggle" type="button" id="triggerId" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     Seřadit dle
                                 </button>
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="triggerId">
-                                    <!--<a class="dropdown-item" href="#">Nejnovější</a> Zatím nefunguje -->
+                                    <!-- <a class="dropdown-item" href="#">Nejnovější</a> Zatím nefunguje -->
                                     <a class="dropdown-item" href="{% url 'shop-nejdrazsi' %}">Cena - nejdražší</a>
                                     <a class="dropdown-item" href="{% url 'shop-nejlevnejsi' %}">Cena - nejlevnější</a>
                                 </div>
                             </div>
                         </div>
                     </div>
+
+                    <!-- Cyklus pro zobrazení jednotlivých produktů -->
                     {% for object in products %}
                     <div class="col-lg-4 col-md-6 col-sm-12 pb-1">
                         <div class="card product-item border-0 mb-4">
                             <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
+                                <!-- Odkaz na detail produktu -->
                                 <a href="{% url 'detail' object.id %}" class="text-decoration-none">
                                     <img class="img-fluid w-100" src="{% static 'img/product-1.jpg' %}" alt="">
                                 </a>
@@ -61,15 +71,18 @@
                                 <a href="{{ object.id }}" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>Zobrazit detail</a>
                                 <a href="{{ object.add_to_cart_url }}" class="btn btn-sm text-dark p-1"><i class="fas fa-shopping-cart text-primary mr-1"></i>Vložit do košíku</a>
                                 {% if perms.accounts.change_product %}
-                                <a href="{% url 'product_create' object.id %}" class="btn btn-sm text-uppercase text-danger p-0"><i class="fas fa-edit text-primary mr-1"></i>Upravit produkt</a>
+                                <a href="{% url 'product_update' object.id %}" class="btn btn-sm text-uppercase text-danger p-0"><i class="fas fa-edit text-primary mr-1"></i>Upravit produkt</a>
                                 {% endif %}
                                 {% if perms.accounts.delete_product %}
+                                <!-- Odkaz pro smazání produktu, zobrazí se jen pokud má uživatel oprávnění -->
                                 <a href="{% url 'product_delete' object.id %}" class="btn btn-sm text-uppercase text-danger p-0"><i class="fas fa-trash-alt text-primary mr-1"></i>Odstranit produkt</a>
                                 {% endif %}
                             </div>
                         </div>
                     </div>
                     {% endfor %}
+
+                    <!-- Paginace pro stránkování produktů -->
                     <div class="col-12 pb-1">
                         <nav aria-label="Page navigation">
                           <ul class="pagination justify-content-center mb-3">

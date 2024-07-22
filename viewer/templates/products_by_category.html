@@ -1,15 +1,17 @@
 {% extends "base.html" %}
 {% load static %}
+
 {% block content %}
-    <!-- Shop Start -->
+    <!-- Začátek sekce obchodu -->
     <div class="container-fluid pt-5">
         <div class="row px-xl-5">
-            <!-- Shop Sidebar Start -->
+            <!-- Boční panel obchodu (aktualně prázdný, ale může obsahovat filtry nebo jiné prvky) -->
             <div class="col-lg-3 col-md-12"></div>
             <div class="col-lg-9 col-md-12">
                 <div class="row pb-3">
                     <div class="col-12 pb-1">
                         <div class="d-flex align-items-center justify-content-between mb-4">
+                            <!-- Formulář pro vyhledávání produktů dle názvu -->
                             <form action="">
                                 <div class="input-group">
                                     <input type="text" class="form-control" placeholder="Hledat dle názvu">
@@ -20,6 +22,7 @@
                                     </div>
                                 </div>
                             </form>
+                            <!-- Odkaz na vytvoření nového produktu, zobrazuje se pouze pokud má uživatel právo přidávat produkty -->
                             {% if perms.accounts.add_product %}
                             <div class="col-md-4 mb-1">
                                 <h5>
@@ -27,36 +30,43 @@
                                 </h5>
                             </div>
                             {% endif %}
+                            <!-- Dropdown menu pro seřazení produktů -->
                             <div class="dropdown ml-4">
                                 <button class="btn border dropdown-toggle" type="button" id="triggerId" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     Seřadit dle
                                 </button>
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="triggerId">
                                     <a class="dropdown-item" href="#">Nejnovější</a>
-                                    <a class="dropdown-item" href="#">Cena</a> <!-- TODO: řazení? -->
+                                    <a class="dropdown-item" href="#">Cena</a> <!-- TODO: Implementovat funkci řazení podle ceny -->
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <!-- Zobrazení produktů na stránce -->
                     {% for product in page_obj %}
                     <div class="col-lg-4 col-md-6 col-sm-12 pb-1">
                         <div class="card product-item border-0 mb-4">
+                            <!-- Obrázek produktu s odkazem na detail produktu -->
                             <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
                                 <a href="{% url 'detail' product.id %}" class="text-decoration-none">
                                     <img class="img-fluid w-100" src="{% static 'img/product-1.jpg' %}" alt="">
                                 </a>
                             </div>
                             <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
+                                <!-- Název produktu a cena -->
                                 <h6 class="text-truncate mb-3">{{ product.title }}</h6>
                                 <div class="d-flex justify-content-center">
                                     <h6>€ {{ product.price }}</h6>
                                 </div>
                             </div>
                             <div class="card-footer d-flex justify-content-between bg-light border">
+                                <!-- Tlačítko pro přidání produktu do košíku -->
                                 <a href="" class="btn btn-sm text-dark p-1"><i class="fas fa-shopping-cart text-primary mr-1"></i>Vložit do košíku</a>
+                                <!-- Odkaz na úpravu produktu, zobrazuje se pouze pokud má uživatel právo měnit produkty -->
                                 {% if perms.accounts.change_product %}
-                                <a href="{% url 'product_create' product.id %}" class="btn btn-sm text-uppercase text-danger p-0"><i class="fas fa-edit text-primary mr-1"></i>Upravit produkt</a>
+                                <a href="{% url 'product_update' product.id %}" class="btn btn-sm text-uppercase text-danger p-0"><i class="fas fa-edit text-primary mr-1"></i>Upravit produkt</a>
                                 {% endif %}
+                                <!-- Odkaz na odstranění produktu, zobrazuje se pouze pokud má uživatel právo mazat produkty -->
                                 {% if perms.accounts.delete_product %}
                                 <a href="{% url 'product_delete' product.id %}" class="btn btn-sm text-uppercase text-danger p-0"><i class="fas fa-trash-alt text-primary mr-1"></i>Odstranit produkt</a>
                                 {% endif %}
@@ -64,6 +74,7 @@
                         </div>
                     </div>
                     {% endfor %}
+                    <!-- Navigace mezi stránkami -->
                     <div class="col-12 pb-1">
                         <nav aria-label="Page navigation">
                           <ul class="pagination justify-content-center mb-3">
@@ -109,5 +120,5 @@
             </div>
         </div>
     </div>
-    <!-- Shop End -->
+    <!-- Konec sekce obchodu -->
 {% endblock %}

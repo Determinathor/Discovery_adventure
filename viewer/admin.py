@@ -21,11 +21,9 @@ class CategoryAdmin(ModelAdmin):
 
 
 admin.site.register(Manufacturer)
-admin.site.register(Product)
+# admin.site.register(Product)
 admin.site.register(Cart)
 admin.site.register(Category, CategoryAdmin)
-admin.site.register(Order)
-admin.site.register(Order_Line)
+# admin.site.register(Order)
+# admin.site.register(Order_Line)
 admin.site.register(Payment)
-
-

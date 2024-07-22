@@ -3,20 +3,28 @@
 {% block content %}
     <!-- Categories Start -->
     <!-- TODO: změnit, aby se zobrazovalo vedle sebe -->
-<div class="container-fluid pt-5">
-    <div class="row">
-        {% for category in categories %}
-            <div class="col-lg-4 col-md-6 pb-1">
-                <div class="cat-item d-flex flex-column border mb-4" style="padding: 30px;">
-                    <p class="text-right">{{ category.product_count }} Products</p>
-                    <a href="category/{{ category.id }}/" class="cat-img position-relative overflow-hidden mb-3">
-                        <img class="img-fluid" src="{% static 'img/cat-1.jpg' %}" alt="">
-                    </a>
-                    <h5 class="font-weight-semi-bold m-0">{{ category.name }}</h5>
+    <!-- Hlavní kontejner pro kategorii, začíná novým řádkem a má padding nahoře -->
+    <div class="container-fluid pt-5">
+        <div class="row">
+            <!-- Smyčka pro iteraci přes všechny kategorie -->
+            {% for category in categories %}
+                <!-- Sloupec pro každou kategorii. Šířka sloupce je určena pro velké obrazovky (col-lg-4) a střední obrazovky (col-md-6). -->
+                <div class="col-lg-4 col-md-6 pb-1">
+                    <!-- Blok pro každou kategorii. Používá flexbox pro uspořádání prvků a má padding 30px -->
+                    <div class="cat-item d-flex flex-column border mb-4" style="padding: 30px;">
+                        <!-- Počet produktů v kategorii zobrazený vpravo -->
+                        <p class="text-right">{{ category.product_count }} Produktů</p>
+                        <!-- Odkaz na stránku kategorie s obrázkem. Obrázek je umístěn v relativním kontejneru pro možnost překrytí -->
+                        <a href="category/{{ category.id }}/" class="cat-img position-relative overflow-hidden mb-3">
+                            <!-- Obrázek kategorie. Cesta k obrázku je nastavena pomocí statického souboru -->
+                            <img class="img-fluid" src="{% static 'img/cat-1.jpg' %}" alt="">
+                        </a>
+                        <!-- Název kategorie s použitím tučného písma -->
+                        <h5 class="font-weight-semi-bold m-0">{{ category.name }}</h5>
+                    </div>
                 </div>
-            </div>
-        {% endfor %}
+            {% endfor %}
+        </div>
     </div>
-</div>
     <!-- Categories End -->
 {% endblock %}

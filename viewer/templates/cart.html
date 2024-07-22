@@ -6,6 +6,7 @@
     <!-- Cart Start -->
 <div class="container-fluid pt-5" xmlns="http://www.w3.org/1999/html">
         <div class="row px-xl-5">
+            <!-- Tabulka s produkty v košíku -->
             <div class="col-lg-8 table-responsive mb-5">
                 <table class="table table-bordered text-center mb-0">
                     <thead class="bg-secondary text-dark">
@@ -20,9 +21,10 @@
                     <tbody class="align-middle">
                     {% for object in order_lines %}
                         <tr>
-                            <td class="align-middle"><img src="img/product-1.jpg" alt="" style="width: 50px;">{{ object.Product.title }}</td>
+                            <td><a href="{% url 'detail' object.Product.id %}" class="align-middle">{{ object.Product.title }}</a></td>
                             <td class="align-middle">€ {{ object.product_price }}</td>
                             <td class="align-middle">
+                                <!-- Výběr množství produktu -->
                                 <div class="input-group quantity mx-auto" style="width: 100px;">
                                     <div class="input-group-btn">
                                         <a href="{% url 'remove_from_cart' object.id %}">
@@ -62,7 +64,9 @@
                 {% endif %}
 
             </div>
+            <!-- Shrnutí košíku a platební možnosti -->
             <div class="col-lg-4">
+                <!-- Formulář pro uplatnění slevového kódu -->
                 <form class="mb-5" action="">
                     <div class="input-group">
                         <input type="text" class="form-control p-4" placeholder="Slevový kód">
@@ -71,6 +75,7 @@
                         </div>
                     </div>
                 </form>
+                <!-- Shrnutí košíku -->
                 <div class="card border-secondary mb-5">
                     <div class="card-header bg-secondary border-0">
                         <h4 class="font-weight-semi-bold m-0">Souhrn košíku</h4>
@@ -90,7 +95,11 @@
                             <h5 class="font-weight-bold">Celková cena</h5>
                             <h5 class="font-weight-bold">€ {{ total_cost }}</h5>
                         </div>
-                        <button class="btn btn-block btn-primary my-3 py-3">K pokladně</button>
+                        {% if has_items %}
+                            <a href="{% url 'checkout' %}">
+                                <button class="btn btn-block btn-primary my-3 py-3">K pokladně</button>
+                            </a>
+                        {% endif %}
                     </div>
                 </div>
             </div>
@@ -105,33 +114,33 @@
 
 
 
-<h2>Shopping Cart</h2>
-<table>
-    <thead>
-        <tr>
-            <th>Product</th>
-            <th>Quantity</th>
-            <th>Price</th>
-            <th>Total</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for object in order_lines %}
-        <tr>
-            <td>{{ object.Product.title }}</td>
-            <td>{{ object.quantity }}</td>
-            <td>{{ object.product_price }}</td>
-            <td>{{ object.line_total }}</td>
-            <td>
-                <a href="{% url 'remove_from_cart' object.id %}">Remove one</a>
-                <a href="{% url 'delete_order_line' object.id %}">Remove all</a>
-            </td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
-<h3>Total: {{ total_cost }}</h3>
-<a href="">Proceed to Checkout</a>
+<!--<h2>Shopping Cart</h2>-->
+<!--<table>-->
+<!--    <thead>-->
+<!--        <tr>-->
+<!--            <th>Product</th>-->
+<!--            <th>Quantity</th>-->
+<!--            <th>Price</th>-->
+<!--            <th>Total</th>-->
+<!--        </tr>-->
+<!--    </thead>-->
+<!--    <tbody>-->
+<!--        {% for object in order_lines %}-->
+<!--        <tr>-->
+<!--            <td>{{ object.Product.title }}</td>-->
+<!--            <td>{{ object.quantity }}</td>-->
+<!--            <td>{{ object.product_price }}</td>-->
+<!--            <td>{{ object.line_total }}</td>-->
+<!--            <td>-->
+<!--                <a href="{% url 'remove_from_cart' object.id %}">Remove one</a>-->
+<!--                <a href="{% url 'delete_order_line' object.id %}">Remove all</a>-->
+<!--            </td>-->
+<!--        </tr>-->
+<!--        {% endfor %}-->
+<!--    </tbody>-->
+<!--</table>-->
+<!--<h3>Total: {{ total_cost }}</h3>-->
+<!--<a href="">Proceed to Checkout</a>-->
 
 
 

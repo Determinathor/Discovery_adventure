@@ -1,4 +1,6 @@
 from datetime import date
+
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models import *  #(Model, CharField, ForeignKey, DO_NOTHING,
 from django.core.validators import MinValueValidator
@@ -40,6 +42,10 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
+    def clean(self):
+        if len(self.name) < 2:
+            raise ValidationError("Name must be at least 2 characters")
+
 
 class Product(models.Model):
     class ProductType(models.TextChoices):
@@ -76,6 +82,12 @@ class Product(models.Model):
         {"pk": self.pk
          })
 
+    def clean(self):
+        if self.price <= 0:
+            raise ValidationError('Price must be greater than 0.')
+        if self.stock < 0:
+            raise ValidationError('Stock cannot be negative.')
+
 
 class Cart(Model):
     quantity = IntegerField(default=0, null=True, blank=False)
@@ -102,6 +114,12 @@ class Order(Model):
     status = CharField(max_length=42, null=True, blank=False)
     User = ForeignKey(Profile, on_delete=DO_NOTHING, null=True, blank=False)
 
+    # _processed = models.BooleanField(default=False, editable=False)  # Temporary flag
+
+    def clean(self):
+        if self.total_cost < 0:
+            raise ValidationError('Total cost cannot be negative.')
+
 
 class Order_Line(Model):
     product_price = IntegerField(default=0, null=True, blank=False)
@@ -109,14 +127,14 @@ class Order_Line(Model):
     Product = ForeignKey(Product, on_delete=DO_NOTHING, null=True, blank=False)
     Order = ForeignKey(Order, on_delete=DO_NOTHING, null=True, blank=False)
 
+    def total_order_line_price(self):
+        return self.product_price * self.quantity
+
+    total_order_line_price.short_description = 'Total Price'
+
 
 class Payment(Model):
     # sum = IntegerField(default=0, null=True, blank=False)
     # User = ForeignKey(Profile, on_delete=DO_NOTHING, null=True, blank=False)
     Order = ForeignKey(Order, on_delete=DO_NOTHING, null=True, blank=False)
     date_of_payment = DateTimeField(null=True, blank=False)
-
-
-
-
-

@@ -10,18 +10,17 @@
     <meta content="Free HTML Templates" name="description">
 
     <!-- Favicon -->
-    <!--    <link href="img/favicon.ico" rel="icon">-->
+    <!-- <link href="img/favicon.ico" rel="icon"> --> <!-- Ikona stránky, kterou je možné nahrát -->
 
     <!-- Google Web Fonts -->
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap"
-          rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com"> <!-- Připojení k serveru Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet"> <!-- Font Poppins pro celou stránku -->
 
     <!-- Font Awesome -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet"> <!-- Ikony Font Awesome -->
 
     <!-- Libraries Stylesheet -->
-    <link href="{% static 'css/owl.carousel.css' %}" rel="stylesheet">
+    <link href="{% static 'css/owl.carousel.css' %}" rel="stylesheet"> <!-- Styl pro carousel (karusel) knihovnu Owl Carousel -->
 
     <!-- Customized Bootstrap Stylesheet -->
     <link href="{% static 'css/style.css' %}" rel="stylesheet">
@@ -162,43 +161,53 @@
 <!-- Topbar End -->
 
 
-{% include "nav.html" %}
+    {% include "nav.html" %} <!-- Zahrnutí navigačního menu -->
 
-<!-- Page Header Start -->
-<div class="container-fluid bg-secondary mb-5">
-    <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 150px">
-        <h1 class="font-weight-semi-bold text-uppercase mb-3">
-            {% if current_template %}
-            {{ current_template }}
+    <!-- Page Header Start -->
+    <div class="container-fluid bg-secondary mb-5">
+        <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 150px">
+            <!-- Hlavní nadpis stránky -->
+            <h1 class="font-weight-semi-bold text-uppercase mb-3">
+                {% if current_template %}
+                    {{ current_template }}
+                {% endif %}
+            </h1>
+            {% if category %}
+                <h1 class="font-weight-semi-bold text-uppercase mb-3">{{ category.name }}</h1> <!-- Název kategorie -->
             {% endif %}
-        </h1>
-        {% if category %}
-        <h1 class="font-weight-semi-bold text-uppercase mb-3">{{ category.name }}</h1>
+        </div>
+    </div>
+    <!-- Page Header End -->
+
+    <div class="container">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
         {% endif %}
     </div>
-</div>
-<!-- Page Header End -->
-
 
 {% block content %}
 
 {% endblock %}
 
 
-{% include "footer.html" %}
+    {% include "footer.html" %} <!-- Zahrnutí patičky -->
 
-<!-- Back to Top -->
-<a href="#" class="btn btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a> <!-- Tlačítko pro návrat na začátek stránky -->
 
-<!-- JavaScript Libraries -->
-<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
-<script src="{% static 'lib/easing/easing.min.js' %}"></script>
-<script src="{% static 'lib/owlcarousel/owl.carousel.min.js' %}"></script>
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script> <!-- JQuery knihovna -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script> <!-- Bootstrap knihovna -->
+    <script src="{% static 'lib/easing/easing.min.js' %}"></script> <!-- Knihovna pro plynulé přechody -->
+    <script src="{% static 'lib/owlcarousel/owl.carousel.min.js' %}"></script> <!-- Knihovna pro carousel (karusel) -->
 
-<!-- Contact Javascript File -->
-<script src="{% static 'mail/jqBootstrapValidation.min.js' %}"></script>
-<script src="{% static 'mail/contact.js' %}"></script>
+    <!-- Contact Javascript File -->
+    <script src="{% static 'mail/jqBootstrapValidation.min.js' %}"></script> <!-- Knihovna pro validaci formulářů -->
+    <script src="{% static 'mail/contact.js' %}"></script> <!-- Skript pro zpracování kontaktů -->
 
 <!-- Template Javascript -->
 <script src="{% static 'js/main.js' %}"></script>
