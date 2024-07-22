@@ -243,21 +243,24 @@ class ProductsCheckoutListView(ListView):
         except:
             context['user_city'] = 'Praha'
         return context
+# -----------------------------------------
+# CRUD_product OPERATIONS START
+# -----------------------------------------
 
 # Pohled pro zobrazení produktů z orderlines (objednané produkty)
-class ProductsCartListView(ListView):
-    model = Product
-    template_name = 'cart.html'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['categories'] = Category.objects.all()  # Získání všech kategorií
-        context['current_template'] = "Objednané produkty"  # Nastavení aktuální šablony
-        try:
-            context['user_city'] = self.request.user.profile.city
-        except:
-            context['user_city'] = 'Praha'
-        return context
+# class ProductsCartListView(ListView):
+#     model = Product
+#     template_name = 'cart.html'
+#
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         context['categories'] = Category.objects.all()  # Získání všech kategorií
+#         context['current_template'] = "Objednané produkty"  # Nastavení aktuální šablony
+#         try:
+#             context['user_city'] = self.request.user.profile.city
+#         except:
+#             context['user_city'] = 'Praha'
+#         return context
 
 # Formulář pro vytvoření/úpravu produktu
 class ProductModelForm(ModelForm):
@@ -271,12 +274,24 @@ class ProductModelForm(ModelForm):
             )
         }
 
-    price = IntegerField(min_value=0, required=True)  # Pole pro cenu s minimální hodnotou 0
+    price = IntegerField(min_value=1, required=True)  # Pole pro cenu s minimální hodnotou 1
     stock = IntegerField(min_value=0, required=True)  # Pole pro sklady s minimální hodnotou 0
 
     def clean_title(self):
         initial = self.cleaned_data['title']
         return initial.strip()  # Odstranění mezer na začátku a konci názvu
+
+    def clean_price(self):
+        price = self.cleaned_data.get('price')
+        if price <= 0:
+            raise forms.ValidationError('Price must be greater than 0.')
+        return price
+
+    def clean_stock(self):
+        stock = self.cleaned_data.get('stock')
+        if stock < 0:
+            raise forms.ValidationError('Stock cannot be negative.')
+        return stock
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
