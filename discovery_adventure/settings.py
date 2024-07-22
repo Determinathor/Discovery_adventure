@@ -131,6 +131,8 @@ USE_TZ = True
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [BASE_DIR / "static"]
 
+OPENWEATHERMAP_API_KEY = '240ca85ef22b996cbd7218253fcadb27'
+
 
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'home'
@@ -139,3 +141,4 @@ LOGOUT_REDIRECT_URL = 'home'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+

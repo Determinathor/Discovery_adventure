@@ -1,6 +1,7 @@
 import random
 from concurrent.futures._base import LOGGER
 
+from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin, UserPassesTestMixin
@@ -56,6 +57,10 @@ class CategoryListView(ListView): # chceme zobrazit všechny kategorie
             category.product_count = Product.objects.filter(categories=category).count()
         context['categories'] = categories
         context['current_template'] = "Kategorie"
+        try:
+            context['user_city'] = self.request.user.profile.city
+        except:
+            context['user_city'] = 'Praha'
         return context
 
 
