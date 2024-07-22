@@ -64,7 +64,7 @@
                                 <a href="" class="btn btn-sm text-dark p-1"><i class="fas fa-shopping-cart text-primary mr-1"></i>Vložit do košíku</a>
                                 <!-- Odkaz na úpravu produktu, zobrazuje se pouze pokud má uživatel právo měnit produkty -->
                                 {% if perms.accounts.change_product %}
-                                <a href="{% url 'product_create' product.id %}" class="btn btn-sm text-uppercase text-danger p-0"><i class="fas fa-edit text-primary mr-1"></i>Upravit produkt</a>
+                                <a href="{% url 'product_update' product.id %}" class="btn btn-sm text-uppercase text-danger p-0"><i class="fas fa-edit text-primary mr-1"></i>Upravit produkt</a>
                                 {% endif %}
                                 <!-- Odkaz na odstranění produktu, zobrazuje se pouze pokud má uživatel právo mazat produkty -->
                                 {% if perms.accounts.delete_product %}

@@ -8,17 +8,17 @@
             <!-- Sekce pro vyplnění fakturační adresy -->
             <div class="col-lg-8">
                 <div class="mb-4">
-                    <h4 class="font-weight-semi-bold mb-4">Billing Address</h4> <!-- Nadpis sekce fakturační adresy -->
+                    <h4 class="font-weight-semi-bold mb-4">Doručovací adresa</h4>
                     <div class="row">
                         <!-- Pole pro jméno -->
                         <div class="col-md-6 form-group">
-                            <label>First Name</label>
-                            <input class="form-control" type="text" placeholder="John"> <!-- Vstupní pole pro křestní jméno -->
+                            <label>Křestní jméno</label>
+                            <input class="form-control" type="text" placeholder="John">
                         </div>
                         <!-- Pole pro příjmení -->
                         <div class="col-md-6 form-group">
-                            <label>Last Name</label>
-                            <input class="form-control" type="text" placeholder="Doe"> <!-- Vstupní pole pro příjmení -->
+                            <label>Příjmení</label>
+                            <input class="form-control" type="text" placeholder="Doe">
                         </div>
                         <!-- Pole pro e-mail -->
                         <div class="col-md-6 form-group">
@@ -27,22 +27,17 @@
                         </div>
                         <!-- Pole pro telefonní číslo -->
                         <div class="col-md-6 form-group">
-                            <label>Mobile No</label>
-                            <input class="form-control" type="text" placeholder="+123 456 789"> <!-- Vstupní pole pro telefonní číslo -->
+                            <label>Telefonní číslo</label>
+                            <input class="form-control" type="text" placeholder="+123 456 789">
                         </div>
                         <!-- Pole pro adresu řádek 1 -->
                         <div class="col-md-6 form-group">
-                            <label>Address Line 1</label>
-                            <input class="form-control" type="text" placeholder="123 Street"> <!-- Vstupní pole pro první řádek adresy -->
-                        </div>
-                        <!-- Pole pro adresu řádek 2 -->
-                        <div class="col-md-6 form-group">
-                            <label>Address Line 2</label>
-                            <input class="form-control" type="text" placeholder="123 Street"> <!-- Vstupní pole pro druhý řádek adresy -->
+                            <label>Adresa</label>
+                            <input class="form-control" type="text" placeholder="123 Street">
                         </div>
                         <!-- Pole pro výběr země -->
                         <div class="col-md-6 form-group">
-                            <label>Country</label>
+                            <label>Země</label>
                             <select class="custom-select">
                                 <option selected>Česká republika</option> <!-- Předvolená země -->
                                 <option>Afghanistan</option>
@@ -52,25 +47,13 @@
                         </div>
                         <!-- Pole pro město -->
                         <div class="col-md-6 form-group">
-                            <label>City</label>
-                            <input class="form-control" type="text" placeholder="New York"> <!-- Vstupní pole pro město -->
+                            <label>Město</label>
+                            <input class="form-control" type="text" placeholder="New York">
                         </div>
                         <!-- Pole pro stát -->
                         <div class="col-md-6 form-group">
-                            <label>State</label>
-                            <input class="form-control" type="text" placeholder="New York"> <!-- Vstupní pole pro stát -->
-                        </div>
-                        <!-- Pole pro PSČ -->
-                        <div class="col-md-6 form-group">
-                            <label>ZIP Code</label>
-                            <input class="form-control" type="text" placeholder="123"> <!-- Vstupní pole pro PSČ -->
-                        </div>
-                        <!-- Checkbox pro vytvoření účtu -->
-                        <div class="col-md-12 form-group">
-                            <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input" id="newaccount">
-                                <label class="custom-control-label" for="newaccount">Create an account</label> <!-- Možnost vytvoření účtu -->
-                            </div>
+                            <label>PSČ</label>
+                            <input class="form-control" type="text" placeholder="123">
                         </div>
                         <!-- Checkbox pro dodání na jinou adresu -->
                         <div class="col-md-12 form-group">
@@ -81,116 +64,102 @@
                         </div>
                     </div>
                 </div>
-                <!-- Rozbalovací sekce pro doručovací adresu -->
-                <div class="collapse mb-4" id="shipping-address">
-                    <h4 class="font-weight-semi-bold mb-4">Shipping Address</h4> <!-- Nadpis sekce doručovací adresy -->
-                    <div class="row">
-                        <!-- Pole pro jméno -->
-                        <div class="col-md-6 form-group">
-                            <label>First Name</label>
-                            <input class="form-control" type="text" placeholder="John"> <!-- Vstupní pole pro křestní jméno -->
-                        </div>
-                        <!-- Pole pro příjmení -->
-                        <div class="col-md-6 form-group">
-                            <label>Last Name</label>
-                            <input class="form-control" type="text" placeholder="Doe"> <!-- Vstupní pole pro příjmení -->
-                        </div>
-                        <!-- Pole pro e-mail -->
-                        <div class="col-md-6 form-group">
-                            <label>E-mail</label>
-                            <input class="form-control" type="text" placeholder="example@email.com"> <!-- Vstupní pole pro e-mail -->
-                        </div>
-                        <!-- Pole pro telefonní číslo -->
-                        <div class="col-md-6 form-group">
-                            <label>Mobile No</label>
-                            <input class="form-control" type="text" placeholder="+123 456 789"> <!-- Vstupní pole pro telefonní číslo -->
-                        </div>
-                        <!-- Pole pro adresu řádek 1 -->
-                        <div class="col-md-6 form-group">
-                            <label>Address Line 1</label>
-                            <input class="form-control" type="text" placeholder="123 Street"> <!-- Vstupní pole pro první řádek adresy -->
-                        </div>
-                        <!-- Pole pro adresu řádek 2 -->
-                        <div class="col-md-6 form-group">
-                            <label>Address Line 2</label>
-                            <input class="form-control" type="text" placeholder="123 Street"> <!-- Vstupní pole pro druhý řádek adresy -->
-                        </div>
-                        <!-- Pole pro výběr země -->
-                        <div class="col-md-6 form-group">
-                            <label>Country</label>
-                            <select class="custom-select">
-                                <option selected>United States</option> <!-- Předvolená země -->
-                                <option>Afghanistan</option>
-                                <option>Albania</option>
-                                <option>Algeria</option>
-                            </select>
-                        </div>
-                        <!-- Pole pro město -->
-                        <div class="col-md-6 form-group">
-                            <label>City</label>
-                            <input class="form-control" type="text" placeholder="New York"> <!-- Vstupní pole pro město -->
-                        </div>
-                        <!-- Pole pro stát -->
-                        <div class="col-md-6 form-group">
-                            <label>State</label>
-                            <input class="form-control" type="text" placeholder="New York"> <!-- Vstupní pole pro stát -->
-                        </div>
-                        <!-- Pole pro PSČ -->
-                        <div class="col-md-6 form-group">
-                            <label>ZIP Code</label>
-                            <input class="form-control" type="text" placeholder="123"> <!-- Vstupní pole pro PSČ -->
-                        </div>
-                    </div>
-                </div>
+<!--                <div class="collapse mb-4" id="shipping-address">-->
+<!--                    <h4 class="font-weight-semi-bold mb-4">Shipping Address</h4>-->
+<!--                    <div class="row">-->
+<!--                        <div class="col-md-6 form-group">-->
+<!--                            <label>First Name</label>-->
+<!--                            <input class="form-control" type="text" placeholder="John">-->
+<!--                        </div>-->
+<!--                        <div class="col-md-6 form-group">-->
+<!--                            <label>Last Name</label>-->
+<!--                            <input class="form-control" type="text" placeholder="Doe">-->
+<!--                        </div>-->
+<!--                        <div class="col-md-6 form-group">-->
+<!--                            <label>E-mail</label>-->
+<!--                            <input class="form-control" type="text" placeholder="example@email.com">-->
+<!--                        </div>-->
+<!--                        <div class="col-md-6 form-group">-->
+<!--                            <label>Mobile No</label>-->
+<!--                            <input class="form-control" type="text" placeholder="+123 456 789">-->
+<!--                        </div>-->
+<!--                        <div class="col-md-6 form-group">-->
+<!--                            <label>Address Line 1</label>-->
+<!--                            <input class="form-control" type="text" placeholder="123 Street">-->
+<!--                        </div>-->
+<!--                        <div class="col-md-6 form-group">-->
+<!--                            <label>Country</label>-->
+<!--                            <select class="custom-select">-->
+<!--                                <option selected>United States</option>-->
+<!--                                <option>Afghanistan</option>-->
+<!--                                <option>Albania</option>-->
+<!--                                <option>Algeria</option>-->
+<!--                            </select>-->
+<!--                        </div>-->
+<!--                        <div class="col-md-6 form-group">-->
+<!--                            <label>City</label>-->
+<!--                            <input class="form-control" type="text" placeholder="New York">-->
+<!--                        </div>-->
+<!--                        <div class="col-md-6 form-group">-->
+<!--                            <label>ZIP Code</label>-->
+<!--                            <input class="form-control" type="text" placeholder="123">-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
             </div>
             <!-- Sekce pro souhrn objednávky a možnosti platby -->
             <div class="col-lg-4">
                 <!-- Shrnutí objednávky -->
                 <div class="card border-secondary mb-5">
                     <div class="card-header bg-secondary border-0">
-                        <h4 class="font-weight-semi-bold m-0">Order Total</h4> <!-- Nadpis sekce souhrnu objednávky -->
+                        <h4 class="font-weight-semi-bold m-0">Shrnutí objednávky</h4>
                     </div>
                     <div class="card-body">
-                        <h5 class="font-weight-medium mb-3">Products</h5> <!-- Nadpis pro seznam produktů -->
-                        <!-- Detail produktu 1 -->
-                        <div class="d-flex justify-content-between">
-                            <p>Colorful Stylish Shirt 1</p>
-                            <p>$150</p>
-                        </div>
-                        <!-- Detail produktu 2 -->
-                        <div class="d-flex justify-content-between">
-                            <p>Colorful Stylish Shirt 2</p>
-                            <p>$150</p>
-                        </div>
-                        <!-- Detail produktu 3 -->
-                        <div class="d-flex justify-content-between">
-                            <p>Colorful Stylish Shirt 3</p>
-                            <p>$150</p>
+                        <h5 class="font-weight-medium mb-3">Produkty</h5>
+                       <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Název</th>
+                                        <th scope="col">Množství</th>
+                                        <th scope="col">Mezisoučet</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for item in order_summary %}
+                                    <tr>
+                                        <td>{{ item.product_title }}</td>
+                                        <td>{{ item.quantity }}</td>
+                                        <td>€{{ item.line_total }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
                         </div>
                         <hr class="mt-0">
                         <!-- Mezisoučet -->
                         <div class="d-flex justify-content-between mb-3 pt-1">
-                            <h6 class="font-weight-medium">Subtotal</h6>
-                            <h6 class="font-weight-medium">$150</h6>
+                            <h6 class="font-weight-medium">Celková cena</h6>
+                            <h6 class="font-weight-medium">€{{ total_cost }}</h6>
                         </div>
                         <!-- Doprava -->
                         <div class="d-flex justify-content-between">
-                            <h6 class="font-weight-medium">Shipping</h6>
+                            <h6 class="font-weight-medium">Doprava</h6>
                             <h6 class="font-weight-medium">$10</h6>
                         </div>
                     </div>
                     <!-- Celková částka -->
                     <div class="card-footer border-secondary bg-transparent">
                         <div class="d-flex justify-content-between mt-2">
-                            <h5 class="font-weight-bold">Total</h5>
-                            <h5 class="font-weight-bold">$160</h5>
+                            <h5 class="font-weight-bold">K zaplacení</h5>
+                            <h5 class="font-weight-bold">€{{ total_cost }}</h5>
                         </div>
                     </div>
                 </div>
                 <!-- Možnosti platby -->
                 <div class="card border-secondary mb-5">
                     <div class="card-header bg-secondary border-0">
-                        <h4 class="font-weight-semi-bold m-0">Payment</h4> <!-- Nadpis sekce platby -->
+                        <h4 class="font-weight-semi-bold m-0">Platba</h4>
                     </div>
                     <div class="card-body">
                         <!-- Možnost platby Paypal -->
@@ -204,20 +173,20 @@
                         <div class="form-group">
                             <div class="custom-control custom-radio">
                                 <input type="radio" class="custom-control-input" name="payment" id="directcheck">
-                                <label class="custom-control-label" for="directcheck">Direct Check</label>
+                                <label class="custom-control-label" for="directcheck">Platební karta</label>
                             </div>
                         </div>
                         <!-- Možnost platby Bankovní převod -->
                         <div class="">
                             <div class="custom-control custom-radio">
                                 <input type="radio" class="custom-control-input" name="payment" id="banktransfer">
-                                <label class="custom-control-label" for="banktransfer">Bank Transfer</label>
+                                <label class="custom-control-label" for="banktransfer">Bankovní převod</label>
                             </div>
                         </div>
                     </div>
                     <!-- Tlačítko pro dokončení objednávky -->
                     <div class="card-footer border-secondary bg-transparent">
-                        <button class="btn btn-lg btn-block btn-primary font-weight-bold my-3 py-3">Place Order</button>
+                        <a href="{% url 'place_order' order.id %}" class="btn btn-lg btn-block btn-primary font-weight-bold my-3 py-3">Závazně objednat</a>
                     </div>
                 </div>
             </div>
@@ -226,3 +195,4 @@
     <!-- Konec pokladny (Checkout) -->
 
 {% endblock %}
+

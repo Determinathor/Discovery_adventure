@@ -25,36 +25,38 @@
                             <a href="" class="dropdown-item">Baby's Dresses</a>
                         </div>
                     </div>
-                    -->
-                </div>
-            </nav>
-        </div>
-        <!-- Tento sloupec se zobrazuje na všech obrazovkách kromě velkých -->
-        <div class="col-lg-9">
-            <!-- Hlavní navigační panel pro stránky -->
-            <nav class="navbar navbar-expand-lg bg-light navbar-light py-3 py-lg-0 px-0">
-                <!-- Název stránky, který se zobrazuje pouze na mobilních zařízeních -->
-                <a href="" class="text-decoration-none d-block d-lg-none">
-                    <h1 class="m-0 display-9 font-weight-semi-bold"><span class="text-primary font-weight-light border px-1 mr-2">DA</span>Discovery adventure</h1>
-                </a>
-                <!-- Tlačítko pro zobrazení/skrytí navigačního menu na mobilních zařízeních -->
-                <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <!-- Hlavní obsah navigačního panelu, který se zobrazuje při rozbalení -->
-                <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
-                    <!-- Hlavní navigační odkazy vlevo -->
-                    <div class="navbar-nav mr-auto py-0">
-                        <a href="{% url 'home' %}" class="nav-item nav-link active">Domů</a>
-                        <a href="{% url 'shop' %}" class="nav-item nav-link">Všechny produkty</a>
-                        <a href="{% url 'random' %}" class="nav-item nav-link">Náhodný produkt</a>
-                        <a href="{% url 'contact' %}" class="nav-item nav-link">Kontakt</a>
-                    </div>
-                    <!-- Odkazy na přihlášení/odhlášení vpravo -->
-                    <div class="navbar-nav ml-auto py-0">
-                        <div class="nav-item dropdown">
-                            <!-- Kontrola, zda je uživatel přihlášen. Pokud ano, zobrazí se jeho jméno a možnosti odhlášení a změny hesla -->
-                            {% if user.is_authenticated %}
+                </nav>
+            </div>
+            <div class="col-lg-9">
+                <nav class="navbar navbar-expand-lg bg-light navbar-light py-3 py-lg-0 px-0">
+                    <a href="" class="text-decoration-none d-block d-lg-none">
+                        <h1 class="m-0 display-9 font-weight-semi-bold"><span class="text-primary font-weight-light border px-1 mr-2">DA</span>Discovery adventure</h1>
+                    </a>
+                    <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
+                        <div class="navbar-nav mr-auto py-0">
+                            <a href="{% url 'home' %}" class="nav-item nav-link active">Domů</a>
+                            <a href="{% url 'shop' %}" class="nav-item nav-link">Všechny produkty</a>
+                            <a href="{% url 'random' %}" class="nav-item nav-link">Náhodný produkt</a>
+                            <a href="{% url 'contact' %}" class="nav-item nav-link">Kontakt</a>
+                        </div>
+                            {% if perms.accounts.add_category %}
+                            <div class="navbar-nav ml-auto py-0">
+                            <div class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" style="color: red; font-weight: bold;">Admin - úpravy</a>
+                                <div class="dropdown-menu dropdown-menu-right">
+                                    <a class="dropdown-item text-right" href="{% url 'category_create' %}">Přidat kategorii</a>
+                                    <a class="dropdown-item text-right" href="{% url 'product_create' %}">Přidat produkt</a>
+                                    <a class="dropdown-item text-right" href="{% url 'product_select' %}">Upravit produkt</a>
+                                </div>
+                            </div>
+                            </div>
+                            {% endif %}
+                        <div class="navbar-nav ml-auto py-0">
+                            <div class="nav-item dropdown">
+                                {% if user.is_authenticated %}
                                 <a class="nav-link active dropdown-toggle" href="#" data-toggle="dropdown">
                                     {% if user.first_name %}
                                         Vítej, {{ user.first_name }}!
@@ -63,8 +65,9 @@
                                     {% endif %}
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right">
-                                    <a class="dropdown-item text-right" href="{% url 'logout' %}">Odhlásit se</a>
+                                    <a class="dropdown-item text-right" href="{% url 'profile_update' %}">Změna osobních údajů</a>
                                     <a class="dropdown-item text-right" href="{% url 'password_change' %}">Změna hesla</a>
+                                    <a class="dropdown-item text-right" href="{% url 'logout' %}">Odhlásit se</a>
                                 </div>
                             <!-- Pokud není uživatel přihlášen, zobrazí se možnosti přihlášení a registrace -->
                             {% else %}
@@ -72,15 +75,145 @@
                                     Chcete se přihlásit?
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right">
-                                    <a class="dropdown-item text-right" href="{% url 'login' %}">Přihlásit</a>
-                                    <a class="dropdown-item text-right" href="{% url 'signup' %}">Registrovat</a>
+                                    <a class="dropdown-item text-right" href="{% url 'home' %}" data-toggle="modal" data-target="#loginModal">Přihlásit</a>
+                                    <a class="dropdown-item text-right" href="{% url 'home' %}" data-toggle="modal" data-target="#signupModal">Registrovat</a>
                                 </div>
-                            {% endif %}
+                            </div>
+                                {% endif %}
                         </div>
                     </div>
-                </div>
-            </nav>
+                </nav>
+            </div>
         </div>
     </div>
+    <!-- Navbar End -->
+
+
+    <!-- Login Modal PopUp Start -->
+<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="loginModalLabel">Přihlášení</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form method="POST" action="{% url 'login' %}">
+            {% csrf_token %}
+          <div class="form-group">
+            <label for="username">Přihlašovací jméno</label>
+            <input type="text" class="form-control" id="username" name="username" required>
+          </div>
+          <div class="form-group">
+            <label for="password">Heslo</label>
+            <input type="password" class="form-control" id="password" name="password" required>
+          </div>
+          <div class="form-group">
+            <a href="#" class="forgot-pass">Zapomenuté heslo?</a>
+          </div>
+          <button type="submit" class="btn btn-primary">Přihlásit se</button>
+        </form>
+
+      </div>
+      <div class="modal-footer">
+        <div class="signup-link">
+          Nemáte účet? <a href="#" id="signupLink" data-toggle="modal" data-target="#signupModal">Registrovat se</a>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
-<!-- Navbar End -->
+     <!-- Login Modal PopUp End -->
+
+
+
+<!-- SignUp Modal PopUp Start -->
+<div class="modal fade" id="signupModal" tabindex="-1" role="dialog" aria-labelledby="signupModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="signupModalLabel">Registrace</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form method="POST" action="{% url 'signup' %}">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="username">Přezdívka</label>
+                <input type="text" class="form-control" name="username" required>
+            </div>
+            <div class="form-group">
+                <label for="signupModal">Křestní jméno</label>
+                <input type="text" class="form-control" name="first_name" required>
+            </div>
+            <div class="form-group">
+                <label for="signupModal">Příjmení</label>
+                <input type="text" class="form-control" name="last_name" required>
+            </div>
+            <div class="form-group">
+                <label for="signupModal">Emailová adresa</label>
+                <input type="email" class="form-control" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="signupModal">Doručovací adresa</label>
+                <input type="text" class="form-control" name="address" required>
+            </div>
+            <div class="form-group">
+                <label for="signupModal">Telefonní číslo</label>
+                <input type="number" class="form-control" name="phone_number" required>
+            </div>
+            <div class="form-group">
+                <label for="signupModal">Město</label>
+                <input type="text" class="form-control" name="city" required>
+            </div>
+            <div class="form-group">
+                <label for="signupModal">Heslo</label>
+                <input type="password" class="form-control" name="password1" required>
+            </div>
+            <div class="form-group">
+                <label for="signupModal">Potvrzení hesla</label>
+                <input type="password" class="form-control" name="password2" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Registrovat se</button>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <div class="signup-link">
+          Máte již účet? <a href="#" id="loginLink" data-toggle="modal" data-target="loginModal">Přihlásit se</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <!-- SignUp Modal PopUp End -->
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        document.getElementById("signupLink").addEventListener("click", function(event) {
+            event.preventDefault();
+            $("#loginModal").modal("hide");
+            $("#signupModal").modal("show");
+        });
+
+        document.getElementById("loginLink").addEventListener("click", function(event) {
+            event.preventDefault();
+            $("#signupModal").modal("hide");
+            $("#loginModal").modal("show");
+        });
+
+        // Remove backdrop if modal is hidden
+        $('#loginModal, #signupModal').on('hidden.bs.modal', function () {
+            if ($('.modal:visible').length) {
+                $('body').addClass('modal-open');
+            } else {
+                $('body').removeClass('modal-open');
+                $('.modal-backdrop').remove(); // Explicitly remove the backdrop
+            }
+        });
+    });
+</script>

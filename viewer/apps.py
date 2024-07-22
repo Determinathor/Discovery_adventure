@@ -7,3 +7,11 @@ class ViewerConfig(AppConfig):
 
     # Název aplikace, jak bude odkazována v projektu
     name = 'viewer'
+
+
+class ViewerConfig(AppConfig):
+    name = 'viewer'
+
+    def ready(self):
+        import viewer.signals
+

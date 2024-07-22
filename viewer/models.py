@@ -2,6 +2,7 @@ from datetime import date
 from django.db import models
 from django.db.models import *  # Importujeme všechny základní modelové třídy
 from django.core.validators import MinValueValidator
+from django.urls import reverse
 
 from accounts.models import Profile
 
@@ -64,11 +65,50 @@ class Product(models.Model):
     def __repr__(self):
         return f"<Product: {self.title}, in stock: {self.stock}, price: {self.price} EUR>"
 
+    def add_to_cart_url(self):
+        return reverse("add_to_cart", kwargs=
+        {"pk": self.pk
+         })
 
-# Model pro košík
-class Cart(models.Model):
-    quantity = models.IntegerField(default=0, null=True, blank=False)  # Množství produktu v košíku
-    Product = models.ManyToManyField(Product, related_name='cart')  # Produkty v košíku
+
+class Cart(Model):
+    quantity = IntegerField(default=0, null=True, blank=False)
+    Product = ManyToManyField(Product, related_name='cart')
+
+
+# class Category(Model):
+#     name = CharField(max_length=42, null=True, blank=False)
+#     Product = ManyToManyField(Product, related_name='category', blank=True)
+#
+#     class Meta:
+#         ordering = ['name']
+#         verbose_name_plural = 'Categories'
+
+    # def __str__(self):
+    #     return f"{self.name}"
+
+
+class Order(Model):
+    total_cost = IntegerField(default=0, null=True, blank=False)
+    delivery_address = CharField(max_length=100, null=True, blank=False)
+    # user_address = CharField(max_length=100, null=True, blank=False)
+    date_of_sale = DateField(null=True, blank=False)
+    status = CharField(max_length=42, null=True, blank=False)
+    User = ForeignKey(Profile, on_delete=DO_NOTHING, null=True, blank=False)
+
+    # _processed = models.BooleanField(default=False, editable=False)  # Temporary flag
+
+
+class Order_Line(Model):
+    product_price = IntegerField(default=0, null=True, blank=False)
+    quantity = IntegerField(default=1, null=True, blank=False)
+    Product = ForeignKey(Product, on_delete=DO_NOTHING, null=True, blank=False)
+    Order = ForeignKey(Order, on_delete=DO_NOTHING, null=True, blank=False)
+
+    def total_order_line_price(self):
+        return self.product_price * self.quantity
+
+    total_order_line_price.short_description = 'Total Price'
 
 
 # Model pro objednávku

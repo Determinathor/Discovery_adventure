@@ -9,15 +9,7 @@
 
     <!-- Vykreslení formuláře jako tabulky. Tento zápis zobrazí všechny formové prvky v tabulce. -->
     <table>{{ form }}</table>
-
-    <!-- Níže jsou alternativní způsoby vykreslení formuláře, které jsou zakomentovány:
-         - form.as_p: Zobrazí formulářové prvky jako odstavce (<p>).
-         - form.as_ul: Zobrazí formulářové prvky jako seznam (<ul>). -->
-    {% comment %}{{ form.as_p }}{% endcomment %}
-    {% comment %}<ul>{{ form.as_ul }}</ul>{% endcomment %}
-
-    <!-- Tlačítko pro odeslání formuláře s textem "Submit" a stylizací třídy btn btn-primary -->
-    <input id="id_submit" type="submit" value="Submit" class="btn btn-primary">
+    <input id="id_submit" type="submit" value="Uložit" class="btn btn-primary">
 </form>
 
 {% endblock %}

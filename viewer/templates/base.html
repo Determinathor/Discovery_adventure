@@ -82,9 +82,9 @@
                 </form>
             </div>
             <div class="col-lg-3 col-6 text-right">
-                <a href="{% url 'cart' %}" class="btn border">
+                <a href="{% url 'cart_view' %}" class="btn border">
                     <i class="fas fa-shopping-cart text-primary"></i> <!-- Ikona košíku -->
-                    <span class="badge">0</span> <!-- Počet položek v košíku -->
+                    <span class="badge">{{ cart_items_count }}</span><!-- Počet položek v košíku -->
                 </a>
             </div>
         </div>
@@ -110,8 +110,20 @@
     </div>
     <!-- Page Header End -->
 
+    <div class="container">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
 
-    {% block content %}{% endblock %} <!-- Blok pro dynamický obsah -->
+    {% block content %}
+
+    {% endblock %}
+
 
     {% include "footer.html" %} <!-- Zahrnutí patičky -->
 
@@ -129,7 +141,12 @@
     <script src="{% static 'mail/contact.js' %}"></script> <!-- Skript pro zpracování kontaktů -->
 
     <!-- Template Javascript -->
-    <script src="{% static 'js/main.js' %}"></script> <!-- Hlavní skript pro šablonu -->
+    <script src="{% static 'js/main.js' %}"></script>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+
+
 
 </body>
 
