@@ -33,6 +33,10 @@ class FAQView(TemplateView):
         context = super().get_context_data(**kwargs)
         context['categories'] = Category.objects.all()  # Získání všech kategorií
         context['current_template'] = "FAQ"  # Nastavení aktuální šablony
+        try:
+            context['user_city'] = self.request.user.profile.city
+        except:
+            context['user_city'] = 'Praha'
         return context
 
 # Funkce pro zobrazení uvítací stránky
@@ -47,6 +51,10 @@ class Contactview(TemplateView):
         context = super().get_context_data(**kwargs)
         context['categories'] = Category.objects.all()  # Získání všech kategorií
         context['current_template'] = "kONTAKT"  # Nastavení aktuální šablony
+        try:
+            context['user_city'] = self.request.user.profile.city
+        except:
+            context['user_city'] = 'Praha'
         return context
 
 # Pohled pro zobrazení seznamu kategorií
@@ -88,6 +96,10 @@ class CategoryTemplateView(TemplateView):
             category.product_count = Product.objects.filter(categories=category).count()
         context['categories'] = categories
         context['page_obj'] = page_obj
+        try:
+            context['user_city'] = self.request.user.profile.city
+        except:
+            context['user_city'] = 'Praha'
         return context
 
 # Pohled pro zobrazení všech produktů
@@ -101,6 +113,10 @@ class ProductsListView(ListView):
         context = super().get_context_data(**kwargs)
         context['categories'] = Category.objects.all()  # Získání všech kategorií
         context['current_template'] = "Všechny produkty"  # Nastavení aktuální šablony
+        try:
+            context['user_city'] = self.request.user.profile.city
+        except:
+            context['user_city'] = 'Praha'
         return context
 
 # Pohled pro zobrazení produktů seřazených od nejlevnějšího
@@ -117,6 +133,10 @@ class ProductSortedHighListView(ListView):
         context = super().get_context_data(**kwargs)
         context['categories'] = Category.objects.all()  # Získání všech kategorií
         context['current_template'] = "produkty seřazené od nejlevnějšího"  # Nastavení aktuální šablony
+        try:
+            context['user_city'] = self.request.user.profile.city
+        except:
+            context['user_city'] = 'Praha'
         return context
 
 # Pohled pro zobrazení produktů seřazených od nejdražšího
@@ -133,6 +153,10 @@ class ProductSortedLowListView(ListView):
         context = super().get_context_data(**kwargs)
         context['categories'] = Category.objects.all()  # Získání všech kategorií
         context['current_template'] = "produkty seřazené od nejdražšího"  # Nastavení aktuální šablony
+        try:
+            context['user_city'] = self.request.user.profile.city
+        except:
+            context['user_city'] = 'Praha'
         return context
 
 # Pohled pro zobrazení nejnovějších produktů
@@ -149,6 +173,10 @@ class ProductNewestListView(ListView):
         context = super().get_context_data(**kwargs)
         context['categories'] = Category.objects.all()  # Získání všech kategorií
         context['current_template'] = "produkty seřazené od nejnovějšího"  # Nastavení aktuální šablony
+        try:
+            context['user_city'] = self.request.user.profile.city
+        except:
+            context['user_city'] = 'Praha'
         return context
 
 # Pohled pro zobrazení detailu konkrétního produktu
@@ -169,6 +197,10 @@ class ProductTemplateView(TemplateView):
         context["price_czk"] = product_.price * conversion_rate  # Přepočet ceny na CZK
         context['categories'] = Category.objects.all()  # Získání všech kategorií
         context['current_template'] = "detail produktu"  # Nastavení aktuální šablony
+        try:
+            context['user_city'] = self.request.user.profile.city
+        except:
+            context['user_city'] = 'Praha'
         return context
         # context["reviews"] = Review.objects.filter(product=product_)  # TODO: Chceme vypisovat a tvořit recenze pro produkt?
         # context["form_review"] = ReviewModelForm
@@ -191,6 +223,10 @@ class RandomProductTemplateView(TemplateView):
         context["product"] = random_product
         context['categories'] = Category.objects.all()  # Získání všech kategorií
         context['current_template'] = "Náhodný produkt"  # Nastavení aktuální šablony
+        try:
+            context['user_city'] = self.request.user.profile.city
+        except:
+            context['user_city'] = 'Praha'
         return context
 
 # Pohled pro zobrazení všech produktů v košíku
@@ -202,6 +238,10 @@ class ProductsCheckoutListView(ListView):
         context = super().get_context_data(**kwargs)
         context['categories'] = Category.objects.all()  # Získání všech kategorií
         context['current_template'] = "Všechny produkty v košíku"  # Nastavení aktuální šablony
+        try:
+            context['user_city'] = self.request.user.profile.city
+        except:
+            context['user_city'] = 'Praha'
         return context
 
 # Pohled pro zobrazení produktů z orderlines (objednané produkty)
@@ -213,6 +253,10 @@ class ProductsCartListView(ListView):
         context = super().get_context_data(**kwargs)
         context['categories'] = Category.objects.all()  # Získání všech kategorií
         context['current_template'] = "Objednané produkty"  # Nastavení aktuální šablony
+        try:
+            context['user_city'] = self.request.user.profile.city
+        except:
+            context['user_city'] = 'Praha'
         return context
 
 # Formulář pro vytvoření/úpravu produktu
@@ -238,6 +282,10 @@ class ProductModelForm(ModelForm):
         context = super().get_context_data(**kwargs)
         context['categories'] = Category.objects.all()  # Získání všech kategorií
         context['current_template'] = "Formulář produktu"  # Nastavení aktuální šablony
+        try:
+            context['user_city'] = self.request.user.profile.city
+        except:
+            context['user_city'] = 'Praha'
         return context
 
 # Pohled pro vytvoření nového produktu
@@ -255,6 +303,10 @@ class ProductCreateView(PermissionRequiredMixin, CreateView):
         context = super().get_context_data(**kwargs)
         context['categories'] = Category.objects.all()  # Získání všech kategorií
         context['current_template'] = "Vytváření produktu"  # Nastavení aktuální šablony
+        try:
+            context['user_city'] = self.request.user.profile.city
+        except:
+            context['user_city'] = 'Praha'
         return context
 
     def get(self, request, *args, **kwargs):
@@ -283,6 +335,10 @@ class ProductUpdateView(PermissionRequiredMixin, UpdateView): # update produktu 
         context = super().get_context_data(**kwargs)
         context['categories'] = Category.objects.all()  # Získání všech kategorií
         context['current_template'] = "úprava produktu"  # Nastavení aktuální šablony
+        try:
+            context['user_city'] = self.request.user.profile.city
+        except:
+            context['user_city'] = 'Praha'
         return context
 
     def get(self, request, *args, **kwargs):
@@ -357,6 +413,10 @@ class CategoryCreateView(PermissionRequiredMixin, CreateView): # autorizace + vy
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['current_template'] = "Vytváření kategorie"
+        try:
+            context['user_city'] = self.request.user.profile.city
+        except:
+            context['user_city'] = 'Praha'
         return context
 
 # -----------------------------------------
@@ -394,21 +454,34 @@ def add_to_cart(request, pk):
 
 
 def cart_view(request):
+    context = {}
+    context['current_template'] = "Košík"
+
+    # Logika pro získání města uživatele
+    try:
+        if request.user.is_authenticated:
+            context['user_city'] = request.user.profile.city
+        else:
+            context['user_city'] = 'Praha'
+    except AttributeError:
+        context['user_city'] = 'Praha'
+
+    # Existující logika košíku
     try:
         order = Order.objects.get(User=request.user.profile, status='Pending')
         order_lines = order.order_line_set.all().order_by('id')
         total_cost = order.total_cost
 
-    # Calculate the total for each order line
+        # Calculate the total for each order line
         order_lines_with_total = []
         for line in order_lines:
             line_total = line.product_price * line.quantity
             order_lines_with_total.append({
-                    'id': line.id,
-                    'Product': line.Product,
-                    'quantity': line.quantity,
-                    'product_price': line.product_price,
-                    'line_total': line_total,
+                'id': line.id,
+                'Product': line.Product,
+                'quantity': line.quantity,
+                'product_price': line.product_price,
+                'line_total': line_total,
             })
 
         # Check if there are any order lines
@@ -419,12 +492,14 @@ def cart_view(request):
         total_cost = 0
         has_items = False
 
-    return render(request, 'cart.html', {
+    # Přidání dat košíku do kontextu
+    context.update({
         'order_lines': order_lines_with_total,
         'total_cost': total_cost,
         'has_items': has_items,
     })
 
+    return render(request, 'cart.html', context)
 
 @login_required
 def remove_from_cart(request, pk):
@@ -471,6 +546,18 @@ def delete_order_line(request, pk):
 
 
 def checkout_view(request):
+    context = {}
+    context['current_template'] = "Pokladna"
+
+    # Logika pro získání města uživatele
+    try:
+        if request.user.is_authenticated:
+            context['user_city'] = request.user.profile.city
+        else:
+            context['user_city'] = 'Praha'
+    except AttributeError:
+        context['user_city'] = 'Praha'
+
     try:
         # Fetch the order based on the current user and status (assuming 'Pending')
         order = Order.objects.get(User=request.user.profile, status='Pending')
@@ -491,8 +578,8 @@ def checkout_view(request):
                 'line_total': line_total,
             })
 
-        # Render the checkout template with the order summary data
-        return render(request, 'checkout.html', {
+        # Add order data to context
+        context.update({
             'order_summary': order_summary,
             'total_cost': total_cost,
             'order': order,
@@ -500,8 +587,13 @@ def checkout_view(request):
 
     except Order.DoesNotExist:
         # Handle case where the order does not exist
-        return render(request, 'checkout.html', {'order_summary': [], 'total_cost': 0})
+        context.update({
+            'order_summary': [],
+            'total_cost': 0,
+        })
 
+    # Render the checkout template with the combined context
+    return render(request, 'checkout.html', context)
 
 @login_required
 def place_order(request, pk):
