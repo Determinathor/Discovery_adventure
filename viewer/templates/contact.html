@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block content %}
+<!-- Hlavní kontejner pro obsah stránky -->
+<div class="container">
+    <!-- Jumbotron - velký blok pro zvýraznění obsahu -->
+    <div class="jumbotron">
+        <!-- Kontejner pro FAQ (často kladené dotazy) -->
+        <div class="faq-container">
+            <!-- Sekce pro informace o obchodě -->
+            <div class="col-lg-4 col-md-12 mb-5 pr-3 pr-xl-5">
+                <!-- Odkaz na domovskou stránku -->
+                <a href="{% url 'home' %}" class="text-decoration-none">
+                    <!-- Hlavní nadpis s názvem obchodu -->
+                    <h1 class="m-0 display-9 font-weight-semi-bold">
+                        <!-- Název obchodu s částí textu v jiném stylu -->
+                        <span class="text-primary font-weight-light border px-1 mr-2">DA</span>Discovery adventure
+                    </h1>
+                </a>
+                <!-- Popis obchodu -->
+                <p>Náš obchod nabízí široký sortiment sportovního vybavení pro všechny věkové kategorie a úrovně dovedností. Od tenisek po fitness náčiní, máme vše pro vaše sportovní potřeby a zdravý životní styl.</p>
+                <!-- Adresa obchodu -->
+                <p class="mb-2">
+                    <i class="fa fa-map-marker-alt text-primary mr-3"></i> Pražská ulice 123 <br> 110 00 Praha 1 <br> Česká republika
+                </p>
+                <!-- E-mailová adresa -->
+                <p class="mb-2">
+                    <i class="fa fa-envelope text-primary mr-3"></i>info@DA.cz
+                </p>
+                <!-- Telefonní číslo -->
+                <p class="mb-0">
+                    <i class="fa fa-phone-alt text-primary mr-3"></i>+420 730 525 754
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

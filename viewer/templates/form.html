@@ -1,11 +1,15 @@
 {% extends "base.html" %}
-
+{% load static %}
 {% block content %}
+
+<!-- Formulář pro odeslání dat metodou POST -->
 <form method="POST">
+    <!-- Token pro ochranu proti CSRF (Cross-Site Request Forgery) útokům -->
     {% csrf_token %}
+
+    <!-- Vykreslení formuláře jako tabulky. Tento zápis zobrazí všechny formové prvky v tabulce. -->
     <table>{{ form }}</table>
-    {% comment %}{{ form.as_p }}{% endcomment %}
-    {% comment %}<ul>{{ form.as_ul }}</ul>{% endcomment %}
-    <input id="id_submit" type="submit" value="Submit" class="btn btn-primary">
+    <input id="id_submit" type="submit" value="Uložit" class="btn btn-primary">
 </form>
+
 {% endblock %}

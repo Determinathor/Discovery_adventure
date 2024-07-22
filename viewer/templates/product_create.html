@@ -1,0 +1,89 @@
+{% extends "form.html" %}
+{% load static %}
+{% load widget_tweaks %}
+{% block content %}
+
+<!--<form method="POST">-->
+<!--    {% csrf_token %}-->
+<!--    <table>{{ form }}</table>-->
+<!--    <input id="id_submit" type="submit" value="Submit" class="btn btn-primary">-->
+<!--</form>-->
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h2 class="mb-0">Nový produkt</h2>
+                </div>
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ product_form.title.id_for_label }}" class="form-label">Název produktu:</label>
+                             {{ product_form.title|add_class:"form-control" }}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ product_form.product_type.id_for_label }}" class="form-label">Typ produktu:</label>
+                            {{ product_form.product_type|add_class:"form-control" }}
+                        </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="{{ product_form.description.id_for_label }}" class="form-label">Popis produktu:</label>
+                            {{ product_form.description|add_class:"form-control" }}
+                        </div>
+                        <div class="mb-3">
+                            <label for="{{ product_form.thumbnail.id_for_label }}" class="form-label">Thumbnail:</label>
+                            {{ product_form.thumbnail|add_class:"form-control" }}
+                        </div>
+                        <div class="mb-3">
+                            <label for="{{ product_form.price.id_for_label }}" class="form-label">Cena:</label>
+                            {{ product_form.price|add_class:"form-control" }}
+                        </div>
+                        <div class="mb-3">
+                            <label for="{{ product_form.stock.id_for_label }}" class="form-label">Skladem:</label>
+                            {{ product_form.stock|add_class:"form-control" }}
+                        </div>
+                        <div class="mb-3">
+                            <label for="{{ product_form.manufacturer.id_for_label }}" class="form-label">Výrobce:</label>
+                            {{ product_form.manufacturer|add_class:"form-control" }}
+                        </div>
+                        <div class="mb-3">
+                            <label for="{{ product_form.categories.id_for_label }}" class="form-label">Kategorie:</label>
+                            {{ product_form.categories|add_class:"form-control" }}
+                        </div>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary btn-lg">Uložit změny</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Bootstrap Modal for success message -->
+<div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="successModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="successModalLabel">Úspěch</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Produkt byl úspěšně vytvořen.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Zavřít</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock %}

@@ -1,55 +1,285 @@
+<!DOCTYPE html>
 {% load static %}
-
-<html {% if LANGUAGE_CODE %}lang="{{ LANGUAGE_CODE }}" {% endif %}>
+<html lang="en">
 
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>HollyMovies</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
-          integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-            crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
-            integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
-            crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
-            integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
-            crossorigin="anonymous"></script>
+    <title>Discovery adventure - kategorie</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="Free HTML Templates" name="keywords">
+    <meta content="Free HTML Templates" name="description">
+
+    <!-- Favicon -->
+    <!-- <link href="img/favicon.ico" rel="icon"> --> <!-- Ikona stránky, kterou je možné nahrát -->
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com"> <!-- Připojení k serveru Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet"> <!-- Font Poppins pro celou stránku -->
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet"> <!-- Ikony Font Awesome -->
+
+    <!-- Libraries Stylesheet -->
+    <link href="{% static 'css/owl.carousel.css' %}" rel="stylesheet"> <!-- Styl pro carousel (karusel) knihovnu Owl Carousel -->
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+
+    <!-- ikony počasí -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+    <style>
+        .mini-widget {
+            background-color: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 5px;
+            padding: 5px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            height: 30px;
+        }
+
+        #weather-widget {
+            width: 80px;
+        }
+
+        #weather-widget .weather-icon {
+            width: 20px;
+            height: 20px;
+            margin-right: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #weather-widget .temperature {
+            font-weight: bold;
+        }
+
+        #currency-converter-widget {
+            width: 200px;
+        }
+
+        #currency-converter-widget .currency-input {
+            width: 60px;
+            border: none;
+            background-color: transparent;
+            font-size: 12px;
+            padding: 2px;
+        }
+
+        #currency-converter-widget select {
+            border: none;
+            background-color: transparent;
+            font-size: 12px;
+        }
+
+        #currency-converter-widget #exchange-rate {
+            margin-left: 5px;
+            font-weight: bold;
+        }
+
+        @media (max-width: 991px) {
+            .mini-widget {
+                display: none;
+            }
+        }
+    </style>
+
 </head>
 
 <body>
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container fixed">
-        <a class="navbar-brand" href="/">Discovery adventure</a>
-        <button
-                class="navbar-toggler" type="button"
-                data-toggle="collapse" data-target="#navbarNavAltMarkup"
-        >
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-            <div class="navbar-nav">
-                <a class="nav-item nav-link active" href="/">
-                    Home
+<!-- Topbar Start -->
+<div class="container-fluid">
+    <div class="row bg-secondary py-2 px-xl-5">
+        <div class="col-lg-6 d-none d-lg-block">
+            <div class="d-inline-flex align-items-center">
+                <a class="text-dark" href="{% url 'faq' %}">FAQ</a>
+            </div>
+        </div>
+        <div class="col-lg-6 text-center text-lg-right">
+            <div class="d-inline-flex align-items-center">
+                <a class="text-dark px-2" href="https://www.facebook.com/vitek.hlavacek">
+                    <i class="fab fa-facebook-f"></i>
+                </a>
+                <a class="text-dark px-2" href="https://x.com/VtHlavacek">
+                    <i class="fab fa-twitter"></i>
+                </a>
+                <a class="text-dark px-2" href="https://www.linkedin.com/in/v%C3%ADtek-hlav%C3%A1%C4%8Dek-388548135/">
+                    <i class="fab fa-linkedin-in"></i>
+                </a>
+                <a class="text-dark px-2" href="https://www.instagram.com/vitekhlavacek/">
+                    <i class="fab fa-instagram"></i>
+                </a>
+                <a class="text-dark pl-2" href="https://www.youtube.com/@vithlavacek2281">
+                    <i class="fab fa-youtube"></i>
                 </a>
             </div>
         </div>
     </div>
-</nav>
-<div class="container">
-    <div class="jumbotron">
-        {% block content %}<h1>Welcome to Discovery adventure!</h1>
-<ul>
-    {% for product in products %}
-    <li>
-        {{ product.title }} ({{ product.category }}) - {{ product.manufacturer }}
-    </li>
-    {% endfor %}
-</ul>{% endblock %}
+    <div class="row align-items-center py-3 px-xl-5">
+        <div class="col-lg-3 d-none d-lg-block">
+            <a href="{% url 'home' %}" class="text-decoration-none">
+                <h1 class="m-0 display-9 font-weight-semi-bold"><span
+                        class="text-primary font-weight-light border px-1 mr-2">DA</span>Discovery adventure</h1>
+            </a>
+        </div>
+        <div class="col-lg-6 col-6 text-left">
+            <form action="">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Vyhledej produkt">
+                    <div class="input-group-append">
+                        <span class="input-group-text bg-transparent text-primary">
+                            <i class="fa fa-search"></i>
+                        </span>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="col-lg-3 col-6 text-right d-flex justify-content-end align-items-center">
+            <div id="weather-widget" class="mini-widget mr-2">
+                <div class="weather-icon"></div>
+                <div class="temperature"></div>
+            </div>
+            <div id="currency-converter-widget" class="mini-widget mr-2">
+                <input type="number" id="amount" placeholder="Částka" class="currency-input">
+                <select id="from-currency">
+                    <option value="EUR">EUR</option>
+                    <option value="USD">USD</option>
+                    <option value="GBP">GBP</option>
+                </select>
+                <div id="exchange-rate"></div>
+            </div>
+            <a href="{% url 'cart_view' %}" class="btn border">
+                <i class="fas fa-shopping-cart text-primary"></i>
+                <span class="badge">{{ cart_items_count }}</span>
+            </a>
+        </div>
     </div>
 </div>
+<!-- Topbar End -->
+
+
+    {% include "nav.html" %} <!-- Zahrnutí navigačního menu -->
+
+    <!-- Page Header Start -->
+    <div class="container-fluid bg-secondary mb-5">
+        <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 150px">
+            <!-- Hlavní nadpis stránky -->
+            <h1 class="font-weight-semi-bold text-uppercase mb-3">
+                {% if current_template %}
+                    {{ current_template }}
+                {% endif %}
+            </h1>
+            {% if category %}
+                <h1 class="font-weight-semi-bold text-uppercase mb-3">{{ category.name }}</h1> <!-- Název kategorie -->
+            {% endif %}
+        </div>
+    </div>
+    <!-- Page Header End -->
+
+    <div class="container">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+
+{% block content %}
+
+{% endblock %}
+
+
+    {% include "footer.html" %} <!-- Zahrnutí patičky -->
+
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a> <!-- Tlačítko pro návrat na začátek stránky -->
+
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script> <!-- JQuery knihovna -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script> <!-- Bootstrap knihovna -->
+    <script src="{% static 'lib/easing/easing.min.js' %}"></script> <!-- Knihovna pro plynulé přechody -->
+    <script src="{% static 'lib/owlcarousel/owl.carousel.min.js' %}"></script> <!-- Knihovna pro carousel (karusel) -->
+
+    <!-- Contact Javascript File -->
+    <script src="{% static 'mail/jqBootstrapValidation.min.js' %}"></script> <!-- Knihovna pro validaci formulářů -->
+    <script src="{% static 'mail/contact.js' %}"></script> <!-- Skript pro zpracování kontaktů -->
+
+<!-- Template Javascript -->
+<script src="{% static 'js/main.js' %}"></script>
+
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const apiKey = '240ca85ef22b996cbd7218253fcadb27';
+        const city = '{{ user_city }}';
+
+        console.log(city)
+
+        fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric&lang=cz`)
+            .then(response => response.json())
+            .then(data => {
+                const temp = Math.round(data.main.temp);
+                const iconCode = data.weather[0].icon;
+
+                document.querySelector('#weather-widget .temperature').textContent = `${temp}°C`;
+
+                const iconMap = {
+                    '01d': 'sun', '01n': 'moon', '02d': 'cloud-sun', '02n': 'cloud-moon',
+                    '03d': 'cloud', '03n': 'cloud', '04d': 'cloud', '04n': 'cloud',
+                    '09d': 'cloud-showers-heavy', '09n': 'cloud-showers-heavy',
+                    '10d': 'cloud-sun-rain', '10n': 'cloud-moon-rain', '11d': 'bolt',
+                    '11n': 'bolt', '13d': 'snowflake', '13n': 'snowflake', '50d': 'smog', '50n': 'smog'
+                };
+
+                const faIcon = iconMap[iconCode] || 'question';
+                document.querySelector('#weather-widget .weather-icon').innerHTML = `<i class="fas fa-${faIcon}"></i>`;
+            })
+            .catch(error => {
+                console.error("API error:", error);
+                document.getElementById('weather-widget').innerHTML = 'Chyba';
+            });
+    });
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+    const amountInput = document.getElementById('amount');
+    const fromCurrency = document.getElementById('from-currency');
+    const exchangeRate = document.getElementById('exchange-rate');
+
+    function updateExchangeRate() {
+        const amount = amountInput.value || 1;
+        const from = fromCurrency.value;
+        const to = 'CZK';
+
+        const apiKey = 'fca_live_agpxLxas3lxoN81U12s5rdugF0Mz7cqRuJSwEwqD';
+
+        fetch(`https://api.freecurrencyapi.com/v1/latest?apikey=${apiKey}&base_currency=${from}&currencies=${to}`)
+            .then(response => response.json())
+            .then(data => {
+                const rate = data.data[to];
+                const convertedAmount = (amount * rate).toFixed(2);
+                exchangeRate.textContent = `${convertedAmount} ${to}`;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                exchangeRate.textContent = 'Chyba';
+            });
+    }
+
+    amountInput.addEventListener('input', updateExchangeRate);
+    fromCurrency.addEventListener('change', updateExchangeRate);
+    updateExchangeRate(); // Inicializace při načtení stránky
+});
+</script>
+
 </body>
 
 </html>
