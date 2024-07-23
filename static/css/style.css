@@ -3040,6 +3040,49 @@ input[type="button"].btn-block {
   border: 1px solid rgba(0, 0, 0, 0.15);
 }
 
+.cat-item {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.cat-item:hover {
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+}
+
+.cat-item img {
+    transition: all 0.5s ease;
+}
+
+.cat-item:hover img {
+    transform: scale(1.1);
+}
+
+.cat-item::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.3);
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+.cat-item:hover::after {
+    opacity: 1;
+}
+
+.cat-item h5, .cat-item p {
+    transition: all 0.3s ease;
+}
+
+.cat-item:hover h5, .cat-item:hover p {
+    color: #fff;
+    position: relative;
+    z-index: 1;
+}
 
 .dropdown-menu-left {
   right: auto;
