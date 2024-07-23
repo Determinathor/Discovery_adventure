@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.admin import ModelAdmin, TabularInline
-
+from django.utils.html import format_html
 
 from viewer.models import *
 # Register your models here.
@@ -14,8 +14,16 @@ class ProductInline(TabularInline):
 
 
 class CategoryAdmin(ModelAdmin):
-    list_display = ['name',]
+    list_display = ('name', 'thumbnail_preview')
     inlines = [ProductInline]
+
+    def thumbnail_preview(self, obj):
+        if obj.thumbnail:
+            return format_html('<img src="/static/img/{}" width="50" height="50" />', obj.thumbnail)
+        return "No Image"
+
+    thumbnail_preview.short_description = 'Thumbnail Preview'
+
 
 # admin.site.register(User)
 

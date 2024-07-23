@@ -34,6 +34,7 @@ class Manufacturer(Model):
 
 class Category(models.Model):
     name = models.CharField(max_length=42, null=True, blank=False)
+    thumbnail = models.CharField(max_length=200, blank=True, null=True)  # Cesta k obrázku
 
     class Meta:
         ordering = ['name']
