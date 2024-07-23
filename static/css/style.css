@@ -64,6 +64,7 @@ body {
   background-color: #ffffff;
 }
 
+
 [tabindex="-1"]:focus:not(:focus-visible) {
   outline: 0 !important;
 }
@@ -3969,6 +3970,7 @@ input[type="button"].btn-block {
   list-style: none;
 }
 
+
 .nav-link {
   display: block;
   padding: 0.5rem 1rem;
@@ -4081,6 +4083,8 @@ input[type="button"].btn-block {
   padding-left: 0;
   margin-bottom: 0;
   list-style: none;
+  /*max-height: 400px;  !* Nebo jakákoliv jiná hodnota *!*/
+  /*overflow-y: auto;*/
 }
 
 .navbar-nav .nav-link {
@@ -9626,3 +9630,4 @@ a.text-dark:hover, a.text-dark:focus {
     transform: translateY(-15px);
   }
 }
+

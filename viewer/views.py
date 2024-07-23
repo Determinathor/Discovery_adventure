@@ -15,7 +15,6 @@ from django_addanother.views import CreatePopupMixin
 from django_addanother.widgets import AddAnotherWidgetWrapper
 from django.core.paginator import Paginator
 
-
 from viewer.models import *
 
 from django.forms import *
@@ -24,6 +23,7 @@ from django.forms import *
 # Funkce pro zobrazení úvodní stránky
 def home(request):
     return render(request, "home.html")
+
 
 # Pohled pro FAQ stránku
 class FAQView(TemplateView):
@@ -39,9 +39,11 @@ class FAQView(TemplateView):
             context['user_city'] = 'Praha'
         return context
 
+
 # Funkce pro zobrazení uvítací stránky
 def hello(request):
     return render(request, "hello.html")
+
 
 # Pohled pro kontaktní stránku
 class Contactview(TemplateView):
@@ -56,6 +58,7 @@ class Contactview(TemplateView):
         except:
             context['user_city'] = 'Praha'
         return context
+
 
 # Pohled pro zobrazení seznamu kategorií
 class CategoryListView(ListView):
@@ -77,6 +80,7 @@ class CategoryListView(ListView):
 
         return context
 
+
 # Pohled pro zobrazení produktů v konkrétní kategorii
 class CategoryTemplateView(TemplateView):
     template_name = "products_by_category.html"
@@ -86,7 +90,7 @@ class CategoryTemplateView(TemplateView):
         pk = self.kwargs['pk']  # Získání ID kategorie z URL
         category = get_object_or_404(Category, pk=pk)  # Získání kategorie nebo 404 pokud neexistuje
         products = Product.objects.filter(categories=category)  # Získání produktů v kategorii
-        paginator = Paginator(products, 3)  # Paginace produktů po 3 na stránku
+        paginator = Paginator(products, 6)  # Paginace produktů po 3 na stránku
         page_number = self.request.GET.get('page')  # Získání čísla stránky z GET parametru
         page_obj = paginator.get_page(page_number)  # Získání aktuální stránky
         context["category"] = category
@@ -102,12 +106,13 @@ class CategoryTemplateView(TemplateView):
             context['user_city'] = 'Praha'
         return context
 
+
 # Pohled pro zobrazení všech produktů
 class ProductsListView(ListView):
     model = Product
     template_name = 'shop.html'
     context_object_name = 'products'
-    paginate_by = 3  # Paginace produktů po 3 na stránku
+    paginate_by = 12  # Paginace produktů po 3 na stránku
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -119,12 +124,13 @@ class ProductsListView(ListView):
             context['user_city'] = 'Praha'
         return context
 
+
 # Pohled pro zobrazení produktů seřazených od nejlevnějšího
 class ProductSortedHighListView(ListView):
     model = Product
     template_name = 'shop.html'
     context_object_name = 'products'
-    paginate_by = 3  # Paginace produktů po 3 na stránku
+    paginate_by = 12  # Paginace produktů po 3 na stránku
 
     def get_queryset(self):
         return Product.objects.order_by('price')  # Seřazení produktů podle ceny vzestupně
@@ -139,12 +145,13 @@ class ProductSortedHighListView(ListView):
             context['user_city'] = 'Praha'
         return context
 
+
 # Pohled pro zobrazení produktů seřazených od nejdražšího
 class ProductSortedLowListView(ListView):
     model = Product
     template_name = 'shop.html'
     context_object_name = 'products'
-    paginate_by = 3  # Paginace produktů po 3 na stránku
+    paginate_by = 12  # Paginace produktů po 3 na stránku
 
     def get_queryset(self):
         return Product.objects.order_by('-price')  # Seřazení produktů podle ceny sestupně
@@ -158,6 +165,7 @@ class ProductSortedLowListView(ListView):
         except:
             context['user_city'] = 'Praha'
         return context
+
 
 # Pohled pro zobrazení nejnovějších produktů
 class ProductNewestListView(ListView):
@@ -178,6 +186,7 @@ class ProductNewestListView(ListView):
         except:
             context['user_city'] = 'Praha'
         return context
+
 
 # Pohled pro zobrazení detailu konkrétního produktu
 class ProductTemplateView(TemplateView):
@@ -205,6 +214,7 @@ class ProductTemplateView(TemplateView):
         # context["reviews"] = Review.objects.filter(product=product_)  # TODO: Chceme vypisovat a tvořit recenze pro produkt?
         # context["form_review"] = ReviewModelForm
 
+
 # Pohled pro zobrazení náhodného produktu
 class RandomProductTemplateView(TemplateView):
     template_name = 'random_detail.html'
@@ -229,6 +239,7 @@ class RandomProductTemplateView(TemplateView):
             context['user_city'] = 'Praha'
         return context
 
+
 # Pohled pro zobrazení všech produktů v košíku
 class ProductsCheckoutListView(ListView):
     model = Product
@@ -243,6 +254,8 @@ class ProductsCheckoutListView(ListView):
         except:
             context['user_city'] = 'Praha'
         return context
+
+
 # -----------------------------------------
 # CRUD_product OPERATIONS START
 # -----------------------------------------
@@ -303,6 +316,7 @@ class ProductModelForm(ModelForm):
             context['user_city'] = 'Praha'
         return context
 
+
 # Pohled pro vytvoření nového produktu
 class ProductCreateView(PermissionRequiredMixin, CreateView):
     template_name = 'product_create.html'
@@ -335,7 +349,7 @@ class ProductCreateView(PermissionRequiredMixin, CreateView):
             return redirect('shop')
 
 
-class ProductUpdateView(PermissionRequiredMixin, UpdateView): # update produktu (stock, cena apod)
+class ProductUpdateView(PermissionRequiredMixin, UpdateView):  # update produktu (stock, cena apod)
     template_name = 'product_update.html'
     model = Product
     form_class = ProductModelForm
@@ -388,6 +402,7 @@ class StaffRequiredMixin(UserPassesTestMixin):
     def test_func(self):
         return self.request.user.is_staff  # Kontrola, zda je uživatel staff
 
+
 # Pohled pro smazání produktu (pouze pro administrátory)
 class ProductDeleteView(StaffRequiredMixin, PermissionRequiredMixin, DeleteView):
     template_name = 'product_delete.html'
@@ -395,12 +410,13 @@ class ProductDeleteView(StaffRequiredMixin, PermissionRequiredMixin, DeleteView)
     success_url = reverse_lazy('shop')
     permission_required = 'accounts.delete_product'
 
+
 # -----------------------------------------
 # CRUD_product OPERATIONS END
 # -----------------------------------------
 
 
-class CategoryModelForm(ModelForm): # formulář pro kategorii
+class CategoryModelForm(ModelForm):  # formulář pro kategorii
     class Meta:
         model = Category
         fields = '__all__'
@@ -415,7 +431,7 @@ class CategoryModelForm(ModelForm): # formulář pro kategorii
         return context
 
 
-class CategoryCreateView(PermissionRequiredMixin, CreateView): # autorizace + vytvoření kategorie skrze formulář
+class CategoryCreateView(PermissionRequiredMixin, CreateView):  # autorizace + vytvoření kategorie skrze formulář
     template_name = 'category_create.html'
     form_class = CategoryModelForm
     success_url = reverse_lazy('home')
@@ -433,6 +449,7 @@ class CategoryCreateView(PermissionRequiredMixin, CreateView): # autorizace + vy
         except:
             context['user_city'] = 'Praha'
         return context
+
 
 # -----------------------------------------
 # CART OPERATIONS START
@@ -515,6 +532,7 @@ def cart_view(request):
     })
 
     return render(request, 'cart.html', context)
+
 
 @login_required
 def remove_from_cart(request, pk):
@@ -610,6 +628,7 @@ def checkout_view(request):
     # Render the checkout template with the combined context
     return render(request, 'checkout.html', context)
 
+
 @login_required
 def place_order(request, pk):
     order = get_object_or_404(Order, id=pk, User=request.user.profile, status='Pending')
@@ -637,8 +656,6 @@ def place_order(request, pk):
 
 def order_confirmation(request):
     return render(request, 'order_confirmation.html')
-
-
 
 # -----------------------------------------
 # CART OPERATIONS END
@@ -693,9 +710,3 @@ def order_confirmation(request):
 #         context['order_lines'] = order_lines
 #         context['total_price'] = total_price
 #         return context
-
-
-
-
-
-

@@ -62,7 +62,7 @@ class Product(models.Model):
         default=ProductType.OTHER,
     )
     description = models.CharField(max_length=500, null=True, blank=False)
-    thumbnail = models.CharField(max_length=500, null=True, blank=False)
+    thumbnail = models.CharField(max_length=200, blank=True, null=True)  # Cesta k obrázku
     price = models.IntegerField(default=0, null=True, blank=False, validators=[MinValueValidator(1)])
     stock = models.IntegerField(default=0, null=True, blank=False, validators=[MinValueValidator(0)])
     manufacturer = models.ForeignKey('Manufacturer', on_delete=models.DO_NOTHING, null=True, blank=False)
