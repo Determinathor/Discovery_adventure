@@ -1,22 +1,50 @@
 (function ($) {
     "use strict";
-    
+
     // Dropdown on mouse hover
-    $(document).ready(function () {
-        function toggleNavbarMethod() {
-            if ($(window).width() > 992) {
-                $('.navbar .dropdown').on('mouseover', function () {
-                    $('.dropdown-toggle', this).trigger('click');
-                }).on('mouseout', function () {
-                    $('.dropdown-toggle', this).trigger('click').blur();
-                });
-            } else {
-                $('.navbar .dropdown').off('mouseover').off('mouseout');
-            }
-        }
-        toggleNavbarMethod();
-        $(window).resize(toggleNavbarMethod);
+        $(document).ready(function () {
+    var navbarVertical = $('#navbar-vertical');
+    var categoryToggle = $('#category-toggle');
+    var timeoutId;
+
+    function showNavbar() {
+        navbarVertical.collapse('show');
+    }
+
+    function hideNavbar() {
+        timeoutId = setTimeout(function() {
+            navbarVertical.collapse('hide');
+        }, 200);  // Přidáme malé zpoždění, aby uživatel měl čas přesunout myš na navbar
+    }
+
+    categoryToggle.on('mouseenter', showNavbar);
+    categoryToggle.on('mouseleave', hideNavbar);
+
+    navbarVertical.on('mouseenter', function() {
+        clearTimeout(timeoutId);
     });
+
+    navbarVertical.on('mouseleave', hideNavbar);
+
+    navbarVertical.on('show.bs.collapse', function () {
+        $(this).css('position', 'absolute');
+        $(this).css('width', 'calc(100% - 30px)');
+        $(this).css('z-index', '999');
+    });
+
+    navbarVertical.on('hide.bs.collapse', function () {
+        $(this).css('position', '');
+        $(this).css('width', '');
+        $(this).css('z-index', '');
+    });
+
+    // Zavření dropdown menu při kliknutí mimo
+    $(document).on('click', function (e) {
+        if (!navbarVertical.is(e.target) && navbarVertical.has(e.target).length === 0 && !categoryToggle.is(e.target)) {
+            navbarVertical.collapse('hide');
+        }
+    });
+});
     
     
     // Back to top button

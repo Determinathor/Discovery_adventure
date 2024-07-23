@@ -1,31 +1,40 @@
+<style>
+    @media (min-width: 992px) {
+    #navbar-vertical {
+        position: absolute;
+        width: calc(100% - 30px);
+        z-index: 999;
+    }
+
+    #navbar-vertical.collapsing {
+        transition: height 0.35s ease;
+    }
+
+    #navbar-vertical.collapse.show {
+        display: block;
+    }
+}
+</style>
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
 <!-- Navbar Start -->
 <div class="container-fluid">
     <div class="row border-top px-xl-5">
         <!-- Tento sloupec se zobrazuje pouze na velkých obrazovkách (d-lg-block) -->
         <div class="col-lg-3 d-none d-lg-block">
-            <!-- Tlačítko pro zobrazení a skrytí vertikálního navigačního panelu. Má specifické styly pro barvu pozadí, text a výšku. -->
-            <a class="btn shadow-none d-flex align-items-center justify-content-between bg-primary text-white w-100" data-toggle="collapse" href="#navbar-vertical" style="height: 65px; margin-top: -1px; padding: 0 30px;">
-                <h6 class="m-0">Kategorie</h6>
-                <i class="fa fa-angle-down text-dark"></i>
-            </a>
-            <!-- Vertikální navigační panel, který se zobrazuje při kliknutí na tlačítko. Má pevnou šířku a používá absolutní pozicování. -->
-            <nav class="collapse position-absolute navbar navbar-vertical navbar-light align-items-start p-0 border border-top-0 border-bottom-0 bg-light" id="navbar-vertical" style="width: calc(100% - 30px); z-index: 1;">
-                <div class="navbar-nav w-100 overflow-hidden" style="height: 245px">
-                    <!-- Smyčka pro zobrazení všech kategorií jako odkazy -->
-                    {% for object in categories %}
-                        <a href="{% url 'category' object.id %}" class="nav-item nav-link">{{ object.name }}</a>
-                    {% endfor %}
-                    <!-- Komentované části kódu, které obsahovaly příklady dalších položek v menu -->
-                    <div class="nav-item dropdown">
-                        <a href="#" class="nav-link" data-toggle="dropdown">Dresses <i class="fa fa-angle-down float-right mt-1"></i></a>
-                        <div class="dropdown-menu position-absolute bg-secondary border-0 rounded-0 w-100 m-0">
-                            <a href="" class="dropdown-item">Men's Dresses</a>
-                            <a href="" class="dropdown-item">Women's Dresses</a>
-                            <a href="" class="dropdown-item">Baby's Dresses</a>
-                        </div>
-                    </div>
-                </nav>
-            </div>
+    <a class="btn shadow-none d-flex align-items-center justify-content-between bg-primary text-white w-100" id="category-toggle" data-toggle="collapse" href="#navbar-vertical" style="height: 65px; margin-top: -1px; padding: 0 30px;">
+        <h6 class="m-0">Kategorie</h6>
+        <i class="fa fa-angle-down text-dark"></i>
+    </a>
+    <nav class="collapse navbar navbar-vertical navbar-light align-items-start p-0 border border-top-0 border-bottom-0 bg-light" id="navbar-vertical">
+        <div class="navbar-nav w-100 overflow-hidden" style="height: 245px">
+            {% for object in categories %}
+                <a href="{% url 'category' object.id %}" class="nav-item nav-link">{{ object.name }}</a>
+            {% endfor %}
+        </div>
+    </nav>
+</div>
             <div class="col-lg-9">
                 <nav class="navbar navbar-expand-lg bg-light navbar-light py-3 py-lg-0 px-0">
                     <a href="" class="text-decoration-none d-block d-lg-none">
