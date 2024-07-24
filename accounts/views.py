@@ -15,6 +15,7 @@ from pydantic import ValidationError
 
 from accounts.models import Profile
 from discovery_adventure import settings
+from viewer.models import Category
 
 
 def my_view(request):
@@ -219,13 +220,26 @@ class ProfileUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'profile_update.html'
     success_url = reverse_lazy('profile_update')
 
+    def get_common_context(self):
+        context = {
+            'categories': Category.objects.all(),
+            'current_template': "Update profilu"
+        }
+        try:
+            context['user_city'] = self.request.user.profile.city
+        except:
+            context['user_city'] = 'Praha'
+        return context
+
     def get(self, request, *args, **kwargs):
         user_form = UserUpdateForm(instance=request.user)
         profile_form = ProfileUpdateForm(instance=request.user.profile, user=request.user)
-        return render(request, self.template_name, {
+        context = self.get_common_context()
+        context.update({
             'user_form': user_form,
             'profile_form': profile_form
         })
+        return render(request, self.template_name, context)
 
     def post(self, request, *args, **kwargs):
         user_form = UserUpdateForm(request.POST, instance=request.user)
@@ -237,9 +251,11 @@ class ProfileUpdateView(LoginRequiredMixin, UpdateView):
             messages.success(request, 'Změna osobních údajů proběhla úspěšně.')
             return redirect(self.success_url)
 
-        return render(request, self.template_name, {
+        context = self.get_common_context()
+        context.update({
             'user_form': user_form,
             'profile_form': profile_form
         })
+        return render(request, self.template_name, context)
 
 

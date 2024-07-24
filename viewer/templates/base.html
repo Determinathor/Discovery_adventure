@@ -14,78 +14,24 @@
 
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.gstatic.com"> <!-- Připojení k serveru Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet"> <!-- Font Poppins pro celou stránku -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap"
+          rel="stylesheet"> <!-- Font Poppins pro celou stránku -->
 
     <!-- Font Awesome -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet"> <!-- Ikony Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <!-- Ikony Font Awesome -->
 
     <!-- Libraries Stylesheet -->
-    <link href="{% static 'css/owl.carousel.css' %}" rel="stylesheet"> <!-- Styl pro carousel (karusel) knihovnu Owl Carousel -->
+    <link href="{% static 'css/owl.carousel.css' %}" rel="stylesheet">
+    <!-- Styl pro carousel (karusel) knihovnu Owl Carousel -->
 
     <!-- Customized Bootstrap Stylesheet -->
     <link href="{% static 'css/style.css' %}" rel="stylesheet">
+    <link href="{% static 'css/widgets.css' %}" rel="stylesheet">
 
     <!-- ikony počasí -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
-    <style>
-        .mini-widget {
-            background-color: #f8f9fa;
-            border: 1px solid #e9ecef;
-            border-radius: 5px;
-            padding: 5px;
-            font-size: 12px;
-            display: flex;
-            align-items: center;
-            height: 30px;
-        }
-
-        #weather-widget {
-            width: 80px;
-        }
-
-        #weather-widget .weather-icon {
-            width: 20px;
-            height: 20px;
-            margin-right: 5px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        #weather-widget .temperature {
-            font-weight: bold;
-        }
-
-        #currency-converter-widget {
-            width: 200px;
-        }
-
-        #currency-converter-widget .currency-input {
-            width: 60px;
-            border: none;
-            background-color: transparent;
-            font-size: 12px;
-            padding: 2px;
-        }
-
-        #currency-converter-widget select {
-            border: none;
-            background-color: transparent;
-            font-size: 12px;
-        }
-
-        #currency-converter-widget #exchange-rate {
-            margin-left: 5px;
-            font-weight: bold;
-        }
-
-        @media (max-width: 991px) {
-            .mini-widget {
-                display: none;
-            }
-        }
-    </style>
 
 </head>
 
@@ -126,21 +72,25 @@
             </a>
         </div>
         <div class="col-lg-6 col-6 text-left">
-            <form action="">
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Vyhledej produkt">
-                    <div class="input-group-append">
-                        <span class="input-group-text bg-transparent text-primary">
-                            <i class="fa fa-search"></i>
-                        </span>
-                    </div>
-                </div>
-            </form>
+            <form action="{% url 'search_results' %}" method="get">
+    <div class="input-group">
+        <input type="text" class="form-control" name="q" placeholder="Vyhledej produkt">
+        <div class="input-group-append">
+            <button class="btn btn-outline-secondary" type="submit">
+                <i class="fa fa-search"></i>
+            </button>
+        </div>
+    </div>
+</form>
         </div>
         <div class="col-lg-3 col-6 text-right d-flex justify-content-end align-items-center">
             <div id="weather-widget" class="mini-widget mr-2">
                 <div class="weather-icon"></div>
-                <div class="temperature"></div>
+                <div class="weather-info">
+                    <div class="temperature"></div>
+                    <div class="city"></div>
+
+                </div>
             </div>
             <div id="currency-converter-widget" class="mini-widget mr-2">
                 <input type="number" id="amount" placeholder="Částka" class="currency-input">
@@ -163,53 +113,55 @@
 <!-- Topbar End -->
 
 
-    {% include "nav.html" %} <!-- Zahrnutí navigačního menu -->
+{% include "nav.html" %} <!-- Zahrnutí navigačního menu -->
 
-    <!-- Page Header Start -->
-    <div class="container-fluid bg-secondary mb-5">
-        <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 150px">
-            <!-- Hlavní nadpis stránky -->
-            <h1 class="font-weight-semi-bold text-uppercase mb-3">
-                {% if current_template %}
-                    {{ current_template }}
-                {% endif %}
-            </h1>
-            {% if category %}
-                <h1 class="font-weight-semi-bold text-uppercase mb-3">{{ category.name }}</h1> <!-- Název kategorie -->
+<!-- Page Header Start -->
+<div class="container-fluid bg-secondary mb-5">
+    <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 150px">
+        <!-- Hlavní nadpis stránky -->
+        <h1 class="font-weight-semi-bold text-uppercase mb-3">
+            {% if current_template %}
+            {{ current_template }}
             {% endif %}
-        </div>
-    </div>
-    <!-- Page Header End -->
-
-    <div class="container">
-        {% if messages %}
-            {% for message in messages %}
-                <div class="alert alert-{{ message.tags }}">
-                    {{ message }}
-                </div>
-            {% endfor %}
+        </h1>
+        {% if category %}
+        <h1 class="font-weight-semi-bold text-uppercase mb-3">{{ category.name }}</h1> <!-- Název kategorie -->
         {% endif %}
     </div>
+</div>
+<!-- Page Header End -->
+
+<div class="container">
+    {% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags }}">
+        {{ message }}
+    </div>
+    {% endfor %}
+    {% endif %}
+</div>
 
 {% block content %}
 
 {% endblock %}
 
 
-    {% include "footer.html" %} <!-- Zahrnutí patičky -->
+{% include "footer.html" %} <!-- Zahrnutí patičky -->
 
-    <!-- Back to Top -->
-    <a href="#" class="btn btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a> <!-- Tlačítko pro návrat na začátek stránky -->
+<!-- Back to Top -->
+<a href="#" class="btn btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>
+<!-- Tlačítko pro návrat na začátek stránky -->
 
-    <!-- JavaScript Libraries -->
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script> <!-- JQuery knihovna -->
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script> <!-- Bootstrap knihovna -->
-    <script src="{% static 'lib/easing/easing.min.js' %}"></script> <!-- Knihovna pro plynulé přechody -->
-    <script src="{% static 'lib/owlcarousel/owl.carousel.min.js' %}"></script> <!-- Knihovna pro carousel (karusel) -->
+<!-- JavaScript Libraries -->
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script> <!-- JQuery knihovna -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+<!-- Bootstrap knihovna -->
+<script src="{% static 'lib/easing/easing.min.js' %}"></script> <!-- Knihovna pro plynulé přechody -->
+<script src="{% static 'lib/owlcarousel/owl.carousel.min.js' %}"></script> <!-- Knihovna pro carousel (karusel) -->
 
-    <!-- Contact Javascript File -->
-    <script src="{% static 'mail/jqBootstrapValidation.min.js' %}"></script> <!-- Knihovna pro validaci formulářů -->
-    <script src="{% static 'mail/contact.js' %}"></script> <!-- Skript pro zpracování kontaktů -->
+<!-- Contact Javascript File -->
+<script src="{% static 'mail/jqBootstrapValidation.min.js' %}"></script> <!-- Knihovna pro validaci formulářů -->
+<script src="{% static 'mail/contact.js' %}"></script> <!-- Skript pro zpracování kontaktů -->
 
 <!-- Template Javascript -->
 <script src="{% static 'js/main.js' %}"></script>
@@ -230,7 +182,9 @@
             .then(data => {
                 const temp = Math.round(data.main.temp);
                 const iconCode = data.weather[0].icon;
+                const cityName = data.name;
 
+                document.querySelector('#weather-widget .city').textContent = cityName;
                 document.querySelector('#weather-widget .temperature').textContent = `${temp}°C`;
 
                 const iconMap = {
@@ -251,35 +205,35 @@
     });
 </script>
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-    const amountInput = document.getElementById('amount');
-    const fromCurrency = document.getElementById('from-currency');
-    const exchangeRate = document.getElementById('exchange-rate');
+    document.addEventListener('DOMContentLoaded', function () {
+        const amountInput = document.getElementById('amount');
+        const fromCurrency = document.getElementById('from-currency');
+        const exchangeRate = document.getElementById('exchange-rate');
 
-    function updateExchangeRate() {
-        const amount = amountInput.value || 1;
-        const from = fromCurrency.value;
-        const to = 'CZK';
+        function updateExchangeRate() {
+            const amount = amountInput.value || 1;
+            const from = fromCurrency.value;
+            const to = 'CZK';
 
-        const apiKey = 'fca_live_agpxLxas3lxoN81U12s5rdugF0Mz7cqRuJSwEwqD';
+            const apiKey = 'fca_live_agpxLxas3lxoN81U12s5rdugF0Mz7cqRuJSwEwqD';
 
-        fetch(`https://api.freecurrencyapi.com/v1/latest?apikey=${apiKey}&base_currency=${from}&currencies=${to}`)
-            .then(response => response.json())
-            .then(data => {
-                const rate = data.data[to];
-                const convertedAmount = (amount * rate).toFixed(2);
-                exchangeRate.textContent = `${convertedAmount} ${to}`;
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                exchangeRate.textContent = 'Chyba';
-            });
-    }
+            fetch(`https://api.freecurrencyapi.com/v1/latest?apikey=${apiKey}&base_currency=${from}&currencies=${to}`)
+                .then(response => response.json())
+                .then(data => {
+                    const rate = data.data[to];
+                    const convertedAmount = (amount * rate).toFixed(2);
+                    exchangeRate.textContent = `${convertedAmount} ${to}`;
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    exchangeRate.textContent = 'Chyba';
+                });
+        }
 
-    amountInput.addEventListener('input', updateExchangeRate);
-    fromCurrency.addEventListener('change', updateExchangeRate);
-    updateExchangeRate(); // Inicializace při načtení stránky
-});
+        amountInput.addEventListener('input', updateExchangeRate);
+        fromCurrency.addEventListener('change', updateExchangeRate);
+        updateExchangeRate(); // Inicializace při načtení stránky
+    });
 </script>
 
 </body>
