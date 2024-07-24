@@ -2,6 +2,7 @@
 from django.contrib import admin
 from django.urls import path, include
 from discovery_adventure import settings
+from discovery_adventure.context_processors import search_results
 
 from viewer import views
 from accounts.views import SignUpView, my_view, ProfileUpdateView, CustomPasswordChangeView
@@ -30,6 +31,8 @@ urlpatterns = [
     path('product/create/', ProductCreateView.as_view(), name='product_create'), # vytvoření produktu
     path('product/update/<pk>/', ProductUpdateView.as_view(), name='product_update'), # update produktu
     path('product/delete/<pk>/', ProductDeleteView.as_view(), name='product_delete'), # odstranění produktu
+    path('search/', views.search_view, name='search_results'),
+
 
     path('faq/', FAQView.as_view(), name='faq'), # faq stránka
     path('contact/', Contactview.as_view(), name='contact'), # kontakt stránka
