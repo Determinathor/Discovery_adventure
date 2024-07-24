@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container-fluid pt-5">
+    <div class="text-center mb-4">
+        {% if search_query %}
+            <h2 class="section-title px-5"><span class="px-2">Výsledky vyhledávání pro "{{ search_query }}"</span></h2>
+        {% else %}
+            <h2 class="section-title px-5"><span class="px-2">Všechny produkty</span></h2>
+        {% endif %}
+    </div>
+    <div class="row px-xl-5 pb-3">
+        {% if search_products %}
+            {% for object in search_products %}
+            <div class="col-lg-3 col-md-4 col-sm-6 pb-1">
+                <div class="card product-item border-0 mb-4">
+                    <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
+                        <!-- Odkaz na detail produktu -->
+                        <a href="{% url 'detail' object.id %}" class="text-decoration-none">
+                            {% if object.thumbnail %}
+                            <img src="{% static 'img/'|add:object.thumbnail %}" alt="{{ object.name }}"
+                                 class="img-fluid w-100">
+                            {% endif %}
+                        </a>
+                    </div>
+                    <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
+                        <h6 class="text-truncate mb-3">{{ object.title }}</h6>
+                        <div class="d-flex justify-content-center">
+                            <h6>€ {{ object.price }}</h6>
+                        </div>
+                    </div>
+                    <div class="card-footer d-flex justify-content-between bg-light border">
+                        <a href="{{ object.id }}" class="btn btn-sm text-dark p-0"><i
+                                class="fas fa-eye text-primary mr-1"></i>Detail</a>
+                        <a href="{{ object.add_to_cart_url }}" class="btn btn-sm text-dark p-0"><i
+                                class="fas fa-shopping-cart text-primary mr-1"></i>Do košíku</a>
+                        {% if perms.accounts.change_product %}
+                        <a href="{% url 'product_update' object.id %}"
+                           class="btn btn-sm text-uppercase text-danger p-0"><i
+                                class="fas fa-edit text-primary mr-1"></i>Upravit</a>
+                        {% endif %}
+                        {% if perms.accounts.delete_product %}
+                        <!-- Odkaz pro smazání produktu, zobrazí se jen pokud má uživatel oprávnění -->
+                        <a href="{% url 'product_delete' object.id %}"
+                           class="btn btn-sm text-uppercase text-danger p-0"><i
+                                class="fas fa-trash-alt text-primary mr-1"></i>Smazat</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="col-12 text-center">
+                {% if search_query %}
+                    <p>Pro vyhledávaný výraz "{{ search_query }}" nebyly nalezeny žádné produkty.</p>
+                {% else %}
+                    <p>Zadejte hledaný výraz pro vyhledání produktů.</p>
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

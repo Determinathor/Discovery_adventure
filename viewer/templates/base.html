@@ -72,16 +72,16 @@
             </a>
         </div>
         <div class="col-lg-6 col-6 text-left">
-            <form action="">
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Vyhledej produkt">
-                    <div class="input-group-append">
-                        <span class="input-group-text bg-transparent text-primary">
-                            <i class="fa fa-search"></i>
-                        </span>
-                    </div>
-                </div>
-            </form>
+            <form action="{% url 'search_results' %}" method="get">
+    <div class="input-group">
+        <input type="text" class="form-control" name="q" placeholder="Vyhledej produkt">
+        <div class="input-group-append">
+            <button class="btn btn-outline-secondary" type="submit">
+                <i class="fa fa-search"></i>
+            </button>
+        </div>
+    </div>
+</form>
         </div>
         <div class="col-lg-3 col-6 text-right d-flex justify-content-end align-items-center">
             <div id="weather-widget" class="mini-widget mr-2">
