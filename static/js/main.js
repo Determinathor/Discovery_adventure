@@ -45,8 +45,23 @@
         }
     });
 });
-    
-    
+    // Tlacitko vlozeni do kosiku
+    $(document).ready(function() {
+    $('#add-to-cart-form').on('submit', function(e) {
+        e.preventDefault();
+        var form = $(this);
+        var url = form.attr('action');
+        var quantity = form.find('input[name="quantity"]').val();
+
+        // Přidáme quantity do URL
+        url += (url.indexOf('?') > -1 ? '&' : '?') + 'quantity=' + quantity;
+
+        // Přesměrujeme na upravenou URL
+        window.location.href = url;
+    });
+});
+
+
     // Back to top button
     $(window).scroll(function () {
         if ($(this).scrollTop() > 100) {
@@ -127,6 +142,6 @@
         }
         button.parent().parent().find('input').val(newVal);
     });
-    
+
 })(jQuery);
 

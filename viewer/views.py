@@ -461,6 +461,9 @@ class CategoryCreateView(PermissionRequiredMixin, CreateView):  # autorizace + v
 def add_to_cart(request, pk):
     cart_product = get_object_or_404(Product, id=pk)
 
+    # Get quantity from request, default to 1 if not provided
+    quantity = int(request.GET.get('quantity', 1))
+
     # get or create order for user
     order, created = Order.objects.get_or_create(User=request.user.profile, status='Pending', defaults={
         'delivery_address': '',
@@ -471,12 +474,12 @@ def add_to_cart(request, pk):
     # check if product is in order
     order_line, created = Order_Line.objects.get_or_create(Order=order, Product=cart_product, defaults={
         'product_price': cart_product.price,
-        'quantity': 1,
+        'quantity': quantity,
     })
 
     # if product in order update quantity
     if not created:
-        order_line.quantity += 1
+        order_line.quantity += quantity
         order_line.save()
 
     # update total cost of order
