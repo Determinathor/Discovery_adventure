@@ -125,7 +125,7 @@ class SignUpView(CreateView):
     #         phone_number=form.cleaned_data.get('phone_number'),
     #         city=form.cleaned_data.get('city')
     #     )
-    #     # Add the success message
+    #
     #     messages.success(self.request, 'Účet byl úspěšně vytvořen! Můžete se nyní přihlásit.')
     #     return response
 

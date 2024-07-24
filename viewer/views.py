@@ -288,8 +288,10 @@ class ProductModelForm(ModelForm):
             )
         }
 
-    price = IntegerField(min_value=1, required=True)  # Pole pro cenu s minimální hodnotou 1
-    stock = IntegerField(min_value=0, required=True)  # Pole pro sklady s minimální hodnotou 0
+    price = IntegerField(min_value=1, required=True) # Pole pro cenu s minimální hodnotou 1
+    # price = IntegerField(required=True)  # TEST VALIDACE BEZ INTEGER FIELD S VLASTNÍ ERROR MESSAGE
+    # stock = IntegerField(min_value=0, required=True)  # S DEFAULT VALIDACÍ INTEGER FORM (ERROR_MSG)
+    stock = IntegerField(required=True)  # Pole pro sklady s minimální hodnotou 0
 
     def clean_title(self):
         initial = self.cleaned_data['title']
