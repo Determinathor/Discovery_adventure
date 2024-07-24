@@ -91,7 +91,7 @@ class CategoryTemplateView(TemplateView):
         pk = self.kwargs['pk']  # Získání ID kategorie z URL
         category = get_object_or_404(Category, pk=pk)  # Získání kategorie nebo 404 pokud neexistuje
         products = Product.objects.filter(categories=category)  # Získání produktů v kategorii
-        paginator = Paginator(products, 6)  # Paginace produktů po 3 na stránku
+        paginator = Paginator(products, 9)  # Paginace produktů po 3 na stránku
         page_number = self.request.GET.get('page')  # Získání čísla stránky z GET parametru
         page_obj = paginator.get_page(page_number)  # Získání aktuální stránky
         context["category"] = category
@@ -461,6 +461,9 @@ class CategoryCreateView(PermissionRequiredMixin, CreateView):  # autorizace + v
 def add_to_cart(request, pk):
     cart_product = get_object_or_404(Product, id=pk)
 
+    # Get quantity from request, default to 1 if not provided
+    quantity = int(request.GET.get('quantity', 1))
+
     # get or create order for user
     order, created = Order.objects.get_or_create(User=request.user.profile, status='Pending', defaults={
         'delivery_address': '',
@@ -471,12 +474,12 @@ def add_to_cart(request, pk):
     # check if product is in order
     order_line, created = Order_Line.objects.get_or_create(Order=order, Product=cart_product, defaults={
         'product_price': cart_product.price,
-        'quantity': 1,
+        'quantity': quantity,
     })
 
     # if product in order update quantity
     if not created:
-        order_line.quantity += 1
+        order_line.quantity += quantity
         order_line.save()
 
     # update total cost of order
