@@ -1,124 +1,143 @@
 {% extends "base.html" %}
 {% load static %}
-
 {% block content %}
-    <!-- Začátek sekce obchodu -->
-    <div class="container-fluid pt-5">
-        <div class="row px-xl-5">
-            <!-- Boční panel obchodu (aktualně prázdný, ale může obsahovat filtry nebo jiné prvky) -->
-            <div class="col-lg-3 col-md-12"></div>
-            <div class="col-lg-9 col-md-12">
-                <div class="row pb-3">
-                    <div class="col-12 pb-1">
-                        <div class="d-flex align-items-center justify-content-between mb-4">
-                            <!-- Formulář pro vyhledávání produktů dle názvu -->
-                            <form action="">
-                                <div class="input-group">
-                                    <input type="text" class="form-control" placeholder="Hledat dle názvu">
-                                    <div class="input-group-append">
-                                        <span class="input-group-text bg-transparent text-primary">
-                                            <i class="fa fa-search"></i>
-                                        </span>
-                                    </div>
+<!-- Shop Start -->
+<div class="container-fluid pt-5">
+    <div class="row px-xl-5">
+        <!-- Shop Product Start -->
+        <div class="col-lg-12 col-md-12">
+            <div class="row pb-3">
+                <div class="col-12 pb-1">
+                    <div class="d-flex align-items-center justify-content-between mb-4">
+                        <!-- Formulář pro vyhledávání produktů podle názvu -->
+                        <form action="">
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="Hledat dle názvu">
+                                <div class="input-group-append">
+                                    <span class="input-group-text bg-transparent text-primary">
+                                        <i class="fa fa-search"></i>
+                                    </span>
                                 </div>
-                            </form>
-                            <!-- Odkaz na vytvoření nového produktu, zobrazuje se pouze pokud má uživatel právo přidávat produkty -->
-                            {% if perms.accounts.add_product %}
-                            <div class="col-md-4 mb-1">
-                                <h5>
-                                    <a href="{% url 'product_create' %}" class="font-weight-bold text-monospace text-uppercase mb-1" style="color: red">Vytvořit nový produkt</a>
-                                </h5>
                             </div>
+                        </form>
+
+                        <!-- Tlačítko pro vytvoření nového produktu, zobrazí se jen pokud má uživatel oprávnění -->
+                        {% if perms.accounts.add_product %}
+                        <div class="container">
+                            <div class="row justify-content-center">
+                                <div class="col-md-4 text-center mb-1">
+                                    <h5>
+                                        <a href="{% url 'product_create' %}"
+                                           class="btn btn-danger font-weight-bold text-monospace text-uppercase mb-1">
+                                            Vytvořit nový produkt
+                                        </a>
+                                    </h5>
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
+
+                        <!-- Dropdown menu pro řazení produktů -->
+                        <div class="dropdown ml-4">
+                            <button class="btn border dropdown-toggle" type="button" id="triggerId"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Seřadit dle
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="triggerId">
+                                <a class="dropdown-item" href="{% url 'shop-nejdrazsi' %}">Cena - nejdražší</a>
+                                <a class="dropdown-item" href="{% url 'shop-nejlevnejsi' %}">Cena - nejlevnější</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cyklus pro zobrazení jednotlivých produktů -->
+                {% for product in products %}
+                <div class="col-lg-3 col-md-4 col-sm-6 pb-1">
+                    <div class="card product-item border-0 mb-4">
+                        <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
+                            <!-- Odkaz na detail produktu -->
+                            <a href="{% url 'detail' product.id %}" class="text-decoration-none">
+                                {% if product.thumbnail %}
+                                <img src="{% static 'img/'|add:product.thumbnail %}" alt="{{ product.name }}"
+                                     class="img-fluid w-100">
+                                {% endif %}
+                            </a>
+                        </div>
+                        <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
+                            <h6 class="text-truncate mb-3">{{ product.title }}</h6>
+                            <div class="d-flex justify-content-center">
+                                <h6>€ {{ product.price }}</h6>
+                            </div>
+                        </div>
+                        <div class="card-footer d-flex justify-content-between bg-light border">
+                            <a href="{% url 'detail' product.id %}" class="btn btn-sm text-dark p-0"><i
+                                    class="fas fa-eye text-primary mr-1"></i>Detail</a>
+                            <a href="{{ product.add_to_cart_url }}" class="btn btn-sm text-dark p-0"><i
+                                    class="fas fa-shopping-cart text-primary mr-1"></i>Do košíku</a>
+                            {% if perms.accounts.change_product %}
+                            <a href="{% url 'product_update' product.id %}"
+                               class="btn btn-sm text-uppercase text-danger p-0"><i
+                                    class="fas fa-edit text-primary mr-1"></i>Upravit</a>
                             {% endif %}
-                            <!-- Dropdown menu pro seřazení produktů -->
-                            <div class="dropdown ml-4">
-                                <button class="btn border dropdown-toggle" type="button" id="triggerId" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Seřadit dle
-                                </button>
-                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="triggerId">
-                                    <a class="dropdown-item" href="#">Nejnovější</a>
-                                    <a class="dropdown-item" href="#">Cena</a> <!-- TODO: Implementovat funkci řazení podle ceny -->
-                                </div>
-                            </div>
+                            {% if perms.accounts.delete_product %}
+                            <!-- Odkaz pro smazání produktu, zobrazí se jen pokud má uživatel oprávnění -->
+                            <a href="{% url 'product_delete' product.id %}"
+                               class="btn btn-sm text-uppercase text-danger p-0"><i
+                                    class="fas fa-trash-alt text-primary mr-1"></i>Smazat</a>
+                            {% endif %}
                         </div>
                     </div>
-                    <!-- Zobrazení produktů na stránce -->
-                    {% for product in page_obj %}
-                    <div class="col-lg-4 col-md-6 col-sm-12 pb-1">
-                        <div class="card product-item border-0 mb-4">
-                            <!-- Obrázek produktu s odkazem na detail produktu -->
-                            <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
-                                <a href="{% url 'detail' product.id %}" class="text-decoration-none">
-                                    <img class="img-fluid w-100" src="{% static 'img/product-1.jpg' %}" alt="">
-                                </a>
-                            </div>
-                            <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
-                                <!-- Název produktu a cena -->
-                                <h6 class="text-truncate mb-3">{{ product.title }}</h6>
-                                <div class="d-flex justify-content-center">
-                                    <h6>€ {{ product.price }}</h6>
-                                </div>
-                            </div>
-                            <div class="card-footer d-flex justify-content-between bg-light border">
-                                <!-- Tlačítko pro přidání produktu do košíku -->
-                                <a href="" class="btn btn-sm text-dark p-1"><i class="fas fa-shopping-cart text-primary mr-1"></i>Vložit do košíku</a>
-                                <!-- Odkaz na úpravu produktu, zobrazuje se pouze pokud má uživatel právo měnit produkty -->
-                                {% if perms.accounts.change_product %}
-                                <a href="{% url 'product_update' product.id %}" class="btn btn-sm text-uppercase text-danger p-0"><i class="fas fa-edit text-primary mr-1"></i>Upravit produkt</a>
-                                {% endif %}
-                                <!-- Odkaz na odstranění produktu, zobrazuje se pouze pokud má uživatel právo mazat produkty -->
-                                {% if perms.accounts.delete_product %}
-                                <a href="{% url 'product_delete' product.id %}" class="btn btn-sm text-uppercase text-danger p-0"><i class="fas fa-trash-alt text-primary mr-1"></i>Odstranit produkt</a>
-                                {% endif %}
-                            </div>
-                        </div>
-                    </div>
-                    {% endfor %}
-                    <!-- Navigace mezi stránkami -->
-                    <div class="col-12 pb-1">
-                        <nav aria-label="Page navigation">
-                          <ul class="pagination justify-content-center mb-3">
+                </div>
+                {% endfor %}
+
+                <!-- Paginace pro stránkování produktů -->
+                <div class="col-12 pb-1">
+                    <nav aria-label="Page navigation">
+                        <ul class="pagination justify-content-center mb-3">
                             {% if page_obj.has_previous %}
                             <li class="page-item">
-                              <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
-                                <span aria-hidden="true">&laquo;</span>
-                                <span class="sr-only">Previous</span>
-                              </a>
+                                <a class="page-link" href="?page={{ page_obj.previous_page_number }}"
+                                   aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                    <span class="sr-only">Previous</span>
+                                </a>
                             </li>
                             {% else %}
                             <li class="page-item disabled">
-                              <a class="page-link" href="#" aria-label="Previous">
-                                <span aria-hidden="true">&laquo;</span>
-                                <span class="sr-only">Previous</span>
-                              </a>
+                                <a class="page-link" href="#" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                    <span class="sr-only">Previous</span>
+                                </a>
                             </li>
                             {% endif %}
                             {% for num in page_obj.paginator.page_range %}
                             <li class="page-item {% if page_obj.number == num %}active{% endif %}">
-                              <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                                <a class="page-link" href="?page={{ num }}">{{ num }}</a>
                             </li>
                             {% endfor %}
                             {% if page_obj.has_next %}
                             <li class="page-item">
-                              <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
-                                <span aria-hidden="true">&raquo;</span>
-                                <span class="sr-only">Next</span>
-                              </a>
+                                <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                    <span class="sr-only">Next</span>
+                                </a>
                             </li>
                             {% else %}
                             <li class="page-item disabled">
-                              <a class="page-link" href="#" aria-label="Next">
-                                <span aria-hidden="true">&raquo;</span>
-                                <span class="sr-only">Next</span>
-                              </a>
+                                <a class="page-link" href="#" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                    <span class="sr-only">Next</span>
+                                </a>
                             </li>
                             {% endif %}
-                          </ul>
-                        </nav>
-                    </div>
+                        </ul>
+                    </nav>
                 </div>
             </div>
         </div>
+        <!-- Shop Product End -->
     </div>
-    <!-- Konec sekce obchodu -->
+</div>
+<!-- Shop End -->
 {% endblock %}

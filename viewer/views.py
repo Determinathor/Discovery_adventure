@@ -91,7 +91,7 @@ class CategoryTemplateView(TemplateView):
         pk = self.kwargs['pk']  # Získání ID kategorie z URL
         category = get_object_or_404(Category, pk=pk)  # Získání kategorie nebo 404 pokud neexistuje
         products = Product.objects.filter(categories=category)  # Získání produktů v kategorii
-        paginator = Paginator(products, 6)  # Paginace produktů po 3 na stránku
+        paginator = Paginator(products, 9)  # Paginace produktů po 3 na stránku
         page_number = self.request.GET.get('page')  # Získání čísla stránky z GET parametru
         page_obj = paginator.get_page(page_number)  # Získání aktuální stránky
         context["category"] = category
