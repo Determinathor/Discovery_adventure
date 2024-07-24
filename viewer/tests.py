@@ -4,38 +4,46 @@
 # from viewer.models import Product, Category, Manufacturer
 # from django.utils import timezone
 #
+#
 # class ShopViewTests(TestCase):
-#     def setUp(self):
+#     @classmethod
+#     def setUpTestData(cls):
 #         # Inicializace testovacího klienta
-#         self.client = Client()
+#         cls.client = Client()
 #         # Vytvoření běžného uživatele
-#         self.user = User.objects.create_user(username='testuser', password='password')
+#         cls.user = User.objects.create_user(username='testuser', password='password')
 #         # Vytvoření uživatele s právy administrátora (staff)
-#         self.staff_user = User.objects.create_user(username='staffuser', password='password', is_staff=True)
+#         cls.staff_user = User.objects.create_user(username='staffuser', password='password', is_staff=True)
 #
 #         # Vytvoření testovací kategorie
-#         self.category = Category.objects.create(name='Test Category')
+#         cls.category = Category.objects.create(name='Test Category')
 #         # Vytvoření testovacího výrobce
-#         self.manufacturer = Manufacturer.objects.create(name='Test Manufacturer')
+#         cls.manufacturer = Manufacturer.objects.create(name='Test Manufacturer')
 #
 #         # Vytvoření testovacích produktů
-#         self.product1 = Product.objects.create(
+#         cls.product1 = Product.objects.create(
 #             title='Test Product 1',
 #             description='Description for product 1',
 #             price=100,
 #             stock=10,
-#             manufacturer=self.manufacturer
+#             manufacturer=cls.manufacturer
 #         )
-#         self.product1.categories.add(self.category)  # Přiřazení kategorie k produktu
+#         cls.product1.categories.add(cls.category)  # Přiřazení kategorie k produktu
 #
-#         self.product2 = Product.objects.create(
+#         cls.product2 = Product.objects.create(
 #             title='Test Product 2',
 #             description='Description for product 2',
 #             price=200,
 #             stock=5,
-#             manufacturer=self.manufacturer
+#             manufacturer=cls.manufacturer
 #         )
-#         self.product2.categories.add(self.category)  # Přiřazení kategorie k produktu
+#         cls.product2.categories.add(cls.category)  # Přiřazení kategorie k produktu
+#
+#         cls.product1.save()
+#         cls.product2.save()
+#
+#     def setUp(self):
+#         print("-"*60)
 #
 #     def test_product_list_view(self):
 #         # Test zobrazení seznamu produktů

@@ -29,7 +29,7 @@ class ProfileTest(TestCase):
         print(f"test_profile_creation: user='{profile.user.username}', address='{profile.address}', phone_number='{profile.phone_number}', city='{profile.city}'")
         self.assertEqual(profile.user.username, 'testuser')
         self.assertEqual(profile.address, 'Test ulice 123')
-        self.assertEqual(profile.phone_number, '123456789')
+        self.assertEqual(int(profile.phone_number), 123456789)
         self.assertEqual(profile.city, 'Test city')
 
     def test_profile_username(self):
@@ -45,7 +45,7 @@ class ProfileTest(TestCase):
     def test_profile_phone_number(self):
         profile = Profile.objects.get(id=self.profile.id)
         print(f"test_profile_phone_number: '{profile.phone_number}'")
-        self.assertEqual(profile.phone_number, '123456789')
+        self.assertEqual(int(profile.phone_number), 123456789)
 
     def test_profile_city(self):
         profile = Profile.objects.get(id=self.profile.id)
@@ -66,7 +66,7 @@ class ProfileTest(TestCase):
         profile = Profile(
             user=self.user,
             address='Test ulice 123',
-            phone_number='12345678',  # 8 číslic, krátké
+            phone_number=12345678,  # 8 číslic, krátké
             city='Test city',
         )
         print("test_phone_number_too_short: Trying to validate phone number '12345678'")
@@ -77,7 +77,7 @@ class ProfileTest(TestCase):
         profile = Profile(
             user=self.user,
             address='Test ulice 123',
-            phone_number='1234567890123',  # 13 číslic, dlouhé
+            phone_number=1234567890123,  # 13 číslic, dlouhé
             city='Test city',
         )
         print("test_phone_number_too_long: Trying to validate phone number:", 1234567890123)
