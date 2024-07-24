@@ -11,6 +11,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import CreateView, UpdateView
+from pydantic import ValidationError
 
 from accounts.models import Profile
 from discovery_adventure import settings
@@ -86,6 +87,14 @@ class SignUpForm(UserCreationForm):
     address = CharField(max_length=80)
     phone_number = IntegerField()
     city = CharField(max_length=42)
+
+    # def clean_phone_number(self):
+    #     phone_number = self.cleaned_data.get('phone_number')
+    #     if len(phone_number) < 10:
+    #         raise ValidationError('Phone number must be at least 10 digits')
+    #     if len(phone_number) > 12:
+    #         raise ValidationError('Phone number must be at most 12 digits')
+    #     return phone_number
 
     @atomic
     def save(self, commit=True):

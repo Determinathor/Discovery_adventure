@@ -151,10 +151,12 @@
                 </select>
                 <div id="exchange-rate"></div>
             </div>
+            {% if user.is_authenticated %}
             <a href="{% url 'cart_view' %}" class="btn border">
                 <i class="fas fa-shopping-cart text-primary"></i>
                 <span class="badge">{{ cart_items_count }}</span>
             </a>
+            {% endif %}
         </div>
     </div>
 </div>
