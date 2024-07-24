@@ -1,0 +1,70 @@
+.mini-widget {
+    background-color: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 5px;
+    padding: 5px;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    height: 30px;
+}
+
+
+#weather-widget .weather-icon {
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#weather-widget {
+    width: 150px; /* Zvětšeno pro zahrnutí města vedle teploty */
+}
+
+#weather-widget .weather-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+#weather-widget .city {
+    font-size: 12px;
+    margin-right: 5px;
+}
+
+#weather-widget .temperature {
+    font-weight: bold;
+    font-size: 12px;
+}
+
+#currency-converter-widget {
+    width: 200px;
+}
+
+#currency-converter-widget .currency-input {
+    width: 60px;
+    border: none;
+    background-color: transparent;
+    font-size: 12px;
+    padding: 2px;
+}
+
+#currency-converter-widget select {
+    border: none;
+    background-color: transparent;
+    font-size: 12px;
+}
+
+#currency-converter-widget #exchange-rate {
+    margin-left: 5px;
+    font-weight: bold;
+}
+
+@media (max-width: 991px) {
+    .mini-widget {
+        display: none;
+    }
+}
