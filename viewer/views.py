@@ -663,7 +663,20 @@ def order_confirmation(request):
 
 
 def search_view(request):
-    return render(request, 'search_results.html')
+
+    context = {}
+    context['current_template'] = "Košík"
+
+    # Logika pro získání města uživatele
+    try:
+        if request.user.is_authenticated:
+                context['user_city'] = request.user.profile.city
+        else:
+                context['user_city'] = 'Praha'
+    except AttributeError:
+        context['user_city'] = 'Praha'
+
+    return render(request, 'search_results.html',context)
 
 
 
