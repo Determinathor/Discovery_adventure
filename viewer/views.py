@@ -665,6 +665,8 @@ def order_confirmation(request):
 def search_view(request):
     return render(request, 'search_results.html')
 
+
+
 # -----------------------------------------
 # CART OPERATIONS END
 # -----------------------------------------

@@ -10,6 +10,8 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 import os
+import sys
+
 import psycopg2
 from pathlib import Path
 
@@ -71,7 +73,8 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'discovery_adventure.context_processors.cart_items_count',
-                'discovery_adventure.context_processors.search_results'
+                'discovery_adventure.context_processors.search_results',
+                'discovery_adventure.context_processors.cart_status',
             ],
         },
     },
@@ -94,7 +97,13 @@ DATABASES = {
     }
 }
 
-
+if 'test' in sys.argv:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': ':memory:',
+        }
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators

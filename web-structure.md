@@ -1,6 +1,6 @@
 # For users
 
-> Homepage - /home
+> Homepage - discoveryadventures.xxx/
 > 
 > Personal Page - /profile
 > 
@@ -26,3 +26,4 @@
 
 > Admin - /admin
 
+fotbal, beh, hokej, cyklo, vodni sporty, turistika, 
