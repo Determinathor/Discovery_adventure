@@ -14,6 +14,7 @@ from django.views.generic import TemplateView, ListView, FormView, CreateView, U
 from django_addanother.views import CreatePopupMixin
 from django_addanother.widgets import AddAnotherWidgetWrapper
 from django.core.paginator import Paginator
+from django.db.models import Q
 
 from viewer.models import *
 
@@ -656,6 +657,12 @@ def place_order(request, pk):
 
 def order_confirmation(request):
     return render(request, 'order_confirmation.html')
+
+
+def search_view(request):
+    return render(request, 'search_results.html')
+
+
 
 # -----------------------------------------
 # CART OPERATIONS END
