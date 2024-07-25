@@ -37,13 +37,13 @@ def cart_status(request):
 
 
 def search_results(request):
-    query = request.GET.get('q')
+    query = request.GET.get('q', '').strip()
     if query:
         products = Product.objects.filter(
             Q(title__icontains=query) | Q(description__icontains=query)
         )
     else:
-        products = Product.objects.none()  # Vracíme prázdný QuerySet místo všech produktů
+        products = Product.objects.all()  # Vracíme všechny produkty, pokud je pole prázdné
 
     return {
         'search_products': products,

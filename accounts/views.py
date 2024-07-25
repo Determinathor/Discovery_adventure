@@ -39,8 +39,8 @@ def my_view(request):
             else:
                 # Username neexistuje
                 messages.error(request,
-                               'Nelze se přihlásit. Uživatelské jméno neexistuje. '
-                               'Chcete se <a href="#" onclick="openSignupModal()">registrovat</a>?')
+                               'Nelze se přihlásit. Uživatelské jméno neexistuje. Chcete se registrovat?')
+                               # 'Chcete se <a href="#" onclick="openSignupModal()">registrovat</a>?')
     else:
         # Uživatel není registrován (chybí username i heslo)
         messages.error(request,
@@ -140,19 +140,13 @@ class SignUpView(CreateView):
     template_name = "form.html"
     form_class = SignUpForm
     success_url = reverse_lazy('home')
-    # def form_valid(self, form):
-    #     response = super().form_valid(form)
-    #     # Create the Profile for the user
-    #     user = form.instance
-    #     Profile.objects.create(
-    #         user=user,
-    #         address=form.cleaned_data.get('address'),
-    #         phone_number=form.cleaned_data.get('phone_number'),
-    #         city=form.cleaned_data.get('city')
-    #     )
-    #
-    #     messages.success(self.request, 'Účet byl úspěšně vytvořen! Můžete se nyní přihlásit.')
-    #     return response
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        messages.success(self.request, 'Registrace byla úspěšná, nyní se můžete přihlásit.')
+                                       # ' <a href="#" onclick="openLoginModal()">přihlásit</a>.')
+        return response
+
 
 
 # class SubmittablePasswordChangeView(PasswordChangeView):
@@ -191,6 +185,10 @@ class CustomPasswordChangeView(PasswordChangeView):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Změna hesla'
         context['submit_text'] = 'Změnit heslo'
+        try:
+            context['user_city'] = self.request.user.profile.city
+        except:
+            context['user_city'] = 'Praha'
         return context
 
     def form_valid(self, form):

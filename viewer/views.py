@@ -16,6 +16,7 @@ from django_addanother.widgets import AddAnotherWidgetWrapper
 from django.core.paginator import Paginator
 from django.db.models import Q
 
+from accounts.views import ProfileUpdateForm
 from viewer.models import *
 
 from django.forms import *
@@ -351,6 +352,7 @@ class ProductCreateView(PermissionRequiredMixin, CreateView):
         product_form = ProductModelForm(self.request.POST)
         if product_form.is_valid():
             product_form.save()
+            messages.success(request, 'Produkt byl úspěšně vytvořen.')
             return redirect('shop')
 
 
@@ -384,6 +386,7 @@ class ProductUpdateView(PermissionRequiredMixin, UpdateView):  # update produktu
 
         if product_form.is_valid():
             product_form.save()
+            messages.success(request, 'Produkt byl úspěšně aktualizován.')
             return redirect('product_select')
 
 
@@ -641,29 +644,82 @@ def checkout_view(request):
     return render(request, 'checkout.html', context)
 
 
+# @login_required
+# def place_order(request, pk):
+#     order = get_object_or_404(Order, id=pk, User=request.user.profile, status='Pending')
+#     order_lines = order.order_line_set.all()
+#
+#     try:
+#         for line in order_lines:
+#             product = line.Product
+#             if product.stock >= line.quantity:
+#                 product.stock -= line.quantity
+#                 product.save()
+#             else:
+#                 messages.error(request, f"Insufficient stock for {product.title}")
+#                 return redirect('checkout')
+#
+#         order.status = 'Confirmed'
+#         # order._processed = False  # Reset the flag to ensure the signal processes
+#         order.save()
+#         # messages.success(request, "Objednávka byla úspěšně vytvořena! Děkujeme! Nyní již potřebujeme jen vytvořit s.r.o., nakoupit stovky produktů, napojit skladový systém na databázi a zprovoznit tisíc dalších funkcí.")
+#         return redirect('order_confirmation')
+#     except Exception as e:
+#         messages.error(request, f"An error occurred while placing the order: {e}")
+#         return redirect('checkout')
+
 @login_required
 def place_order(request, pk):
     order = get_object_or_404(Order, id=pk, User=request.user.profile, status='Pending')
     order_lines = order.order_line_set.all()
 
-    try:
-        for line in order_lines:
-            product = line.Product
-            if product.stock >= line.quantity:
-                product.stock -= line.quantity
-                product.save()
-            else:
-                messages.error(request, f"Insufficient stock for {product.title}")
-                return redirect('checkout')
+    if request.method == 'POST':
+        user = request.user
+        profile = user.profile
 
-        order.status = 'Confirmed'
-        # order._processed = False  # Reset the flag to ensure the signal processes
-        order.save()
-        # messages.success(request, "Objednávka byla úspěšně vytvořena! Děkujeme! Nyní již potřebujeme jen vytvořit s.r.o., nakoupit stovky produktů, napojit skladový systém na databázi a zprovoznit tisíc dalších funkcí.")
-        return redirect('order_confirmation')
-    except Exception as e:
-        messages.error(request, f"An error occurred while placing the order: {e}")
-        return redirect('checkout')
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
+        email = request.POST.get('email')
+        phone_number = request.POST.get('phone_number')
+        address = request.POST.get('address')
+        city = request.POST.get('city')
+
+        # kontrola atributů usera (příp update)
+        if user.first_name != first_name:
+            user.first_name = first_name
+        if user.last_name != last_name:
+            user.last_name = last_name
+        if user.email != email:
+            user.email = email
+        user.save()
+
+        # kontrola atributů profilu (příp update)
+        if profile.phone_number != phone_number:
+            profile.phone_number = phone_number
+        if profile.address != address:
+            profile.address = address
+        if profile.city != city:
+            profile.city = city
+        profile.save()
+
+        try:
+            for line in order_lines:
+                product = line.Product
+                if product.stock >= line.quantity:
+                    product.stock -= line.quantity
+                    product.save()
+                else:
+                    messages.error(request, f"Insufficient stock for {product.title}")
+                    return redirect('checkout')
+
+            order.status = 'Confirmed'
+            order.save()
+            return redirect('order_confirmation')
+        except Exception as e:
+            messages.error(request, f"An error occurred while placing the order: {e}")
+            return redirect('checkout')
+
+    return redirect('checkout')
 
 
 def order_confirmation(request):
