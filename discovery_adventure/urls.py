@@ -51,5 +51,6 @@ urlpatterns = [
     path('accounts/', include('django.contrib.auth.urls')), # default django view
 
     path('admin/', admin.site.urls),
+
 ]
 
