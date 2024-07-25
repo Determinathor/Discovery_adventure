@@ -349,6 +349,7 @@ class ProductCreateView(PermissionRequiredMixin, CreateView):
         product_form = ProductModelForm(self.request.POST)
         if product_form.is_valid():
             product_form.save()
+            messages.success(request, 'Produkt byl úspěšně vytvořen.')
             return redirect('shop')
 
 
@@ -382,6 +383,7 @@ class ProductUpdateView(PermissionRequiredMixin, UpdateView):  # update produktu
 
         if product_form.is_valid():
             product_form.save()
+            messages.success(request, 'Produkt byl úspěšně aktualizován.')
             return redirect('product_select')
 
 
