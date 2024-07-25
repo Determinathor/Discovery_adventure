@@ -1,122 +1,170 @@
-# from django.test import TestCase, Client
-# from django.urls import reverse
-# from django.contrib.auth.models import User, Permission
-# from viewer.models import Product, Category, Manufacturer
-# from django.utils import timezone
-#
-#
-# class ShopViewTests(TestCase):
-#     @classmethod
-#     def setUpTestData(cls):
-#         # Inicializace testovacího klienta
-#         cls.client = Client()
-#         # Vytvoření běžného uživatele
-#         cls.user = User.objects.create_user(username='testuser', password='password')
-#         # Vytvoření uživatele s právy administrátora (staff)
-#         cls.staff_user = User.objects.create_user(username='staffuser', password='password', is_staff=True)
-#
-#         # Vytvoření testovací kategorie
-#         cls.category = Category.objects.create(name='Test Category')
-#         # Vytvoření testovacího výrobce
-#         cls.manufacturer = Manufacturer.objects.create(name='Test Manufacturer')
-#
-#         # Vytvoření testovacích produktů
-#         cls.product1 = Product.objects.create(
-#             title='Test Product 1',
-#             description='Description for product 1',
-#             price=100,
-#             stock=10,
-#             manufacturer=cls.manufacturer
-#         )
-#         cls.product1.categories.add(cls.category)  # Přiřazení kategorie k produktu
-#
-#         cls.product2 = Product.objects.create(
-#             title='Test Product 2',
-#             description='Description for product 2',
-#             price=200,
-#             stock=5,
-#             manufacturer=cls.manufacturer
-#         )
-#         cls.product2.categories.add(cls.category)  # Přiřazení kategorie k produktu
-#
-#         cls.product1.save()
-#         cls.product2.save()
-#
-#     def setUp(self):
-#         print("-"*60)
-#
-#     def test_product_list_view(self):
-#         # Test zobrazení seznamu produktů
-#         response = self.client.get(reverse('shop'))
-#         self.assertEqual(response.status_code, 200)  # Očekáváme úspěšný HTTP status kód 200
-#         self.assertContains(response, 'Test Product 1')  # Ověření, že stránka obsahuje 'Test Product 1'
-#         self.assertContains(response, 'Test Product 2')  # Ověření, že stránka obsahuje 'Test Product 2'
-#
-#     def test_product_create_view_permission(self):
-#         # Test oprávnění pro vytvoření produktu
-#         self.client.login(username='testuser', password='password')
-#         response = self.client.get(reverse('product_create'))
-#         self.assertEqual(response.status_code, 403)  # Očekáváme zakázaný HTTP status kód 403 (bez oprávnění)
-#
-#         # Přiřazení oprávnění k uživateli pro přidání produktu
-#         self.user.user_permissions.add(Permission.objects.get(codename='add_product'))
-#         response = self.client.get(reverse('product_create'))
-#         self.assertEqual(response.status_code, 200)  # Očekáváme úspěšný HTTP status kód 200 (s oprávněním)
-#
-#     def test_product_create_view(self):
-#         # Test vytvoření nového produktu
-#         self.client.login(username='staffuser', password='password')
-#         response = self.client.post(reverse('product_create'), {
-#             'title': 'New Product',
-#             'description': 'New product description',
-#             'price': 300,
-#             'stock': 15,
-#             'manufacturer': self.manufacturer.id,
-#             'categories': [self.category.id]
-#         })
-#         self.assertEqual(response.status_code, 302)  # Očekáváme přesměrování (status kód 302)
-#         self.assertTrue(Product.objects.filter(title='New Product').exists())  # Ověření, že nový produkt byl vytvořen
-#
-#     def test_product_update_view_permission(self):
-#         # Test oprávnění pro úpravu produktu
-#         self.client.login(username='testuser', password='password')
-#         response = self.client.get(reverse('product_create', args=[self.product1.id]))
-#         self.assertEqual(response.status_code, 403)  # Očekáváme zakázaný HTTP status kód 403 (bez oprávnění)
-#
-#         # Přiřazení oprávnění k uživateli pro úpravu produktu
-#         self.user.user_permissions.add(Permission.objects.get(codename='change_product'))
-#         response = self.client.get(reverse('product_create', args=[self.product1.id]))
-#         self.assertEqual(response.status_code, 200)  # Očekáváme úspěšný HTTP status kód 200 (s oprávněním)
-#
-#     def test_product_update_view(self):
-#         # Test úpravy produktu
-#         self.client.login(username='staffuser', password='password')
-#         response = self.client.post(reverse('product_create', args=[self.product1.id]), {
-#             'title': 'Updated Product',
-#             'description': 'Updated description',
-#             'price': 150,
-#             'stock': 20,
-#             'manufacturer': self.manufacturer.id,
-#             'categories': [self.category.id]
-#         })
-#         self.assertEqual(response.status_code, 302)  # Očekáváme přesměrování (status kód 302)
-#         self.product1.refresh_from_db()  # Obnovení produktu z databáze
-#         self.assertEqual(self.product1.title, 'Updated Product')  # Ověření, že titul produktu byl aktualizován
-#
-#     def test_product_delete_view_permission(self):
-#         # Test oprávnění pro smazání produktu
-#         self.client.login(username='testuser', password='password')
-#         response = self.client.get(reverse('product_delete', args=[self.product1.id]))
-#         self.assertEqual(response.status_code, 403)  # Očekáváme zakázaný HTTP status kód 403 (bez oprávnění)
-#
-#         # Přiřazení oprávnění k uživateli pro smazání produktu
-#         self.user.user_permissions.add(Permission.objects.get(codename='delete_product'))
-#         response = self.client.get(reverse('product_delete', args=[self.product1.id]))
-#         self.assertEqual(response.status_code, 200)  # Očekáváme úspěšný HTTP status kód 200 (s oprávněním)
-#
-#     def test_product_delete_view(self):
-#         # Test smazání produktu
-#         self.client.login(username='staffuser', password='password')
-#         response = self.client.post(reverse('product_delete', args=[self.product1.id]))
-#         self.assertEqual(response.status_code, 302)  # Očekáváme přesměrování (status kód 302)
-#         self.assertFalse(Product.objects.filter(id=self.product1.id).exists())  # Ověření, že produkt byl smazán
+from django.test import TestCase, Client
+from django.urls import reverse
+from django.contrib.auth.models import User
+from .models import Category, Profile, Product
+from viewer.models import Category, Product, Profile
+from django.core.paginator import Paginator
+
+
+class ContactviewTest(TestCase):
+    def setUp(self):
+        self.client = Client()
+        self.url = reverse('contact')  # Zajistěte, aby URL jméno odpovídalo cestě k šabloně
+
+        # Vytvoření testovacích kategorií
+        self.category1 = Category.objects.create(name="Category 1")
+        self.category2 = Category.objects.create(name="Category 2")
+
+        # Vytvoření testovacího uživatele a profilu
+        self.user = User.objects.create_user(username='testuser', password='12345')
+        self.profile = Profile.objects.create(user=self.user, city="Brno")
+
+    def test_view_with_logged_in_user(self):
+        # Přihlášení uživatele
+        self.client.login(username='testuser', password='12345')
+
+        # Získání odpovědi
+        response = self.client.get(self.url)
+
+        # Ověření status kódu odpovědi
+        self.assertEqual(response.status_code, 200)
+
+        # Ověření, že všechny kategorie jsou v kontextu
+        categories = response.context['categories']
+        self.assertIn(self.category1, categories)
+        self.assertIn(self.category2, categories)
+
+        # Ověření, že aktuální šablona je správně nastavena
+        self.assertEqual(response.context['current_template'], "kONTAKT")
+
+        # Ověření, že město uživatele je správně vráceno
+        self.assertEqual(response.context['user_city'], "Brno")
+
+    def test_view_with_anonymous_user(self):
+        # Získání odpovědi jako anonymní uživatel
+        response = self.client.get(self.url)
+
+        # Ověření status kódu odpovědi
+        self.assertEqual(response.status_code, 200)
+
+        # Ověření, že všechny kategorie jsou v kontextu
+        categories = response.context['categories']
+        self.assertIn(self.category1, categories)
+        self.assertIn(self.category2, categories)
+
+        # Ověření, že aktuální šablona je správně nastavena
+        self.assertEqual(response.context['current_template'], "kONTAKT")
+
+        # Ověření, že město uživatele je nastaveno na 'Praha'
+        self.assertEqual(response.context['user_city'], "Praha")
+
+
+class CategoryListViewTest(TestCase):
+
+    def setUp(self):
+        """Příprava prostředí pro testování seznamu kategorií"""
+        self.client = Client()  # Inicializace testovacího klienta
+        self.user = User.objects.create_user(username='testuser', password='password')  # Vytvoření testovacího uživatele
+        self.profile = Profile.objects.create(user=self.user, city='Brno')  # Vytvoření profilu pro uživatele
+        self.category1 = Category.objects.create(name='Category 1')  # Vytvoření testovací kategorie
+        self.category2 = Category.objects.create(name='Category 2')  # Vytvoření další testovací kategorie
+        self.product1 = Product.objects.create(title='Product 1')  # Vytvoření testovacího produktu
+        self.product2 = Product.objects.create(title='Product 2')  # Vytvoření dalšího testovacího produktu
+        self.product1.categories.add(self.category1)  # Přiřazení produktu do kategorie
+        self.product2.categories.add(self.category2)  # Přiřazení dalšího produktu do jiné kategorie
+
+    def test_view_with_logged_in_user(self):
+        """Testování seznamu kategorií s přihlášeným uživatelem"""
+        self.client.login(username='testuser', password='password')  # Přihlášení testovacího uživatele
+        response = self.client.get(reverse('home'))  # Získání odpovědi ze seznamu kategorií
+        self.assertEqual(response.status_code, 200)  # Ověření, že odpověď má status kód 200 (OK)
+        self.assertTemplateUsed(response, 'home.html')  # Ověření, že je použita správná šablona
+        self.assertIn('categories', response.context)  # Ověření, že kontext obsahuje kategorie
+        self.assertEqual(len(response.context['categories']), 2)  # Ověření počtu kategorií
+        self.assertEqual(response.context['categories'][0].product_count, 1)  # Ověření počtu produktů v první kategorii
+        self.assertEqual(response.context['categories'][1].product_count, 1)  # Ověření počtu produktů v druhé kategorii
+        self.assertEqual(response.context['current_template'], "Kategorie")  # Ověření aktuální šablony
+        self.assertEqual(response.context['user_city'], 'Brno')  # Ověření města uživatele
+
+    def test_view_with_anonymous_user(self):
+        """Testování seznamu kategorií s anonymním uživatelem"""
+        response = self.client.get(reverse('home'))  # Získání odpovědi ze seznamu kategorií jako anonymní uživatel
+        self.assertEqual(response.status_code, 200)  # Ověření, že odpověď má status kód 200 (OK)
+        self.assertTemplateUsed(response, 'home.html')  # Ověření, že je použita správná šablona
+        self.assertIn('categories', response.context)  # Ověření, že kontext obsahuje kategorie
+        self.assertEqual(len(response.context['categories']), 2)  # Ověření počtu kategorií
+        self.assertEqual(response.context['categories'][0].product_count, 1)  # Ověření počtu produktů v první kategorii
+        self.assertEqual(response.context['categories'][1].product_count, 1)  # Ověření počtu produktů v druhé kategorii
+        self.assertEqual(response.context['current_template'], "Kategorie")  # Ověření aktuální šablony
+        self.assertEqual(response.context['user_city'], 'Praha')  # Ověření města pro anonymního uživatele
+
+
+class CategoryTemplateViewTest(TestCase):
+    def setUp(self):
+        self.client = Client()
+        self.user = User.objects.create_user(username='testuser', password='password')
+        self.profile = Profile.objects.create(user=self.user, city='Brno')
+        self.category1 = Category.objects.create(name='Category 1')
+        self.category2 = Category.objects.create(name='Category 2')
+
+        # Vytvoření produktů
+        for i in range(1, 20):
+            product = Product.objects.create(
+                title=f'Product {i}',
+                description=f'Description {i}',
+                price=i * 10,
+                stock=i
+            )
+            if i % 2 == 0:
+                product.categories.add(self.category1)
+            else:
+                product.categories.add(self.category2)
+
+        # Vyberte jednu kategorii pro testy
+        self.url = reverse('category', args=[self.category1.pk])
+
+    def test_view_with_logged_in_user(self):
+        # Přihlášení uživatele
+        self.client.login(username='testuser', password='password')
+
+        # Získání odpovědi
+        response = self.client.get(self.url)
+
+        # Ověření status kódu odpovědi
+        self.assertEqual(response.status_code, 200)
+
+        # Ověření, že správné produkty jsou vráceny
+        products = response.context['products']
+        self.assertTrue(all(product in products for product in Product.objects.filter(categories=self.category1)))
+        self.assertFalse(any(product in products for product in Product.objects.filter(categories=self.category2)))
+
+        # Ověření paginace
+        self.assertEqual(len(response.context['page_obj']), 9)  # Očekáváme 9 produktů na první stránce
+        self.assertEqual(response.context['page_obj'].number, 1)  # Očekáváme, že jsme na první stránce
+
+    def test_pagination(self):
+        # Testování stránkování
+        self.client.login(username='testuser', password='password')
+
+        # Paginace test
+        response = self.client.get(self.url + '?page=2')
+
+        # Ověření, že stránkování funguje
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context['page_obj'].number, 2)
+        self.assertEqual(len(response.context['page_obj']), 1)  # Na druhé stránce by měl být pouze jeden produkt
+
+    def test_view_with_anonymous_user(self):
+        # Získání odpovědi jako anonymní uživatel
+        response = self.client.get(self.url)
+
+        # Ověření status kódu odpovědi
+        self.assertEqual(response.status_code, 200)
+
+        # Ověření, že správné produkty jsou vráceny
+        products = response.context['products']
+        self.assertTrue(all(product in products for product in Product.objects.filter(categories=self.category1)))
+        self.assertFalse(any(product in products for product in Product.objects.filter(categories=self.category2)))
+
+        # Ověření, že město uživatele je nastaveno na 'Praha'
+        self.assertEqual(response.context['user_city'], 'Praha')
