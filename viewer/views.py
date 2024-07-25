@@ -234,7 +234,17 @@ class RandomProductTemplateView(TemplateView):
                     break
         else:
             random_product = None
-        context["product"] = random_product
+
+        if random_product:
+            conversion_rate = 25.5  # Převodní kurz pro cenu (CZK na EUR)
+            context["product"] = random_product
+            context["title"] = random_product.title
+            context["description"] = random_product.description
+            context["price"] = random_product.price
+            context["manufacturer"] = random_product.manufacturer
+            context["conversion_rate"] = conversion_rate
+            context["price_czk"] = random_product.price * conversion_rate  # Přepočet ceny na CZK
+
         context['categories'] = Category.objects.all()  # Získání všech kategorií
         context['current_template'] = "Náhodný produkt"  # Nastavení aktuální šablony
         try:
