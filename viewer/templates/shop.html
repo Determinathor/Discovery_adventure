@@ -14,13 +14,13 @@
                 <div class="col-12 pb-1">
                     <div class="d-flex align-items-center justify-content-between mb-4">
                         <!-- Formulář pro vyhledávání produktů podle názvu -->
-                        <form action="">
+                        <form action="{% url 'search_results' %}" method="get">
                             <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Hledat dle názvu">
+                                <input type="text" class="form-control" name="q" placeholder="Hledej">
                                 <div class="input-group-append">
-                                        <span class="input-group-text bg-transparent text-primary">
-                                            <i class="fa fa-search"></i>
-                                        </span>
+                                    <button class="btn btn-outline-secondary" type="submit">
+                                        <i class="fa fa-search"></i>
+                                    </button>
                                 </div>
                             </div>
                         </form>
