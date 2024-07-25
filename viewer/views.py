@@ -91,16 +91,18 @@ class CategoryTemplateView(TemplateView):
         pk = self.kwargs['pk']  # Získání ID kategorie z URL
         category = get_object_or_404(Category, pk=pk)  # Získání kategorie nebo 404 pokud neexistuje
         products = Product.objects.filter(categories=category)  # Získání produktů v kategorii
-        paginator = Paginator(products, 9)  # Paginace produktů po 3 na stránku
+        paginator = Paginator(products, 9)  # Paginace produktů po 9 na stránku
         page_number = self.request.GET.get('page')  # Získání čísla stránky z GET parametru
         page_obj = paginator.get_page(page_number)  # Získání aktuální stránky
         context["category"] = category
         context["products"] = products
+        context['page_obj'] = page_obj
         categories = Category.objects.all()
         for category in categories:
             category.product_count = Product.objects.filter(categories=category).count()
         context['categories'] = categories
-        context['page_obj'] = page_obj
+
+
         try:
             context['user_city'] = self.request.user.profile.city
         except:
@@ -431,6 +433,10 @@ class CategoryModelForm(ModelForm):  # formulář pro kategorii
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['current_template'] = "Formulář kategorie"
+        try:
+            context['user_city'] = self.request.user.profile.city
+        except:
+            context['user_city'] = 'Praha'
         return context
 
 
