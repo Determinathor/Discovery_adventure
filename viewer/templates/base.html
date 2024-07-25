@@ -66,11 +66,18 @@
     </div>
     <div class="row align-items-center py-3 px-xl-5">
         <div class="col-lg-3 d-none d-lg-block">
-            <a href="{% url 'home' %}" class="text-decoration-none">
-                <h1 class="m-0 display-9 font-weight-semi-bold"><span
-                        class="text-primary font-weight-light border px-1 mr-2">DA</span>Discovery adventure</h1>
-            </a>
+    <a href="{% url 'home' %}" class="text-decoration-none">
+        <div class="d-flex align-items-center">
+            <img src="{% static 'img/logo.png' %}" alt="DA" class="me-4" style="height: 120px; width: auto;">
+            <div>
+                <h1 class="m-0 fs-4 fw-semibold">
+                    <span class="text-secondary d-block">Discovery</span>
+                </h1>
+                <span class="text-info d-block ms-3">adventure</span>
+            </div>
         </div>
+    </a>
+</div>
         <div class="col-lg-6 col-6 text-left">
             <form action="{% url 'search_results' %}" method="get">
                 <div class="input-group">
