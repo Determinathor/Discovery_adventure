@@ -19,7 +19,6 @@ urlpatterns = [
 
     path('', CategoryListView.as_view(), name='home'), # "domovská stránka", která zobrazuje kategorie
 
-    # path('index/', CategoryListView.as_view(), name='index'), # "domovská stránka", která zobrazuje kategorie
     path('shop/', ProductsListView.as_view(), name='shop'), # zobrazení všech produktů
     path('category/create/', CategoryCreateView.as_view(), name='category_create'), # vytvoření kategorie
     path('category/<pk>/', CategoryTemplateView.as_view(), name='category'), # zobrazení produktů dané kategorie
@@ -33,11 +32,8 @@ urlpatterns = [
     path('product/delete/<pk>/', ProductDeleteView.as_view(), name='product_delete'), # odstranění produktu
     path('search/', views.search_view, name='search_results'),
 
-
     path('faq/', FAQView.as_view(), name='faq'), # faq stránka
     path('contact/', Contactview.as_view(), name='contact'), # kontakt stránka
-
-    # path('checkout/', CheckoutView.as_view(), name='checkout'),
 
     path('add-to-cart/<pk>/', add_to_cart, name='add_to_cart'),
     path('remove-from-cart/<pk>/', remove_from_cart, name='remove_from_cart'),
@@ -48,9 +44,6 @@ urlpatterns = [
     path('order_confirmation/', order_confirmation, name='order_confirmation'),
 
 
-
-
-
     path('accounts/login/', my_view, name='login'),  # vlastní view pro login
     path('accounts/signup/', SignUpView.as_view(), name='signup'),          # vlastní view pro signup
     path('accounts/password_change/', CustomPasswordChangeView.as_view(), name='password_change'), # view pro změnu hesla
@@ -58,5 +51,6 @@ urlpatterns = [
     path('accounts/', include('django.contrib.auth.urls')), # default django view
 
     path('admin/', admin.site.urls),
+
 ]
 

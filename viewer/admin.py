@@ -3,7 +3,6 @@ from django.contrib.admin import ModelAdmin, TabularInline
 from django.utils.html import format_html
 
 from viewer.models import *
-# Register your models here.
 
 
 class ProductInline(TabularInline):
@@ -25,13 +24,7 @@ class CategoryAdmin(ModelAdmin):
     thumbnail_preview.short_description = 'Thumbnail Preview'
 
 
-# admin.site.register(User)
-
-
 admin.site.register(Manufacturer)
-# admin.site.register(Product)
 admin.site.register(Cart)
 admin.site.register(Category, CategoryAdmin)
-# admin.site.register(Order)
-# admin.site.register(Order_Line)
 admin.site.register(Payment)

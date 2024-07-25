@@ -152,8 +152,8 @@ class ProductSortedHighListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['categories'] = Category.objects.all()  # Získání všech kategorií
-        context['current_template'] = "produkty seřazené od nejlevnějšího"  # Nastavení aktuální šablony
+        context['categories'] = Category.objects.all()
+        context['current_template'] = "produkty seřazené od nejlevnějšího"
         try:
             context['user_city'] = self.request.user.profile.city
         except:
@@ -166,15 +166,15 @@ class ProductSortedLowListView(ListView):
     model = Product
     template_name = 'shop.html'
     context_object_name = 'products'
-    paginate_by = 12  # Paginace produktů po 3 na stránku
+    paginate_by = 12
 
     def get_queryset(self):
         return Product.objects.order_by('-price')  # Seřazení produktů podle ceny sestupně
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['categories'] = Category.objects.all()  # Získání všech kategorií
-        context['current_template'] = "produkty seřazené od nejdražšího"  # Nastavení aktuální šablony
+        context['categories'] = Category.objects.all()
+        context['current_template'] = "produkty seřazené od nejdražšího"
         try:
             context['user_city'] = self.request.user.profile.city
         except:
@@ -194,8 +194,8 @@ class ProductNewestListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['categories'] = Category.objects.all()  # Získání všech kategorií
-        context['current_template'] = "produkty seřazené od nejnovějšího"  # Nastavení aktuální šablony
+        context['categories'] = Category.objects.all()
+        context['current_template'] = "produkty seřazené od nejnovějšího"
         try:
             context['user_city'] = self.request.user.profile.city
         except:
@@ -226,7 +226,7 @@ class ProductTemplateView(TemplateView):
         except:
             context['user_city'] = 'Praha'
         return context
-        # context["reviews"] = Review.objects.filter(product=product_)  # TODO: Chceme vypisovat a tvořit recenze pro produkt?
+        # context["reviews"] = Review.objects.filter(product=product_)
         # context["form_review"] = ReviewModelForm
 
 
@@ -245,7 +245,17 @@ class RandomProductTemplateView(TemplateView):
                     break
         else:
             random_product = None
-        context["product"] = random_product
+
+        if random_product:
+            conversion_rate = 25.5  # Převodní kurz pro cenu (CZK na EUR)
+            context["product"] = random_product
+            context["title"] = random_product.title
+            context["description"] = random_product.description
+            context["price"] = random_product.price
+            context["manufacturer"] = random_product.manufacturer
+            context["conversion_rate"] = conversion_rate
+            context["price_czk"] = random_product.price * conversion_rate  # Přepočet ceny na CZK
+
         context['categories'] = Category.objects.all()  # Získání všech kategorií
         context['current_template'] = "Náhodný produkt"  # Nastavení aktuální šablony
         try:
@@ -274,21 +284,6 @@ class ProductsCheckoutListView(ListView):
 # -----------------------------------------
 # CRUD_product OPERATIONS START
 # -----------------------------------------
-
-# Pohled pro zobrazení produktů z orderlines (objednané produkty)
-# class ProductsCartListView(ListView):
-#     model = Product
-#     template_name = 'cart.html'
-#
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         context['categories'] = Category.objects.all()  # Získání všech kategorií
-#         context['current_template'] = "Objednané produkty"  # Nastavení aktuální šablony
-#         try:
-#             context['user_city'] = self.request.user.profile.city
-#         except:
-#             context['user_city'] = 'Praha'
-#         return context
 
 # Formulář pro vytvoření/úpravu produktu
 class ProductModelForm(ModelForm):
@@ -351,7 +346,7 @@ class ProductCreateView(PermissionRequiredMixin, CreateView):
         context['current_template'] = "Vytváření produktu"  # Nastavení aktuální šablony
         try:
             context['user_city'] = self.request.user.profile.city
-        except:
+        except AttributeError:
             context['user_city'] = 'Praha'
         return context
 
@@ -364,6 +359,9 @@ class ProductCreateView(PermissionRequiredMixin, CreateView):
         if product_form.is_valid():
             product_form.save()
             messages.success(request, 'Produkt byl úspěšně vytvořen.')
+            return redirect('shop')
+        else:
+            messages.error(request, "Nastala chyba při tvorbě produktu.")
             return redirect('shop')
 
 
@@ -398,6 +396,9 @@ class ProductUpdateView(PermissionRequiredMixin, UpdateView):  # update produktu
         if product_form.is_valid():
             product_form.save()
             messages.success(request, 'Produkt byl úspěšně aktualizován.')
+            return redirect('product_select')
+        else:
+            messages.error(request, "Nastala chyba při aktualizaci produktu.")
             return redirect('product_select')
 
 
@@ -493,18 +494,17 @@ def add_to_cart(request, pk):
         'total_cost': 0,
     })
 
-    # check if product is in order
     order_line, created = Order_Line.objects.get_or_create(Order=order, Product=cart_product, defaults={
         'product_price': cart_product.price,
         'quantity': quantity,
     })
 
-    # if product in order update quantity
+    # update počtu produktů
     if not created:
         order_line.quantity += quantity
         order_line.save()
 
-    # update total cost of order
+    # update ceny order
     order.total_cost = sum(line.Product.price * line.quantity for line in order.order_line_set.all())
     order.save()
 
@@ -524,13 +524,12 @@ def cart_view(request):
     except AttributeError:
         context['user_city'] = 'Praha'
 
-    # Existující logika košíku
     try:
         order = Order.objects.get(User=request.user.profile, status='Pending')
         order_lines = order.order_line_set.all().order_by('id')
         total_cost = order.total_cost
 
-        # Calculate the total for each order line
+        # výpočet ceny pro každou order_line
         order_lines_with_total = []
         for line in order_lines:
             line_total = line.product_price * line.quantity
@@ -542,7 +541,6 @@ def cart_view(request):
                 'line_total': line_total,
             })
 
-        # Check if there are any order lines
         has_items = order_lines.exists()
 
     except Order.DoesNotExist:
@@ -565,14 +563,13 @@ def remove_from_cart(request, pk):
     order_line = get_object_or_404(Order_Line, id=pk, Order__User=request.user.profile, Order__status='Pending')
 
     if order_line.quantity > 1:
-        # Decrease the quantity by 1
         order_line.quantity -= 1
         order_line.save()
     else:
-        # Remove the order line if quantity is 1
+        # smaže order_line, jestliže je menší než 1
         order_line.delete()
 
-    # Update the total cost of the order
+    # Update celkové ceny
     order = order_line.Order
     order.total_cost = sum(line.product_price * line.quantity for line in order.order_line_set.all())
     order.save()
@@ -587,17 +584,15 @@ def remove_from_cart(request, pk):
 def delete_order_line(request, pk):
     order_line = get_object_or_404(Order_Line, id=pk, Order__User=request.user.profile, Order__status='Pending')
 
-    # Get the associated order before deleting the line
     order = order_line.Order
 
-    # Delete the order line
     order_line.delete()
 
-    # Update the total cost of the order
+    # Update celkové ceny
     order.total_cost = sum(line.product_price * line.quantity for line in order.order_line_set.all())
     order.save()
 
-    # Check if the order has no more order lines and delete the order if true
+    # smaže order jestliže nejsou další order_lines
     if not order.order_line_set.exists():
         order.delete()
 
@@ -608,7 +603,6 @@ def checkout_view(request):
     context = {}
     context['current_template'] = "Pokladna"
 
-    # Logika pro získání města uživatele
     try:
         if request.user.is_authenticated:
             context['user_city'] = request.user.profile.city
@@ -618,16 +612,12 @@ def checkout_view(request):
         context['user_city'] = 'Praha'
 
     try:
-        # Fetch the order based on the current user and status (assuming 'Pending')
         order = Order.objects.get(User=request.user.profile, status='Pending')
-
-        # Fetch all order lines for the current order
         order_lines = order.order_line_set.all()
 
-        # Calculate total cost of the order
-        total_cost = order.total_cost  # Assuming total_cost is pre-calculated in the Order model
+        # výpočet celkové ceny order
+        total_cost = order.total_cost
 
-        # Prepare data for displaying in the template
         order_summary = []
         for line in order_lines:
             line_total = line.product_price * line.quantity
@@ -637,7 +627,6 @@ def checkout_view(request):
                 'line_total': line_total,
             })
 
-        # Add order data to context
         context.update({
             'order_summary': order_summary,
             'total_cost': total_cost,
@@ -645,39 +634,13 @@ def checkout_view(request):
         })
 
     except Order.DoesNotExist:
-        # Handle case where the order does not exist
         context.update({
             'order_summary': [],
             'total_cost': 0,
         })
 
-    # Render the checkout template with the combined context
+
     return render(request, 'checkout.html', context)
-
-
-# @login_required
-# def place_order(request, pk):
-#     order = get_object_or_404(Order, id=pk, User=request.user.profile, status='Pending')
-#     order_lines = order.order_line_set.all()
-#
-#     try:
-#         for line in order_lines:
-#             product = line.Product
-#             if product.stock >= line.quantity:
-#                 product.stock -= line.quantity
-#                 product.save()
-#             else:
-#                 messages.error(request, f"Insufficient stock for {product.title}")
-#                 return redirect('checkout')
-#
-#         order.status = 'Confirmed'
-#         # order._processed = False  # Reset the flag to ensure the signal processes
-#         order.save()
-#         # messages.success(request, "Objednávka byla úspěšně vytvořena! Děkujeme! Nyní již potřebujeme jen vytvořit s.r.o., nakoupit stovky produktů, napojit skladový systém na databázi a zprovoznit tisíc dalších funkcí.")
-#         return redirect('order_confirmation')
-#     except Exception as e:
-#         messages.error(request, f"An error occurred while placing the order: {e}")
-#         return redirect('checkout')
 
 @login_required
 def place_order(request, pk):
@@ -742,7 +705,6 @@ def search_view(request):
     context = {}
     context['current_template'] = "Hledání"
 
-    # Logika pro získání města uživatele
     try:
         if request.user.is_authenticated:
                 context['user_city'] = request.user.profile.city
@@ -754,57 +716,15 @@ def search_view(request):
     return render(request, 'search_results.html',context)
 
 
+# def custom_404(request, exception):
+#     return render(request, '404.html', status=404)
+#
+# def custom_500(request):
+#     return render(request, '500.html', status=500)
+
 
 # -----------------------------------------
 # CART OPERATIONS END
 # -----------------------------------------
 
-# class ProductsCartListView(ListView): #TODO: vypsat produkty v pokladně z orderlines
-#     model = Order_Line
-#     template_name = 'cart.html'
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         context['product'] = Order_Line.objects.filter()
-#         context['quantity'] = Order_Line.quantity
-#         context['total'] = Order.total_cost
-#         context['product_price'] = Product.price
-#         return context
 
-
-# class CheckoutView(ListView):
-#     model = Order_Line
-#     template_name = 'checkout.html'
-#     context_object_name = 'order_lines'
-#
-#     def get_queryset(self):
-#         order_id = self.kwargs['order_id']
-#         order = get_object_or_404(Order, id=order_id)
-#         return Order_Line.objects.filter(Order=order)
-#
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         order_id = self.kwargs['order_id']
-#         order = get_object_or_404(Order, id=order_id)
-#
-#         total_price = sum(line.product_price * line.quantity for line in self.get_queryset())
-#
-#         context['order'] = order
-#         context['total_price'] = total_price
-#         return context
-
-# class CheckoutView(TemplateView):
-#     template_name = 'checkout.html'
-#
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         order_id = self.kwargs.get('order_id')
-#
-#         order = get_object_or_404(Order, pk=order_id)
-#         order_lines = Order_Line.objects.filter(Order=order)
-#
-#         total_price = sum(line.product_price * line.quantity for line in order_lines)
-#
-#         context['order'] = order
-#         context['order_lines'] = order_lines
-#         context['total_price'] = total_price
-#         return context

@@ -17,21 +17,20 @@
         <!-- Detaily produktu -->
         <div class="col-lg-7 pb-5">
             <!-- Název produktu -->
-            <h3 class="font-weight-semi-bold">{{ product.title }}</h3> <!-- TODO: název produktu -->
+            <h3 class="font-weight-semi-bold">{{ product.title }}</h3>
             <div class="d-flex mb-3">
                 <!-- Hodnocení produktu -->
 
             </div>
             <!-- Cena produktu v EUR a CZK -->
             <h3 class="font-weight-semi-bold mb-4">€ {{ product.price }} ({{ price_czk|floatformat:2 }} Kč)</h3>
-            <!-- aktuální kurz produktu v czk API -->
             <!-- Popis produktu -->
             <p class="mb-4">{{ product.description }}</p>
             <div class="d-flex mb-3">
                 <!-- Počet kusů skladem -->
                 <p class="text-dark font-weight-medium mb-0 mr-3">Skladem:</p>
                 <div>
-                    {{product.stock}} ks <!-- TODO: validace počtu produktů skladem a vložení do košíku -->
+                    {{product.stock}} ks
                 </div>
             </div>
             <div class="d-flex mb-3">
