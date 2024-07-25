@@ -131,17 +131,28 @@
 </div>
 <!-- Page Header End -->
 
-<div class="container">
-    {% if messages %}
-    {% for message in messages %}
-    <div class="alert alert-{{ message.tags }}">
-        {{ message }}
+<!--<div class="container">-->
+<!--    {% if messages %}-->
+<!--    {% for message in messages %}-->
+<!--    <div class="alert alert-{{ message.tags }}">-->
+<!--        {{ message }}-->
+<!--    </div>-->
+<!--    {% endfor %}-->
+<!--    {% endif %}-->
+<!--</div>-->
+{% if messages %}
+    <div class="container">
+        {% for message in messages %}
+            <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+                {{ message|safe }}
+            </div>
+        {% endfor %}
     </div>
-    {% endfor %}
-    {% endif %}
-</div>
+{% endif %}
 
 {% block content %}
+
+
 
 {% endblock %}
 
@@ -235,6 +246,15 @@
         updateExchangeRate(); // Inicializace při načtení stránky
     });
 </script>
+<script>
+    function openSignupModal() {
+        $('#signupModal').modal('show');
+    }
+    function openLoginModal() {
+        $('#loginModal').modal('show');
+    }
+</script>
+
 
 </body>
 

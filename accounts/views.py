@@ -21,10 +21,35 @@ from viewer.models import Category
 def my_view(request):
     username = request.POST.get('username')
     password = request.POST.get('password')
-    user = authenticate(request, username=username, password=password)
-    if user is not None:
-        login(request, user)
-        return redirect('home')
+
+    if username and password:
+        user = authenticate(request, username=username, password=password)
+
+        if user is not None:
+            # User exisutje a je ověřen
+            login(request, user)
+            messages.success(request, 'Přihlášení bylo úspěšné.')
+            return redirect('home')
+        else:
+            # Chyba v ověření
+            if User.objects.filter(username=username).exists():
+                # Username exisutje ale heslo ne nesprávné
+                messages.error(request,
+                               'Nelze se přihlásit. Uživatelské jméno nebo heslo jsou nesprávné. ')
+            else:
+                # Username neexistuje
+                messages.error(request,
+                               'Nelze se přihlásit. Uživatelské jméno neexistuje. '
+                               'Chcete se <a href="#" onclick="openSignupModal()">registrovat</a>?')
+    else:
+        # Uživatel není registrován (chybí username i heslo)
+        messages.error(request,
+                       'Pro přidání produktu do košíku je potřeba se nejprve '
+                       '<a href="#" onclick="openSignupModal()">registrovat</a> '
+                       'nebo <a href="#" onclick="openLoginModal()">přihlásit</a>. ')
+
+    return redirect('home')
+
 
 # class SubmittableLoginView(View):
     # def post(self, request, *args, **kwargs):
@@ -125,7 +150,7 @@ class SignUpView(CreateView):
     #         phone_number=form.cleaned_data.get('phone_number'),
     #         city=form.cleaned_data.get('city')
     #     )
-    #     # Add the success message
+    #
     #     messages.success(self.request, 'Účet byl úspěšně vytvořen! Můžete se nyní přihlásit.')
     #     return response
 
