@@ -339,6 +339,9 @@ class ProductCreateView(PermissionRequiredMixin, CreateView):
             product_form.save()
             messages.success(request, 'Produkt byl úspěšně vytvořen.')
             return redirect('shop')
+        else:
+            messages.error(request, "Nastala chyba při tvorbě produktu.")
+            return redirect('shop')
 
 
 class ProductUpdateView(PermissionRequiredMixin, UpdateView):  # update produktu (stock, cena apod)
@@ -372,6 +375,9 @@ class ProductUpdateView(PermissionRequiredMixin, UpdateView):  # update produktu
         if product_form.is_valid():
             product_form.save()
             messages.success(request, 'Produkt byl úspěšně aktualizován.')
+            return redirect('product_select')
+        else:
+            messages.error(request, "Nastala chyba při aktualizaci produktu.")
             return redirect('product_select')
 
 
