@@ -73,15 +73,11 @@
                 <!-- Sdílení produktu na sociálních sítích -->
                 <p class="text-dark font-weight-medium mb-0 mr-2">Sdílet:</p>
                 <div class="d-inline-flex">
-                    <a class="text-dark px-2" href="">
+                    <a class="text-dark px-2" href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}&t={{ product.title }}" target="_blank">
                         <i class="fab fa-facebook-f"></i>
                     </a>
-                    <a class="text-dark px-2" href="">
+                    <a class="text-dark px-2" href="https://twitter.com/intent/tweet?url={{ request.build_absolute_uri }}&text={{ product.title }}" target="_blank">
                         <i class="fab fa-twitter"></i>
-                    </a>
-                    <a class="text-dark px-2" href="">
-                        <i class="fab fa-linkedin-in"></i>
-                    </a>
                     </a>
                 </div>
             </div>
