@@ -13,7 +13,7 @@ from django.views import View
 from django.views.generic import TemplateView, ListView, FormView, CreateView, UpdateView, DeleteView, DetailView
 from django_addanother.views import CreatePopupMixin
 from django_addanother.widgets import AddAnotherWidgetWrapper
-from django.core.paginator import Paginator
+from django.core.paginator import Paginator, EmptyPage
 from django.db.models import Q
 
 from accounts.views import ProfileUpdateForm
@@ -91,23 +91,34 @@ class CategoryTemplateView(TemplateView):
         context = super().get_context_data(**kwargs)
         pk = self.kwargs['pk']  # Získání ID kategorie z URL
         category = get_object_or_404(Category, pk=pk)  # Získání kategorie nebo 404 pokud neexistuje
-        products = Product.objects.filter(categories=category)  # Získání produktů v kategorii
-        paginator = Paginator(products, 9)  # Paginace produktů po 9 na stránku
-        page_number = self.request.GET.get('page')  # Získání čísla stránky z GET parametru
-        page_obj = paginator.get_page(page_number)  # Získání aktuální stránky
-        context["category"] = category
-        context["products"] = products
-        context['page_obj'] = page_obj
-        categories = Category.objects.all()
-        for category in categories:
-            category.product_count = Product.objects.filter(categories=category).count()
-        context['categories'] = categories
 
+        # Získání produktů v kategorii
+        products = Product.objects.filter(categories=category)
+
+        # Paginace produktů po 9 na stránku
+        paginator = Paginator(products, 9)
+        page_number = self.request.GET.get('page', 1)  # Získání čísla stránky z GET parametru
 
         try:
-            context['user_city'] = self.request.user.profile.city
-        except:
+            page_obj = paginator.get_page(page_number)
+        except EmptyPage:
+            page_obj = paginator.page(paginator.num_pages)  # Pokud je číslo stránky větší než počet stránek
+
+        context["category"] = category
+        context['page_obj'] = page_obj
+        context['categories'] = Category.objects.all()
+
+        # Nastavení počtu produktů v každé kategorii
+        for cat in context['categories']:
+            cat.product_count = Product.objects.filter(categories=cat).count()
+
+        # Nastavení města uživatele
+        user = self.request.user
+        if hasattr(user, 'profile'):
+            context['user_city'] = user.profile.city
+        else:
             context['user_city'] = 'Praha'
+
         return context
 
 
@@ -116,7 +127,7 @@ class ProductsListView(ListView):
     model = Product
     template_name = 'shop.html'
     context_object_name = 'products'
-    paginate_by = 12  # Paginace produktů po 3 na stránku
+    paginate_by = 12  # Paginace produktů po 12 na stránku
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
