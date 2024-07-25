@@ -667,7 +667,7 @@ def order_confirmation(request):
 def search_view(request):
 
     context = {}
-    context['current_template'] = "Košík"
+    context['current_template'] = "Hledání"
 
     # Logika pro získání města uživatele
     try:
