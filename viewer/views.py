@@ -676,6 +676,9 @@ def place_order(request, pk):
             profile.city = city
         profile.save()
 
+        # Kombinace adresy a města do jednoho řetězce pro doručovací adresu
+        delivery_address = f"{address}, {city}"
+
         try:
             for line in order_lines:
                 product = line.Product
@@ -687,6 +690,8 @@ def place_order(request, pk):
                     return redirect('checkout')
 
             order.status = 'Confirmed'
+            order.delivery_address = delivery_address  # Uložení doručovací adresy do objednávky
+            order.date_of_sale = timezone.now()  # Nastavení data prodeje
             order.save()
             return redirect('order_confirmation')
         except Exception as e:
