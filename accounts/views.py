@@ -185,6 +185,10 @@ class CustomPasswordChangeView(PasswordChangeView):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Změna hesla'
         context['submit_text'] = 'Změnit heslo'
+        try:
+            context['user_city'] = self.request.user.profile.city
+        except:
+            context['user_city'] = 'Praha'
         return context
 
     def form_valid(self, form):
