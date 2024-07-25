@@ -145,10 +145,10 @@ class ProductSortedHighListView(ListView):
     model = Product
     template_name = 'shop.html'
     context_object_name = 'products'
-    paginate_by = 12  # Paginace produktů po 3 na stránku
+    paginate_by = 12
 
     def get_queryset(self):
-        return Product.objects.order_by('price')  # Seřazení produktů podle ceny vzestupně
+        return Product.objects.all().order_by('price')  # Použijeme all() pro získání všech atributů a seřadíme vzestupně
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -169,7 +169,7 @@ class ProductSortedLowListView(ListView):
     paginate_by = 12
 
     def get_queryset(self):
-        return Product.objects.order_by('-price')  # Seřazení produktů podle ceny sestupně
+        return Product.objects.all().order_by('-price')  # Použijeme all() pro získání všech atributů
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -187,7 +187,7 @@ class ProductNewestListView(ListView):
     model = Product
     template_name = 'shop.html'
     context_object_name = 'products'
-    paginate_by = 3  # Paginace produktů po 3 na stránku
+    paginate_by = 12  # Paginace produktů po 3 na stránku
 
     def get_queryset(self):
         return Product.objects.order_by('-created_at')  # Seřazení produktů podle data vytvoření (novější první)
