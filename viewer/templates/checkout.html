@@ -9,106 +9,44 @@
         <div class="col-lg-8">
             <div class="mb-4">
                 <h4 class="font-weight-semi-bold mb-4">Doručovací adresa</h4>
-                <div class="row">
+                <form method="post" action="{% url 'place_order' order.id %}">
+                    {% csrf_token %}
                     <!-- Pole pro jméno -->
                     <div class="col-md-6 form-group">
                         <label>Křestní jméno</label>
-                        <input class="form-control" type="text" placeholder="John">
+                        <input class="form-control" type="text" name="first_name" value="{{ request.user.first_name }}" placeholder="John">
                     </div>
                     <!-- Pole pro příjmení -->
                     <div class="col-md-6 form-group">
                         <label>Příjmení</label>
-                        <input class="form-control" type="text" placeholder="Doe">
+                        <input class="form-control" type="text" name="last_name" value="{{ request.user.last_name }}" placeholder="Doe">
                     </div>
                     <!-- Pole pro e-mail -->
                     <div class="col-md-6 form-group">
                         <label>E-mail</label>
-                        <input class="form-control" type="text" placeholder="example@email.com">
-                        <!-- Vstupní pole pro e-mail -->
+                        <input class="form-control" type="email" name="email" value="{{ request.user.email }}" placeholder="example@email.com">
                     </div>
                     <!-- Pole pro telefonní číslo -->
                     <div class="col-md-6 form-group">
                         <label>Telefonní číslo</label>
-                        <input class="form-control" type="text" placeholder="+123 456 789">
+                        <input class="form-control" type="text" name="phone_number" value="{{ request.user.profile.phone_number }}" placeholder="+123 456 789">
                     </div>
-                    <!-- Pole pro adresu řádek 1 -->
+                    <!-- Pole pro adresu -->
                     <div class="col-md-6 form-group">
                         <label>Adresa</label>
-                        <input class="form-control" type="text" placeholder="123 Street">
-                    </div>
-                    <!-- Pole pro výběr země -->
-                    <div class="col-md-6 form-group">
-                        <label>Země</label>
-                        <select class="custom-select">
-                            <option selected>Česká republika</option> <!-- Předvolená země -->
-                            <option>Afghanistan</option>
-                            <option>Albania</option>
-                            <option>Algeria</option>
-                        </select>
+                        <input class="form-control" type="text" name="address" value="{{ request.user.profile.address }}" placeholder="123 Street">
                     </div>
                     <!-- Pole pro město -->
                     <div class="col-md-6 form-group">
                         <label>Město</label>
-                        <input class="form-control" type="text" placeholder="New York">
+                        <input class="form-control" type="text" name="city" value="{{ request.user.profile.city }}" placeholder="New York">
                     </div>
-                    <!-- Pole pro stát -->
-                    <div class="col-md-6 form-group">
-                        <label>PSČ</label>
-                        <input class="form-control" type="text" placeholder="123">
+                    <!-- Submit button for placing order -->
+                    <div class="card-footer border-secondary bg-transparent">
+                        <button type="submit" class="btn btn-lg btn-block btn-primary font-weight-bold my-3 py-3">Závazně objednat</button>
                     </div>
-                    <!-- Checkbox pro dodání na jinou adresu -->
-                    <div class="col-md-12 form-group">
-                        <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="shipto">
-                            <label class="custom-control-label" for="shipto" data-toggle="collapse"
-                                   data-target="#shipping-address">Ship to different address</label>
-                            <!-- Možnost dodání na jinou adresu -->
-                        </div>
-                    </div>
-                </div>
+                </form>
             </div>
-            <!--                <div class="collapse mb-4" id="shipping-address">-->
-            <!--                    <h4 class="font-weight-semi-bold mb-4">Shipping Address</h4>-->
-            <!--                    <div class="row">-->
-            <!--                        <div class="col-md-6 form-group">-->
-            <!--                            <label>First Name</label>-->
-            <!--                            <input class="form-control" type="text" placeholder="John">-->
-            <!--                        </div>-->
-            <!--                        <div class="col-md-6 form-group">-->
-            <!--                            <label>Last Name</label>-->
-            <!--                            <input class="form-control" type="text" placeholder="Doe">-->
-            <!--                        </div>-->
-            <!--                        <div class="col-md-6 form-group">-->
-            <!--                            <label>E-mail</label>-->
-            <!--                            <input class="form-control" type="text" placeholder="example@email.com">-->
-            <!--                        </div>-->
-            <!--                        <div class="col-md-6 form-group">-->
-            <!--                            <label>Mobile No</label>-->
-            <!--                            <input class="form-control" type="text" placeholder="+123 456 789">-->
-            <!--                        </div>-->
-            <!--                        <div class="col-md-6 form-group">-->
-            <!--                            <label>Address Line 1</label>-->
-            <!--                            <input class="form-control" type="text" placeholder="123 Street">-->
-            <!--                        </div>-->
-            <!--                        <div class="col-md-6 form-group">-->
-            <!--                            <label>Country</label>-->
-            <!--                            <select class="custom-select">-->
-            <!--                                <option selected>United States</option>-->
-            <!--                                <option>Afghanistan</option>-->
-            <!--                                <option>Albania</option>-->
-            <!--                                <option>Algeria</option>-->
-            <!--                            </select>-->
-            <!--                        </div>-->
-            <!--                        <div class="col-md-6 form-group">-->
-            <!--                            <label>City</label>-->
-            <!--                            <input class="form-control" type="text" placeholder="New York">-->
-            <!--                        </div>-->
-            <!--                        <div class="col-md-6 form-group">-->
-            <!--                            <label>ZIP Code</label>-->
-            <!--                            <input class="form-control" type="text" placeholder="123">-->
-            <!--                        </div>-->
-            <!--                    </div>-->
-            <!--                </div>-->
         </div>
         <!-- Sekce pro souhrn objednávky a možnosti platby -->
         <div class="col-lg-4">
@@ -192,11 +130,6 @@
                         </div>
                     </div>
                 </div>
-                <!-- Tlačítko pro dokončení objednávky -->
-                <div class="card-footer border-secondary bg-transparent">
-                    <a href="{% url 'place_order' order.id %}"
-                       class="btn btn-lg btn-block btn-primary font-weight-bold my-3 py-3">Závazně objednat</a>
-                </div>
             </div>
         </div>
     </div>
@@ -204,4 +137,3 @@
 <!-- Konec pokladny (Checkout) -->
 
 {% endblock %}
-
