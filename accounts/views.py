@@ -26,7 +26,7 @@ def my_view(request):
         user = authenticate(request, username=username, password=password)
 
         if user is not None:
-            # User exisutje a je ověřen
+            # User exisujue a je ověřen
             login(request, user)
             messages.success(request, 'Přihlášení bylo úspěšné.')
             return redirect('home')
@@ -51,60 +51,6 @@ def my_view(request):
     return redirect('home')
 
 
-# class SubmittableLoginView(View):
-    # def post(self, request, *args, **kwargs):
-    #     if request.method == "POST":
-    #         username = request.POST.get('username')
-    #         password = request.POST.get('password')
-    #         user = User.objects.get(username=username)
-    #         login(request, user)
-    #     return redirect('home')
-    # reverse_lazy = 'home'
-
-    # def get(self, request, *args, **kwargs):
-    #     form = AuthenticationForm()
-    #     return render(request, 'login.html', {'form': form})
-
-    # def post(self, request, *args, **kwargs):
-    #     if request.method == "POST":
-    #         form = AuthenticationForm(request, data=request.POST)
-    #         if form.is_valid():
-    #             username = form.cleaned_data.get('username')
-    #             password = form.cleaned_data.get('password')
-    #             user = authenticate(request, username=username, password=password)
-    #             if user is not None:
-    #                 login(request, user)
-    #                 return redirect('home')
-    #             else:
-    #                 form.add_error(None, "Invalid username or password")
-    #     return redirect('home')
-    #
-    # reverse_lazy = 'home'
-
-    # def get(self, request, *args, **kwargs):
-    #     # If user is already authenticated, redirect to LOGIN_REDIRECT_URL
-    #     if request.user.is_authenticated:
-    #         return redirect('home')
-    #
-    #     form = AuthenticationForm()
-    #     return redirect('home')
-
-    # def post(self, request, *args, **kwargs):
-    #     form = AuthenticationForm(request, data=request.POST)
-    #     if form.is_valid():
-    #         username = form.cleaned_data.get('username')
-    #         password = form.cleaned_data.get('password')
-    #         user = authenticate(request, username=username, password=password)
-    #         if user is not None:
-    #             login(request, user)
-    #             return redirect('home')
-    #         else:
-    #             form.add_error(None, "Invalid username or password")
-    #     print("nevalidni formulař")
-    #     # If form is invalid or authentication fails, render the login form with errors
-    #     return redirect('home')
-
-    
 class SignUpForm(UserCreationForm):
 
     class Meta(UserCreationForm.Meta):
@@ -114,19 +60,10 @@ class SignUpForm(UserCreationForm):
     phone_number = IntegerField()
     city = CharField(max_length=42)
 
-    # def clean_phone_number(self):
-    #     phone_number = self.cleaned_data.get('phone_number')
-    #     if len(phone_number) < 10:
-    #         raise ValidationError('Phone number must be at least 10 digits')
-    #     if len(phone_number) > 12:
-    #         raise ValidationError('Phone number must be at most 12 digits')
-    #     return phone_number
-
     @atomic
     def save(self, commit=True):
         self.instance.is_active = True
         user = super().save(commit)
-        # email = self.cleaned_data.get('email')
         address = self.cleaned_data.get('address')
         phone_number = self.cleaned_data.get('phone_number')
         city = self.cleaned_data.get('city')
@@ -147,11 +84,6 @@ class SignUpView(CreateView):
                                        # ' <a href="#" onclick="openLoginModal()">přihlásit</a>.')
         return response
 
-
-
-# class SubmittablePasswordChangeView(PasswordChangeView):
-#     template_name = 'form.html'
-#     success_url = reverse_lazy('home')
 
 class CustomPasswordChangeForm(PasswordChangeForm):
     old_password = forms.CharField(
