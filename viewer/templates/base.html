@@ -73,15 +73,15 @@
         </div>
         <div class="col-lg-6 col-6 text-left">
             <form action="{% url 'search_results' %}" method="get">
-    <div class="input-group">
-        <input type="text" class="form-control" name="q" placeholder="Vyhledej produkt">
-        <div class="input-group-append">
-            <button class="btn btn-outline-secondary" type="submit">
-                <i class="fa fa-search"></i>
-            </button>
-        </div>
-    </div>
-</form>
+                <div class="input-group">
+                    <input type="text" class="form-control" name="q" placeholder="Vyhledej produkt">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary" type="submit">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+            </form>
         </div>
         <div class="col-lg-3 col-6 text-right d-flex justify-content-end align-items-center">
             <div id="weather-widget" class="mini-widget mr-2">
@@ -141,17 +141,16 @@
 <!--    {% endif %}-->
 <!--</div>-->
 {% if messages %}
-    <div class="container">
-        {% for message in messages %}
-            <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
-                {{ message|safe }}
-            </div>
-        {% endfor %}
+<div class="container">
+    {% for message in messages %}
+    <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+        {{ message|safe }}
     </div>
+    {% endfor %}
+</div>
 {% endif %}
 
 {% block content %}
-
 
 
 {% endblock %}
@@ -250,6 +249,7 @@
     function openSignupModal() {
         $('#signupModal').modal('show');
     }
+
     function openLoginModal() {
         $('#loginModal').modal('show');
     }
