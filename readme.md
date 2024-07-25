@@ -6,6 +6,11 @@ Jsme trojice začínajících programátorů, kteří vytvářejí svůj úplně
 _______________________________________________________
 Doufáme, že se vám bude líbit.
 
+## ER Diagaram
+
+![img.png](ERD.png)
+
+
 ## Funkce
 
 - Zobrazení kategorií produktů
